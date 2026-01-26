@@ -266,24 +266,35 @@ body {
 </div>
 
 <script>
-function showSettings(id) {
+function showSettings(id, card) {
     document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.temp-card').forEach(c => c.classList.remove('active'));
 
-    document.getElementById(id).classList.add('active');
-    event.currentTarget.classList.add('active');
+    const panel = document.getElementById(id);
+    if (panel) {
+        panel.classList.add('active');
+        card.classList.add('active');
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
 }
 
-function openModal(id) {
-    document.getElementById(id).classList.add('active');
-    document.body.style.overflow = 'hidden';
+function showModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
-    document.body.style.overflow = '';
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 }
 </script>
+
 
 </body>
 </html>
