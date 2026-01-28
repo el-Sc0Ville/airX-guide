@@ -68,30 +68,6 @@
             font-weight: 500;
         }
         
-        .lang-toggle {
-            position: absolute;
-            top: max(env(safe-area-inset-top), 20px);
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,122,255,0.3);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .lang-toggle:active {
-            transform: scale(0.95);
-            background: var(--primary-dark);
-        }
-        
         .container {
             padding: var(--spacing-lg) var(--spacing-md);
             max-width: 640px;
@@ -208,4 +184,1013 @@
         
         .settings-panel.active {
             display: block;
-            animation: slide
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .settings-panel h2 {
+            color: #1d1d1f;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+        
+        .setting-row {
+            background: linear-gradient(135deg, #f5f5f7 0%, #fafafa 100%);
+            padding: var(--spacing-md);
+            border-radius: 14px;
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.2s ease;
+        }
+        
+        .setting-row:hover {
+            background: linear-gradient(135deg, #ebebed 0%, #f0f0f0 100%);
+        }
+        
+        .setting-row .label {
+            font-size: 0.85em;
+            color: #6e6e73;
+            margin-bottom: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .setting-row .value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        
+        .setting-row .note {
+            font-size: 0.85em;
+            color: #86868b;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+        
+        .info-note {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            font-size: 0.9em;
+            color: #856404;
+            margin-top: var(--spacing-md);
+            line-height: 1.6;
+            border: 1px solid rgba(133,100,4,0.1);
+        }
+        
+        .info-note strong {
+            color: #664d03;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            font-size: 0.9em;
+            color: #3f51b5;
+            margin-top: var(--spacing-md);
+            line-height: 1.6;
+            border-left: 4px solid var(--info-color);
+        }
+        
+        .info-box strong {
+            color: #303f9f;
+        }
+        
+        .details-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            width: 100%;
+            margin-top: var(--spacing-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,122,255,0.3);
+            letter-spacing: -0.2px;
+        }
+        
+        .details-btn:active {
+            transform: scale(0.98);
+            background: var(--primary-dark);
+            box-shadow: 0 2px 8px rgba(0,122,255,0.4);
+        }
+        
+        .maintenance-btn {
+            background: var(--success-color);
+            box-shadow: 0 4px 12px rgba(52,199,89,0.3);
+        }
+        
+        .maintenance-btn:active {
+            background: #28a745;
+            box-shadow: 0 2px 8px rgba(52,199,89,0.4);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+            to { 
+                opacity: 1;
+                backdrop-filter: blur(10px);
+            }
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 20px;
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            max-width: 640px;
+            width: calc(100% - 40px);
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .modal-header h2 {
+            color: #1d1d1f;
+            font-size: 1.5em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .close-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(255,59,48,0.3);
+        }
+        
+        .close-btn:active {
+            transform: scale(0.9);
+            background: #d32f2f;
+        }
+        
+        .detail-table {
+            width: 100%;
+            margin: var(--spacing-md) 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        
+        .detail-table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 14px 12px;
+            text-align: left;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .detail-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9em;
+            background: white;
+            color: #1d1d1f;
+        }
+        
+        .detail-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .detail-table tbody tr:nth-child(even) td {
+            background: #fafafa;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-left: 4px solid var(--danger-color);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            margin: var(--spacing-md) 0;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #c62828;
+        }
+        
+        .warning-box strong {
+            color: #b71c1c;
+        }
+        
+        .success-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 4px solid var(--success-color);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            margin: var(--spacing-md) 0;
+            font-size: 0.9em;
+            line-height: 1.6;
+            color: #2e7d32;
+        }
+        
+        .success-box strong {
+            color: #1b5e20;
+        }
+        
+        .maintenance-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--card-shadow);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .maintenance-card h4 {
+            color: #1d1d1f;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .maintenance-card .frequency {
+            background: var(--success-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .maintenance-card p {
+            color: #6e6e73;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        .product-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .product-link:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+        
+        .footer {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: var(--spacing-md);
+            text-align: center;
+            margin-top: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            font-size: 0.85em;
+            color: #6e6e73;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .footer p {
+            line-height: 1.6;
+        }
+        
+        .footer-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            margin-top: 12px;
+            padding: 12px;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .footer-link:active {
+            background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
+            transform: scale(0.98);
+        }
+        
+        h3 {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin: var(--spacing-md) 0;
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Better focus states for accessibility */
+        button:focus-visible,
+        .temp-card:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        
+        .quick-access {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        
+        .quick-access h3 {
+            color: #1d1d1f;
+            font-size: 1.2em;
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+        }
+        
+        .quick-btn {
+            background: linear-gradient(135deg, var(--success-color) 0%, #28a745 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(52,199,89,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .quick-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(52,199,89,0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏠 Home Ventilation & Humidifier Settings</h1>
+        <p>Quick Reference Guide</p>
+    </div>
+    
+        
+        <div class="quick-access">
+            <h3>⚡ Quick Access</h3>
+            <button class="quick-btn" onclick="showModal('maintenance-modal')">
+                🔧 Maintenance Schedule & Links
+            </button>
+        </div>
+        
+        <div class="temp-grid">
+            <div class="temp-card winter-deep" onclick="showSettings('deep-winter')" role="button" tabindex="0" aria-label="Deep Winter Settings">
+                <span class="emoji">🥶</span>
+                <div class="title">Deep Winter</div>
+                <div class="subtitle">Below -15°C</div>
+            </div>
+            
+            <div class="temp-card winter-mild" onclick="showSettings('mild-winter')" role="button" tabindex="0" aria-label="Mild Winter Settings">
+                <span class="emoji">❄️</span>
+                <div class="title">Mild Winter</div>
+                <div class="subtitle">-15°C to 0°C</div>
+            </div>
+            
+            <div class="temp-card spring-fall" onclick="showSettings('spring-fall')" role="button" tabindex="0" aria-label="Spring Fall Settings">
+                <span class="emoji">🌱</span>
+                <div class="title">Spring/Fall</div>
+                <div class="subtitle">0°C to 15°C</div>
+            </div>
+            
+            <div class="temp-card summer" onclick="showSettings('summer')" role="button" tabindex="0" aria-label="Summer Settings">
+                <span class="emoji">☀️</span>
+                <div class="title">Summer</div>
+                <div class="subtitle">Above 15°C</div>
+            </div>
+        </div>
+        
+        <!-- Deep Winter Settings -->
+        <div id="deep-winter" class="settings-panel">
+            <h2>🥶 Deep Winter Settings</h2>
+            
+            <div class="setting-row">
+                <div class="label">GeneralAire Humidifier</div>
+                <div class="value">30-35%</div>
+                <div class="note">Mode: Manual</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="value">40-45%</div>
+                <div class="note">Always 10-15% higher than humidifier</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Mode & Speed</div>
+                <div class="value">🕒 Timer / Speed 1</div>
+                <div class="note">Best default for extreme cold</div>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ Important - Wood Protection:</strong> Never go below 30% humidity in winter. Dropping below 30% causes wood to lose moisture, leading to shrinkage, cracking, and potential damage to hardwood floors, cabinets, and furniture. Maintain 30-50% year-round for wood stability.
+            </div>
+            
+            <div class="info-box">
+                <strong>🚗 Garage Tip:</strong> If you keep your car in the garage during winter, consider using a dehumidifier to manage excess moisture from snow/ice melting off the vehicle.
+            </div>
+            
+            <div class="info-note">
+                <strong>Why these settings?</strong> Preserves humidity while maintaining indoor air quality and protecting wood structures. Avoid continuous exchange in extreme cold to prevent over-drying.
+            </div>
+            
+            <button class="details-btn" onclick="showModal('deep-winter-modal')">
+                See Detailed Scenarios →
+            </button>
+        </div>
+        
+        <!-- Mild Winter Settings -->
+        <div id="mild-winter" class="settings-panel">
+            <h2>❄️ Mild Winter Settings</h2>
+            
+            <div class="setting-row">
+                <div class="label">GeneralAire Humidifier</div>
+                <div class="value">30-35%</div>
+                <div class="note">Mode: Manual</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="value">40-45%</div>
+                <div class="note">Always 10-15% higher than humidifier</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Mode & Speed</div>
+                <div class="value">🔁 Exchange / Speed 1</div>
+                <div class="note">Continuous exchange is safe at these temps</div>
+            </div>
+            
+            <div class="info-note">
+                <strong>Why these settings?</strong> Good balance between comfort and protection. Can safely use continuous exchange mode without over-drying. Maintains healthy humidity for both occupants and wood structures.
+            </div>
+            
+            <button class="details-btn" onclick="showModal('mild-winter-modal')">
+                See Detailed Scenarios →
+            </button>
+        </div>
+        
+        <!-- Spring/Fall Settings -->
+        <div id="spring-fall" class="settings-panel">
+            <h2>🌱 Spring/Fall Settings</h2>
+            
+            <div class="setting-row">
+                <div class="label">GeneralAire Humidifier</div>
+                <div class="value">30-40%</div>
+                <div class="note">Mode: Manual (or OFF if windows open)</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="value">45-50%</div>
+                <div class="note">Always 10-15% higher than humidifier</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Mode & Speed</div>
+                <div class="value">🔁 Exchange / Speed 1</div>
+                <div class="note">Boost to Speed 2 if humid</div>
+            </div>
+            
+            <div class="info-note">
+                <strong>Why these settings?</strong> Ideal for indoor air quality with no condensation risk. Turn humidifier OFF if opening windows to avoid fighting fresh air. Maintains optimal range for wood protection.
+            </div>
+            
+            <button class="details-btn" onclick="showModal('spring-fall-modal')">
+                See Detailed Scenarios →
+            </button>
+        </div>
+        
+        <!-- Summer Settings -->
+        <div id="summer" class="settings-panel">
+            <h2>☀️ Summer Settings</h2>
+            
+            <div class="setting-row">
+                <div class="label">GeneralAire Humidifier</div>
+                <div class="value">OFF</div>
+                <div class="note">Let AC handle humidity</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="value">55-60%</div>
+                <div class="note">Safety trigger only</div>
+            </div>
+            
+            <div class="setting-row">
+                <div class="label">Aldes Controller Mode & Speed</div>
+                <div class="value">🔁 Exchange / Speed 1</div>
+                <div class="note">Boost to Speed 2 if very humid</div>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ Important:</strong> Do NOT humidify when AC is running. Let your AC and Aldes controller work together to remove moisture.
+            </div>
+            
+            <button class="details-btn" onclick="showModal('summer-modal')">
+                See Detailed Scenarios →
+            </button>
+        </div>
+        
+        <div class="footer">
+            <p>💡 <strong>Remember:</strong> Aldes controller humidity should always be 10-15% higher than GeneralAire</p>
+            <a href="#" class="footer-link" onclick="showModal('explanation-modal'); return false;">
+                Why? Tap here for explanation
+            </a>
+        </div>
+    </div>
+        <div class="container">
+        <div class="install-prompt">
+            <h3>📱 Add to Home Screen</h3>
+            <p>Tap the Share button <span style="font-size: 1.2em;">⎙</span> below and select "Add to Home Screen" for quick access!</p>
+        </div>
+    
+    <!-- Maintenance Modal -->
+    <div id="maintenance-modal" class="modal" onclick="if(event.target === this) closeModal('maintenance-modal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔧 Maintenance Schedule</h2>
+                <button class="close-btn" onclick="closeModal('maintenance-modal')" aria-label="Close">✕</button>
+            </div>
+            
+            <div class="maintenance-card">
+                <h4>🌡️ Furnace Filter</h4>
+                <span class="frequency">Every 3 months in Quebec</span>
+                <p>Replace your furnace filter regularly to maintain air quality and system efficiency. In Quebec's climate with heating season running 6+ months, change every 3 months (or monthly during peak winter if you have pets/allergies).</p>
+                <p><strong>Check your current filter size before ordering!</strong> Common sizes: 16x25x4, 20x25x4</p>
+                <a href="https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4?_pos=1&_sid=f3e60b228&_ss=r" class="product-link" target="_blank">
+                    🛒 Buy Furnace Filters (20x25x4)
+                </a>
+            </div>
+            
+            <div class="maintenance-card">
+                <h4>💧 GeneralAire Humidifier Pad</h4>
+                <span class="frequency">Annually (Start of heating season)</span>
+                <p>Replace the humidifier water panel/pad at the beginning of each heating season (September/October). A clogged or mineral-encrusted pad reduces efficiency and can harbor bacteria.</p>
+                <p><strong>Also check:</strong> Clean the water distribution tray and ensure the drain line is clear.</p>
+                <a href="https://a.co/d/5AEBEDE" class="product-link" target="_blank">
+                    🛒 Buy GeneralAire Replacement Pad
+                </a>
+            </div>
+            
+            <div class="maintenance-card">
+                <h4>🌀 Aldes Air Exchanger Filter</h4>
+                <span class="frequency">Every 3-6 months</span>
+                <p>Clean or replace the air exchanger filters every 3-6 months depending on use and air quality. Dirty filters reduce efficiency and air exchange effectiveness.</p>
+                <p><strong>How to clean:</strong> Most filters can be vacuumed or washed with mild soap and water. Let dry completely before reinstalling.</p>
+            </div>
+            
+            <div class="maintenance-card">
+                <h4>🚰 Check Drains</h4>
+                <span class="frequency">Every 3 months</span>
+                <p><strong>Humidifier drain:</strong> Ensure water flows freely. Clear any mineral buildup or algae growth.</p>
+                <p><strong>Furnace condensate drain:</strong> Check for clogs, especially if you have a high-efficiency furnace. A clogged drain can cause water damage or system shutdown.</p>
+                <p><strong>Air exchanger drain:</strong> In winter, the HRV produces condensation. Ensure drain line is clear and not frozen.</p>
+            </div>
+            
+            <div class="success-box">
+                <strong>💡 Pro Tip:</strong> Set calendar reminders for these maintenance tasks. Regular maintenance prevents costly repairs and ensures optimal performance year-round.
+            </div>
+            
+            <div class="info-box">
+                <strong>📋 Quick Checklist:</strong><br>
+                ✓ Furnace filter: Every 3 months<br>
+                ✓ Humidifier pad: Annually (fall)<br>
+                ✓ HRV filters: Every 3-6 months<br>
+                ✓ All drains: Every 3 months<br>
+                ✓ Full system inspection: Annually
+            </div>
+        </div>
+    </div>
+    
+    <!-- Deep Winter Modal -->
+    <div id="deep-winter-modal" class="modal" onclick="if(event.target === this) closeModal('deep-winter-modal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🥶 Deep Winter Details</h2>
+                <button class="close-btn" onclick="closeModal('deep-winter-modal')" aria-label="Close">✕</button>
+            </div>
+            
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th>Situation</th>
+                        <th>Mode</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Normal day, occupied</td>
+                        <td>🕒 Timer</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Very cold (&lt; -20°C)</td>
+                        <td>🕒 Timer</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Air feels too dry</td>
+                        <td>↩️ Recirculation</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Shower / cooking</td>
+                        <td>🔁 Exchange</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Guests / high occupancy</td>
+                        <td>🕒 or 🔁</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="success-box">
+                <strong>Legend:</strong><br>
+                🔁 = Air exchange (balanced)<br>
+                ↩️ = Recirculation (temporary only)<br>
+                🕒 = Timer (intermittent)
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mild Winter Modal -->
+    <div id="mild-winter-modal" class="modal" onclick="if(event.target === this) closeModal('mild-winter-modal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>❄️ Mild Winter Details</h2>
+                <button class="close-btn" onclick="closeModal('mild-winter-modal')" aria-label="Close">✕</button>
+            </div>
+            
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th>Situation</th>
+                        <th>Mode</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Normal use</td>
+                        <td>🔁 Exchange</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Overnight</td>
+                        <td>🕒 Timer</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Humidity creeping up</td>
+                        <td>🔁 Exchange</td>
+                        <td>1-2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Spring/Fall Modal -->
+    <div id="spring-fall-modal" class="modal" onclick="if(event.target === this) closeModal('spring-fall-modal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🌱 Spring/Fall Details</h2>
+                <button class="close-btn" onclick="closeModal('spring-fall-modal')" aria-label="Close">✕</button>
+            </div>
+            
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th>Situation</th>
+                        <th>Mode</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Default</td>
+                        <td>🔁 Exchange</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>Humid days</td>
+                        <td>🔁 Exchange</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Cooking / showers</td>
+                        <td>🔁 Exchange</td>
+                        <td>2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Summer Modal -->
+    <div id="summer-modal" class="modal" onclick="if(event.target === this) closeModal('summer-modal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>☀️ Summer Details</h2>
+                <button class="close-btn" onclick="closeModal('summer-modal')" aria-label="Close">✕</button>
+            </div>
+            
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th>Situation</th>
+                        <th>Mode</th>
+                        <th>Speed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Normal use</td>
+                        <td>🔁 Exchange</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>High humidity</td>
+                        <td>🔁 Exchange</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>Very hot / humid</td>
+                        <td>🕒 Timer</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Explanation Modal -->
+    <div id="explanation-modal" class="modal" onclick="if(event.target === this) closeModal('explanation-modal')">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>How They Work Together</h2>
+                <button class="close-btn" onclick="closeModal('explanation-modal')" aria-label="Close">✕</button>
+            </div>
+            
+            <div class="warning-box">
+                <strong>⚠️ CRITICAL RULE:</strong><br>
+                Aldes controller humidity setting should ALWAYS be 10-15% HIGHER than GeneralAire setting
+            </div>
+            
+            <h3>Why They Have Different Jobs:</h3>
+            
+            <div class="success-box">
+                <strong>GeneralAire Humidifier:</strong><br>
+                - ADDS moisture<br>
+                - Sets your desired comfort level<br>
+                - Example: 30% in winter (minimum for wood protection)
+            </div>
+            
+            <div class="info-note">
+                <strong>Aldes Controller HRV Humidity Trigger:</strong><br>
+                - REMOVES moisture (via ventilation)<br>
+                - Safety valve for excess humidity<br>
+                - Example: 40% in winter
+            </div>
+            
+            <h3 style="color: var(--danger-color);">What Happens If You Match Them:</h3>
+            
+            <div class="warning-box">
+                If both are set to 30%:<br>
+                - Humidifier tries to maintain 30%<br>
+                - Aldes controller starts removing moisture at 30%<br>
+                - They fight each other<br>
+                - Result: Dry air + wasted energy
+            </div>
+            
+            <h3>Correct Settings:</h3>
+            
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th>Season</th>
+                        <th>GeneralAire</th>
+                        <th>Aldes Step</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🥶 Deep Winter</td>
+                        <td>30-35%</td>
+                        <td>40-45%</td>
+                    </tr>
+                    <tr>
+                        <td>❄️ Mild Winter</td>
+                        <td>30-35%</td>
+                        <td>40-45%</td>
+                    </tr>
+                    <tr>
+                        <td>🌱 Spring/Fall</td>
+                        <td>30-40%</td>
+                        <td>45-50%</td>
+                    </tr>
+                    <tr>
+                        <td>☀️ Summer</td>
+                        <td>OFF</td>
+                        <td>55-60%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <strong>🏠 Wood Protection Note:</strong> Maintaining 30-50% humidity year-round prevents wood shrinkage, cracking, and structural stress. Never let humidity drop below 30% in winter!
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showSettings(season) {
+            // Remove active class from all cards
+            document.querySelectorAll('.temp-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Hide all panels
+            document.querySelectorAll('.settings-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Show selected panel
+            const panel = document.getElementById(season);
+            if (panel) {
+                panel.classList.add('active');
+                
+                // Add active class to clicked card
+                event.currentTarget.classList.add('active');
+                
+                // Scroll to panel smoothly with offset for header
+                setTimeout(() => {
+                    const headerHeight = document.querySelector('.header').offsetHeight;
+                    const panelTop = panel.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                    window.scrollTo({ top: panelTop, behavior: 'smooth' });
+                }, 100);
+            }
+        }
+        
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Prevent zoom on double tap (iOS)
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Add keyboard navigation for temp cards
+        document.querySelectorAll('.temp-card').forEach(card => {
+            card.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    card.click();
+                }
+            });
+        });
+        
+        // Haptic feedback simulation for iOS
+        function triggerHaptic() {
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10);
+            }
+        }
+        
+        document.querySelectorAll('.temp-card, .details-btn, .close-btn, .quick-btn').forEach(element => {
+            element.addEventListener('touchstart', triggerHaptic);
+        });
+    </script>
+</body>
+</html>
