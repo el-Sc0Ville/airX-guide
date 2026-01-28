@@ -42,6 +42,13 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
+        /* Language toggle - simpler approach */
+        .lang-fr { display: none; }
+        body.french .lang-en { display: none; }
+        body.french .lang-fr { display: block; }
+        body.french .lang-fr.inline { display: inline; }
+        body.french .lang-fr.inline-block { display: inline-block; }
+        
         .header {
             background: rgba(255,255,255,0.98);
             backdrop-filter: saturate(180%) blur(20px);
@@ -66,6 +73,30 @@
             font-size: 0.9em;
             color: #86868b;
             font-weight: 500;
+        }
+        
+        .lang-toggle {
+            position: absolute;
+            top: max(env(safe-area-inset-top), 20px);
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,122,255,0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .lang-toggle:active {
+            transform: scale(0.95);
+            background: var(--primary-dark);
         }
         
         .container {
@@ -294,16 +325,6 @@
             transform: scale(0.98);
             background: var(--primary-dark);
             box-shadow: 0 2px 8px rgba(0,122,255,0.4);
-        }
-        
-        .maintenance-btn {
-            background: var(--success-color);
-            box-shadow: 0 4px 12px rgba(52,199,89,0.3);
-        }
-        
-        .maintenance-btn:active {
-            background: #28a745;
-            box-shadow: 0 2px 8px rgba(52,199,89,0.4);
         }
         
         .modal {
@@ -566,12 +587,10 @@
             margin: var(--spacing-md) 0;
         }
         
-        /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
         }
         
-        /* Better focus states for accessibility */
         button:focus-visible,
         .temp-card:focus-visible {
             outline: 3px solid var(--primary-color);
@@ -621,243 +640,447 @@
 </head>
 <body>
     <div class="header">
-        <h1>🏠 Home Ventilation & Humidifier Settings</h1>
-        <p>Quick Reference Guide</p>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-en">🇫🇷 FR</span>
+            <span class="lang-fr">🇨🇦 EN</span>
+        </button>
+        <h1>
+            <span class="lang-en">🏠 Home Ventilation & Humidifier Settings</span>
+            <span class="lang-fr">🏠 Réglages de Ventilation et Humidificateur</span>
+        </h1>
+        <p>
+            <span class="lang-en">Quick Reference Guide</span>
+            <span class="lang-fr">Guide de Référence Rapide</span>
+        </p>
     </div>
     
+    <div class="container">
+        <div class="install-prompt">
+            <h3>
+                <span class="lang-en">📱 Add to Home Screen</span>
+                <span class="lang-fr">📱 Ajouter à l'Écran d'Accueil</span>
+            </h3>
+            <p class="lang-en">Tap the Share button <span style="font-size: 1.2em;">⎙</span> below and select "Add to Home Screen" for quick access!</p>
+            <p class="lang-fr">Appuyez sur le bouton Partager <span style="font-size: 1.2em;">⎙</span> ci-dessous et sélectionnez « Sur l'écran d'accueil » pour un accès rapide!</p>
+        </div>
         
         <div class="quick-access">
-            <h3>⚡ Quick Access</h3>
+            <h3>
+                <span class="lang-en">⚡ Quick Access</span>
+                <span class="lang-fr">⚡ Accès Rapide</span>
+            </h3>
             <button class="quick-btn" onclick="showModal('maintenance-modal')">
-                🔧 Maintenance Schedule & Links
+                <span class="lang-en">🔧 Maintenance Schedule & Links</span>
+                <span class="lang-fr">🔧 Calendrier d'Entretien et Liens</span>
             </button>
         </div>
         
         <div class="temp-grid">
-            <div class="temp-card winter-deep" onclick="showSettings('deep-winter')" role="button" tabindex="0" aria-label="Deep Winter Settings">
+            <div class="temp-card winter-deep" onclick="showSettings('deep-winter')" role="button" tabindex="0">
                 <span class="emoji">🥶</span>
-                <div class="title">Deep Winter</div>
-                <div class="subtitle">Below -15°C</div>
+                <div class="title">
+                    <span class="lang-en">Deep Winter</span>
+                    <span class="lang-fr">Grand Froid</span>
+                </div>
+                <div class="subtitle">
+                    <span class="lang-en">Below -15°C</span>
+                    <span class="lang-fr">Sous -15°C</span>
+                </div>
             </div>
             
-            <div class="temp-card winter-mild" onclick="showSettings('mild-winter')" role="button" tabindex="0" aria-label="Mild Winter Settings">
+            <div class="temp-card winter-mild" onclick="showSettings('mild-winter')" role="button" tabindex="0">
                 <span class="emoji">❄️</span>
-                <div class="title">Mild Winter</div>
-                <div class="subtitle">-15°C to 0°C</div>
+                <div class="title">
+                    <span class="lang-en">Mild Winter</span>
+                    <span class="lang-fr">Hiver Doux</span>
+                </div>
+                <div class="subtitle">
+                    <span class="lang-en">-15°C to 0°C</span>
+                    <span class="lang-fr">-15°C à 0°C</span>
+                </div>
             </div>
             
-            <div class="temp-card spring-fall" onclick="showSettings('spring-fall')" role="button" tabindex="0" aria-label="Spring Fall Settings">
+            <div class="temp-card spring-fall" onclick="showSettings('spring-fall')" role="button" tabindex="0">
                 <span class="emoji">🌱</span>
-                <div class="title">Spring/Fall</div>
-                <div class="subtitle">0°C to 15°C</div>
+                <div class="title">
+                    <span class="lang-en">Spring/Fall</span>
+                    <span class="lang-fr">Printemps/Automne</span>
+                </div>
+                <div class="subtitle">
+                    <span class="lang-en">0°C to 15°C</span>
+                    <span class="lang-fr">0°C à 15°C</span>
+                </div>
             </div>
             
-            <div class="temp-card summer" onclick="showSettings('summer')" role="button" tabindex="0" aria-label="Summer Settings">
+            <div class="temp-card summer" onclick="showSettings('summer')" role="button" tabindex="0">
                 <span class="emoji">☀️</span>
-                <div class="title">Summer</div>
-                <div class="subtitle">Above 15°C</div>
+                <div class="title">
+                    <span class="lang-en">Summer</span>
+                    <span class="lang-fr">Été</span>
+                </div>
+                <div class="subtitle">
+                    <span class="lang-en">Above 15°C</span>
+                    <span class="lang-fr">Au-dessus de 15°C</span>
+                </div>
             </div>
         </div>
         
         <!-- Deep Winter Settings -->
         <div id="deep-winter" class="settings-panel">
-            <h2>🥶 Deep Winter Settings</h2>
+            <h2>
+                <span class="lang-en">🥶 Deep Winter Settings</span>
+                <span class="lang-fr">🥶 Réglages Grand Froid</span>
+            </h2>
             
             <div class="setting-row">
-                <div class="label">GeneralAire Humidifier</div>
+                <div class="label">
+                    <span class="lang-en">GeneralAire Humidifier</span>
+                    <span class="lang-fr">Humidificateur GeneralAire</span>
+                </div>
                 <div class="value">30-35%</div>
-                <div class="note">Mode: Manual</div>
+                <div class="note">
+                    <span class="lang-en">Mode: Manual</span>
+                    <span class="lang-fr">Mode: Manuel</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Humidity Step</span>
+                    <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
+                </div>
                 <div class="value">40-45%</div>
-                <div class="note">Always 10-15% higher than humidifier</div>
+                <div class="note">
+                    <span class="lang-en">Always 10-15% higher than humidifier</span>
+                    <span class="lang-fr">Toujours 10-15% plus élevé que l'humidificateur</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Mode & Speed</div>
-                <div class="value">🕒 Timer / Speed 1</div>
-                <div class="note">Best default for extreme cold</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Mode & Speed</span>
+                    <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
+                </div>
+                <div class="value">
+                    <span class="lang-en">🕒 Timer / Speed 1</span>
+                    <span class="lang-fr">🕒 Minuterie / Vitesse 1</span>
+                </div>
+                <div class="note">
+                    <span class="lang-en">Best default for extreme cold</span>
+                    <span class="lang-fr">Meilleur réglage par défaut pour grand froid</span>
+                </div>
             </div>
             
             <div class="warning-box">
-                <strong>⚠️ Important - Wood Protection:</strong> Never go below 30% humidity in winter. Dropping below 30% causes wood to lose moisture, leading to shrinkage, cracking, and potential damage to hardwood floors, cabinets, and furniture. Maintain 30-50% year-round for wood stability.
+                <strong class="lang-en">⚠️ Important - Wood Protection: Never go below 30% humidity in winter. Dropping below 30% causes wood to lose moisture, leading to shrinkage, cracking, and potential damage to hardwood floors, cabinets, and furniture. Maintain 30-50% year-round for wood stability.</strong>
+                <strong class="lang-fr">⚠️ Important - Protection du Bois: Ne jamais descendre sous 30% d'humidité en hiver. Descendre sous 30% fait perdre l'humidité du bois, causant rétrécissement, fissures et dommages potentiels aux planchers, armoires et meubles. Maintenez 30-50% à l'année pour la stabilité du bois.</strong>
             </div>
             
             <div class="info-box">
-                <strong>🚗 Garage Tip:</strong> If you keep your car in the garage during winter, consider using a dehumidifier to manage excess moisture from snow/ice melting off the vehicle.
+                <strong class="lang-en">🚗 Garage Tip: If you keep your car in the garage during winter, consider using a dehumidifier to manage excess moisture from snow/ice melting off the vehicle.</strong>
+                <strong class="lang-fr">🚗 Conseil Garage: Si vous gardez votre voiture dans le garage durant l'hiver, considérez utiliser un déshumidificateur pour gérer l'excès d'humidité provenant de la neige/glace qui fond du véhicule.</strong>
             </div>
             
             <div class="info-note">
-                <strong>Why these settings?</strong> Preserves humidity while maintaining indoor air quality and protecting wood structures. Avoid continuous exchange in extreme cold to prevent over-drying.
+                <strong class="lang-en">Why these settings? Preserves humidity while maintaining indoor air quality and protecting wood structures. Avoid continuous exchange in extreme cold to prevent over-drying.</strong>
+                <strong class="lang-fr">Pourquoi ces réglages? Préserve l'humidité tout en maintenant la qualité de l'air intérieur et protégeant les structures de bois. Évitez l'échange continu par grand froid pour prévenir l'assèchement excessif.</strong>
             </div>
             
             <button class="details-btn" onclick="showModal('deep-winter-modal')">
-                See Detailed Scenarios →
+                <span class="lang-en">See Detailed Scenarios →</span>
+                <span class="lang-fr">Voir les Scénarios Détaillés →</span>
             </button>
         </div>
         
         <!-- Mild Winter Settings -->
         <div id="mild-winter" class="settings-panel">
-            <h2>❄️ Mild Winter Settings</h2>
+            <h2>
+                <span class="lang-en">❄️ Mild Winter Settings</span>
+                <span class="lang-fr">❄️ Réglages Hiver Doux</span>
+            </h2>
             
             <div class="setting-row">
-                <div class="label">GeneralAire Humidifier</div>
+                <div class="label">
+                    <span class="lang-en">GeneralAire Humidifier</span>
+                    <span class="lang-fr">Humidificateur GeneralAire</span>
+                </div>
                 <div class="value">30-35%</div>
-                <div class="note">Mode: Manual</div>
+                <div class="note">
+                    <span class="lang-en">Mode: Manual</span>
+                    <span class="lang-fr">Mode: Manuel</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Humidity Step</span>
+                    <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
+                </div>
                 <div class="value">40-45%</div>
-                <div class="note">Always 10-15% higher than humidifier</div>
+                <div class="note">
+                    <span class="lang-en">Always 10-15% higher than humidifier</span>
+                    <span class="lang-fr">Toujours 10-15% plus élevé que l'humidificateur</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Mode & Speed</div>
-                <div class="value">🔁 Exchange / Speed 1</div>
-                <div class="note">Continuous exchange is safe at these temps</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Mode & Speed</span>
+                    <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
+                </div>
+                <div class="value">
+                    <span class="lang-en">🔁 Exchange / Speed 1</span>
+                    <span class="lang-fr">🔁 Échange / Vitesse 1</span>
+                </div>
+                <div class="note">
+                    <span class="lang-en">Continuous exchange is safe at these temps</span>
+                    <span class="lang-fr">L'échange continu est sécuritaire à ces températures</span>
+                </div>
             </div>
             
             <div class="info-note">
-                <strong>Why these settings?</strong> Good balance between comfort and protection. Can safely use continuous exchange mode without over-drying. Maintains healthy humidity for both occupants and wood structures.
+                <strong class="lang-en">Why these settings? Good balance between comfort and protection. Can safely use continuous exchange mode without over-drying. Maintains healthy humidity for both occupants and wood structures.</strong>
+                <strong class="lang-fr">Pourquoi ces réglages? Bon équilibre entre confort et protection. Peut utiliser le mode échange continu sans assèchement excessif. Maintient une humidité saine pour les occupants et les structures de bois.</strong>
             </div>
             
             <button class="details-btn" onclick="showModal('mild-winter-modal')">
-                See Detailed Scenarios →
+                <span class="lang-en">See Detailed Scenarios →</span>
+                <span class="lang-fr">Voir les Scénarios Détaillés →</span>
             </button>
         </div>
         
         <!-- Spring/Fall Settings -->
         <div id="spring-fall" class="settings-panel">
-            <h2>🌱 Spring/Fall Settings</h2>
+            <h2>
+                <span class="lang-en">🌱 Spring/Fall Settings</span>
+                <span class="lang-fr">🌱 Réglages Printemps/Automne</span>
+            </h2>
             
             <div class="setting-row">
-                <div class="label">GeneralAire Humidifier</div>
+                <div class="label">
+                    <span class="lang-en">GeneralAire Humidifier</span>
+                    <span class="lang-fr">Humidificateur GeneralAire</span>
+                </div>
                 <div class="value">30-40%</div>
-                <div class="note">Mode: Manual (or OFF if windows open)</div>
+                <div class="note">
+                    <span class="lang-en">Mode: Manual (or OFF if windows open)</span>
+                    <span class="lang-fr">Mode: Manuel (ou FERMÉ si fenêtres ouvertes)</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Humidity Step</span>
+                    <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
+                </div>
                 <div class="value">45-50%</div>
-                <div class="note">Always 10-15% higher than humidifier</div>
+                <div class="note">
+                    <span class="lang-en">Always 10-15% higher than humidifier</span>
+                    <span class="lang-fr">Toujours 10-15% plus élevé que l'humidificateur</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Mode & Speed</div>
-                <div class="value">🔁 Exchange / Speed 1</div>
-                <div class="note">Boost to Speed 2 if humid</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Mode & Speed</span>
+                    <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
+                </div>
+                <div class="value">
+                    <span class="lang-en">🔁 Exchange / Speed 1</span>
+                    <span class="lang-fr">🔁 Échange / Vitesse 1</span>
+                </div>
+                <div class="note">
+                    <span class="lang-en">Boost to Speed 2 if humid</span>
+                    <span class="lang-fr">Augmenter à Vitesse 2 si humide</span>
+                </div>
             </div>
             
             <div class="info-note">
-                <strong>Why these settings?</strong> Ideal for indoor air quality with no condensation risk. Turn humidifier OFF if opening windows to avoid fighting fresh air. Maintains optimal range for wood protection.
+                <strong class="lang-en">Why these settings? Ideal for indoor air quality with no condensation risk. Turn humidifier OFF if opening windows to avoid fighting fresh air. Maintains optimal range for wood protection.</strong>
+                <strong class="lang-fr">Pourquoi ces réglages? Idéal pour la qualité de l'air intérieur sans risque de condensation. Fermez l'humidificateur si vous ouvrez les fenêtres pour éviter de combattre l'air frais. Maintient la plage optimale pour la protection du bois.</strong>
             </div>
             
             <button class="details-btn" onclick="showModal('spring-fall-modal')">
-                See Detailed Scenarios →
+                <span class="lang-en">See Detailed Scenarios →</span>
+                <span class="lang-fr">Voir les Scénarios Détaillés →</span>
             </button>
         </div>
         
         <!-- Summer Settings -->
         <div id="summer" class="settings-panel">
-            <h2>☀️ Summer Settings</h2>
+            <h2>
+                <span class="lang-en">☀️ Summer Settings</span>
+                <span class="lang-fr">☀️ Réglages Été</span>
+            </h2>
             
             <div class="setting-row">
-                <div class="label">GeneralAire Humidifier</div>
-                <div class="value">OFF</div>
-                <div class="note">Let AC handle humidity</div>
+                <div class="label">
+                    <span class="lang-en">GeneralAire Humidifier</span>
+                    <span class="lang-fr">Humidificateur GeneralAire</span>
+                </div>
+                <div class="value">
+                    <span class="lang-en">OFF</span>
+                    <span class="lang-fr">FERMÉ</span>
+                </div>
+                <div class="note">
+                    <span class="lang-en">Let AC handle humidity</span>
+                    <span class="lang-fr">Laissez le climatiseur gérer l'humidité</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Humidity Step</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Humidity Step</span>
+                    <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
+                </div>
                 <div class="value">55-60%</div>
-                <div class="note">Safety trigger only</div>
+                <div class="note">
+                    <span class="lang-en">Safety trigger only</span>
+                    <span class="lang-fr">Déclencheur de sécurité seulement</span>
+                </div>
             </div>
             
             <div class="setting-row">
-                <div class="label">Aldes Controller Mode & Speed</div>
-                <div class="value">🔁 Exchange / Speed 1</div>
-                <div class="note">Boost to Speed 2 if very humid</div>
+                <div class="label">
+                    <span class="lang-en">Aldes Controller Mode & Speed</span>
+                    <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
+                </div>
+                <div class="value">
+                    <span class="lang-en">🔁 Exchange / Speed 1</span>
+                    <span class="lang-fr">🔁 Échange / Vitesse 1</span>
+                </div>
+                <div class="note">
+                    <span class="lang-en">Boost to Speed 2 if very humid</span>
+                    <span class="lang-fr">Augmenter à Vitesse 2 si très humide</span>
+                </div>
             </div>
             
             <div class="warning-box">
-                <strong>⚠️ Important:</strong> Do NOT humidify when AC is running. Let your AC and Aldes controller work together to remove moisture.
+                <strong class="lang-en">⚠️ Important: Do NOT humidify when AC is running. Let your AC and Aldes controller work together to remove moisture.</strong>
+                <strong class="lang-fr">⚠️ Important: N'humidifiez PAS lorsque le climatiseur fonctionne. Laissez votre climatiseur et le contrôleur Aldes travailler ensemble pour retirer l'humidité.</strong>
             </div>
             
             <button class="details-btn" onclick="showModal('summer-modal')">
-                See Detailed Scenarios →
+                <span class="lang-en">See Detailed Scenarios →</span>
+                <span class="lang-fr">Voir les Scénarios Détaillés →</span>
             </button>
         </div>
         
         <div class="footer">
-            <p>💡 <strong>Remember:</strong> Aldes controller humidity should always be 10-15% higher than GeneralAire</p>
+            <p>
+                <span class="lang-en">💡 <strong>Remember:</strong> Aldes controller humidity should always be 10-15% higher than GeneralAire</span>
+                <span class="lang-fr">💡 <strong>Rappel:</strong> L'humidité du contrôleur Aldes devrait toujours être 10-15% plus élevée que le GeneralAire</span>
+            </p>
             <a href="#" class="footer-link" onclick="showModal('explanation-modal'); return false;">
-                Why? Tap here for explanation
+                <span class="lang-en">Why? Tap here for explanation</span>
+                <span class="lang-fr">Pourquoi? Appuyez ici pour l'explication</span>
             </a>
         </div>
     </div>
-        <div class="container">
-        <div class="install-prompt">
-            <h3>📱 Add to Home Screen</h3>
-            <p>Tap the Share button <span style="font-size: 1.2em;">⎙</span> below and select "Add to Home Screen" for quick access!</p>
-        </div>
     
     <!-- Maintenance Modal -->
     <div id="maintenance-modal" class="modal" onclick="if(event.target === this) closeModal('maintenance-modal')">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>🔧 Maintenance Schedule</h2>
+                <h2>
+                    <span class="lang-en">🔧 Maintenance Schedule</span>
+                    <span class="lang-fr">🔧 Calendrier d'Entretien</span>
+                </h2>
                 <button class="close-btn" onclick="closeModal('maintenance-modal')" aria-label="Close">✕</button>
             </div>
             
             <div class="maintenance-card">
-                <h4>🌡️ Furnace Filter</h4>
-                <span class="frequency">Every 3 months in Quebec</span>
-                <p>Replace your furnace filter regularly to maintain air quality and system efficiency. In Quebec's climate with heating season running 6+ months, change every 3 months (or monthly during peak winter if you have pets/allergies).</p>
-                <p><strong>Check your current filter size before ordering!</strong> Common sizes: 16x25x4, 20x25x4</p>
+                <h4>
+                    <span class="lang-en">🌡️ Furnace Filter</span>
+                    <span class="lang-fr">🌡️ Filtre de Fournaise</span>
+                </h4>
+                <span class="frequency">
+                    <span class="lang-en">Every 3 months in Quebec</span>
+                    <span class="lang-fr">Aux 3 mois au Québec</span>
+                </span>
+                <p class="lang-en">Replace your furnace filter regularly to maintain air quality and system efficiency. In Quebec's climate with heating season running 6+ months, change every 3 months (or monthly during peak winter if you have pets/allergies).</p>
+                <p class="lang-fr">Remplacez votre filtre de fournaise régulièrement pour maintenir la qualité de l'air et l'efficacité du système. Dans le climat québécois avec une saison de chauffage de 6+ mois, changez aux 3 mois (ou mensuellement durant le pic hivernal si vous avez des animaux/allergies).</p>
+                <p class="lang-en"><strong>Check your current filter size before ordering!</strong> Common sizes: 16x25x4, 20x25x4</p>
+                <p class="lang-fr"><strong>Vérifiez la taille de votre filtre actuel avant de commander!</strong> Tailles communes: 16x25x4, 20x25x4</p>
                 <a href="https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4?_pos=1&_sid=f3e60b228&_ss=r" class="product-link" target="_blank">
-                    🛒 Buy Furnace Filters (20x25x4)
+                    <span class="lang-en">🛒 Buy Furnace Filters (20x25x4)</span>
+                    <span class="lang-fr">🛒 Acheter Filtres de Fournaise (20x25x4)</span>
                 </a>
             </div>
             
             <div class="maintenance-card">
-                <h4>💧 GeneralAire Humidifier Pad</h4>
-                <span class="frequency">Annually (Start of heating season)</span>
-                <p>Replace the humidifier water panel/pad at the beginning of each heating season (September/October). A clogged or mineral-encrusted pad reduces efficiency and can harbor bacteria.</p>
-                <p><strong>Also check:</strong> Clean the water distribution tray and ensure the drain line is clear.</p>
+                <h4>
+                    <span class="lang-en">💧 GeneralAire Humidifier Pad</span>
+                    <span class="lang-fr">💧 Tampon Humidificateur GeneralAire</span>
+                </h4>
+                <span class="frequency">
+                    <span class="lang-en">Annually (Start of heating season)</span>
+                    <span class="lang-fr">Annuellement (Début de la saison de chauffage)</span>
+                </span>
+                <p class="lang-en">Replace the humidifier water panel/pad at the beginning of each heating season (September/October). A clogged or mineral-encrusted pad reduces efficiency and can harbor bacteria.</p>
+                <p class="lang-fr">Remplacez le panneau d'eau/tampon de l'humidificateur au début de chaque saison de chauffage (septembre/octobre). Un tampon obstrué ou encroûté de minéraux réduit l'efficacité et peut héberger des bactéries.</p>
+                <p class="lang-en"><strong>Also check:</strong> Clean the water distribution tray and ensure the drain line is clear.</p>
+                <p class="lang-fr"><strong>Vérifiez aussi:</strong> Nettoyez le plateau de distribution d'eau et assurez-vous que la ligne de drainage est dégagée.</p>
                 <a href="https://a.co/d/5AEBEDE" class="product-link" target="_blank">
-                    🛒 Buy GeneralAire Replacement Pad
+                    <span class="lang-en">🛒 Buy GeneralAire Replacement Pad</span>
+                    <span class="lang-fr">🛒 Acheter Tampon de Remplacement GeneralAire</span>
                 </a>
             </div>
             
             <div class="maintenance-card">
-                <h4>🌀 Aldes Air Exchanger Filter</h4>
-                <span class="frequency">Every 3-6 months</span>
-                <p>Clean or replace the air exchanger filters every 3-6 months depending on use and air quality. Dirty filters reduce efficiency and air exchange effectiveness.</p>
-                <p><strong>How to clean:</strong> Most filters can be vacuumed or washed with mild soap and water. Let dry completely before reinstalling.</p>
+                <h4>
+                    <span class="lang-en">🌀 Aldes Air Exchanger Filter</span>
+                    <span class="lang-fr">🌀 Filtre Échangeur d'Air Aldes</span>
+                </h4>
+                <span class="frequency">
+                    <span class="lang-en">Every 3-6 months</span>
+                    <span class="lang-fr">Aux 3-6 mois</span>
+                </span>
+                <p class="lang-en">Clean or replace the air exchanger filters every 3-6 months depending on use and air quality. Dirty filters reduce efficiency and air exchange effectiveness.</p>
+                <p class="lang-fr">Nettoyez ou remplacez les filtres de l'échangeur d'air aux 3-6 mois selon l'utilisation et la qualité de l'air. Les filtres sales réduisent l'efficacité et l'efficacité de l'échange d'air.</p>
+                <p class="lang-en"><strong>How to clean:</strong> Most filters can be vacuumed or washed with mild soap and water. Let dry completely before reinstalling.</p>
+                <p class="lang-fr"><strong>Comment nettoyer:</strong> La plupart des filtres peuvent être aspirés ou lavés avec du savon doux et de l'eau. Laissez sécher complètement avant de réinstaller.</p>
             </div>
             
             <div class="maintenance-card">
-                <h4>🚰 Check Drains</h4>
-                <span class="frequency">Every 3 months</span>
-                <p><strong>Humidifier drain:</strong> Ensure water flows freely. Clear any mineral buildup or algae growth.</p>
-                <p><strong>Furnace condensate drain:</strong> Check for clogs, especially if you have a high-efficiency furnace. A clogged drain can cause water damage or system shutdown.</p>
-                <p><strong>Air exchanger drain:</strong> In winter, the HRV produces condensation. Ensure drain line is clear and not frozen.</p>
+                <h4>
+                    <span class="lang-en">🚰 Check Drains</span>
+                    <span class="lang-fr">🚰 Vérifier les Drains</span>
+                </h4>
+                <span class="frequency">
+                    <span class="lang-en">Every 3 months</span>
+                    <span class="lang-fr">Aux 3 mois</span>
+                </span>
+                <p class="lang-en"><strong>Humidifier drain:</strong> Ensure water flows freely. Clear any mineral buildup or algae growth.</p>
+                <p class="lang-fr"><strong>Drain de l'humidificateur:</strong> Assurez-vous que l'eau coule librement. Dégagez toute accumulation de minéraux ou croissance d'algues.</p>
+                <p class="lang-en"><strong>Furnace condensate drain:</strong> Check for clogs, especially if you have a high-efficiency furnace. A clogged drain can cause water damage or system shutdown.</p>
+                <p class="lang-fr"><strong>Drain de condensat de la fournaise:</strong> Vérifiez les obstructions, surtout si vous avez une fournaise à haute efficacité. Un drain obstrué peut causer des dégâts d'eau ou l'arrêt du système.</p>
+                <p class="lang-en"><strong>Air exchanger drain:</strong> In winter, the HRV produces condensation. Ensure drain line is clear and not frozen.</p>
+                <p class="lang-fr"><strong>Drain de l'échangeur d'air:</strong> En hiver, le VRC produit de la condensation. Assurez-vous que la ligne de drainage est dégagée et non gelée.</p>
             </div>
             
             <div class="success-box">
-                <strong>💡 Pro Tip:</strong> Set calendar reminders for these maintenance tasks. Regular maintenance prevents costly repairs and ensures optimal performance year-round.
+                <strong class="lang-en">💡 Pro Tip: Set calendar reminders for these maintenance tasks. Regular maintenance prevents costly repairs and ensures optimal performance year-round.</strong>
+                <strong class="lang-fr">💡 Conseil Pro: Configurez des rappels au calendrier pour ces tâches d'entretien. L'entretien régulier prévient les réparations coûteuses et assure une performance optimale à l'année.</strong>
             </div>
             
             <div class="info-box">
-                <strong>📋 Quick Checklist:</strong><br>
-                ✓ Furnace filter: Every 3 months<br>
-                ✓ Humidifier pad: Annually (fall)<br>
-                ✓ HRV filters: Every 3-6 months<br>
-                ✓ All drains: Every 3 months<br>
-                ✓ Full system inspection: Annually
+                <p class="lang-en">
+                    <strong>📋 Quick Checklist:</strong><br>
+                    ✓ Furnace filter: Every 3 months<br>
+                    ✓ Humidifier pad: Annually (fall)<br>
+                    ✓ HRV filters: Every 3-6 months<br>
+                    ✓ All drains: Every 3 months<br>
+                    ✓ Full system inspection: Annually
+                </p>
+                <p class="lang-fr">
+                    <strong>📋 Liste de Vérification Rapide:</strong><br>
+                    ✓ Filtre de fournaise: Aux 3 mois<br>
+                    ✓ Tampon d'humidificateur: Annuellement (automne)<br>
+                    ✓ Filtres VRC: Aux 3-6 mois<br>
+                    ✓ Tous les drains: Aux 3 mois<br>
+                    ✓ Inspection complète du système: Annuellement
+                </p>
             </div>
         </div>
     </div>
@@ -866,52 +1089,63 @@
     <div id="deep-winter-modal" class="modal" onclick="if(event.target === this) closeModal('deep-winter-modal')">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>🥶 Deep Winter Details</h2>
+                <h2>
+                    <span class="lang-en">🥶 Deep Winter Details</span>
+                    <span class="lang-fr">🥶 Détails Grand Froid</span>
+                </h2>
                 <button class="close-btn" onclick="closeModal('deep-winter-modal')" aria-label="Close">✕</button>
             </div>
             
             <table class="detail-table">
                 <thead>
                     <tr>
-                        <th>Situation</th>
+                        <th><span class="lang-en">Situation</span><span class="lang-fr">Situation</span></th>
                         <th>Mode</th>
-                        <th>Speed</th>
+                        <th><span class="lang-en">Speed</span><span class="lang-fr">Vitesse</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Normal day, occupied</td>
-                        <td>🕒 Timer</td>
+                        <td><span class="lang-en">Normal day, occupied</span><span class="lang-fr">Journée normale, occupé</span></td>
+                        <td><span class="lang-en">🕒 Timer</span><span class="lang-fr">🕒 Minuterie</span></td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Very cold (&lt; -20°C)</td>
-                        <td>🕒 Timer</td>
+                        <td><span class="lang-en">Very cold (&lt; -20°C)</span><span class="lang-fr">Très froid (&lt; -20°C)</span></td>
+                        <td><span class="lang-en">🕒 Timer</span><span class="lang-fr">🕒 Minuterie</span></td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Air feels too dry</td>
-                        <td>↩️ Recirculation</td>
+                        <td><span class="lang-en">Air feels too dry</span><span class="lang-fr">Air trop sec</span></td>
+                        <td><span class="lang-en">↩️ Recirculation</span><span class="lang-fr">↩️ Recirculation</span></td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Shower / cooking</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">Shower / cooking</span><span class="lang-fr">Douche / cuisson</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>2</td>
                     </tr>
                     <tr>
-                        <td>Guests / high occupancy</td>
-                        <td>🕒 or 🔁</td>
+                        <td><span class="lang-en">Guests / high occupancy</span><span class="lang-fr">Invités / haute occupation</span></td>
+                        <td><span class="lang-en">🕒 or 🔁</span><span class="lang-fr">🕒 ou 🔁</span></td>
                         <td>2</td>
                     </tr>
                 </tbody>
             </table>
             
             <div class="success-box">
-                <strong>Legend:</strong><br>
-                🔁 = Air exchange (balanced)<br>
-                ↩️ = Recirculation (temporary only)<br>
-                🕒 = Timer (intermittent)
+                <p class="lang-en">
+                    <strong>Legend:</strong><br>
+                    🔁 = Air exchange (balanced)<br>
+                    ↩️ = Recirculation (temporary only)<br>
+                    🕒 = Timer (intermittent)
+                </p>
+                <p class="lang-fr">
+                    <strong>Légende:</strong><br>
+                    🔁 = Échange d'air (équilibré)<br>
+                    ↩️ = Recirculation (temporaire seulement)<br>
+                    🕒 = Minuterie (intermittent)
+                </p>
             </div>
         </div>
     </div>
@@ -920,32 +1154,35 @@
     <div id="mild-winter-modal" class="modal" onclick="if(event.target === this) closeModal('mild-winter-modal')">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>❄️ Mild Winter Details</h2>
+                <h2>
+                    <span class="lang-en">❄️ Mild Winter Details</span>
+                    <span class="lang-fr">❄️ Détails Hiver Doux</span>
+                </h2>
                 <button class="close-btn" onclick="closeModal('mild-winter-modal')" aria-label="Close">✕</button>
             </div>
             
             <table class="detail-table">
                 <thead>
                     <tr>
-                        <th>Situation</th>
+                        <th><span class="lang-en">Situation</span><span class="lang-fr">Situation</span></th>
                         <th>Mode</th>
-                        <th>Speed</th>
+                        <th><span class="lang-en">Speed</span><span class="lang-fr">Vitesse</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Normal use</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">Normal use</span><span class="lang-fr">Utilisation normale</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Overnight</td>
-                        <td>🕒 Timer</td>
+                        <td><span class="lang-en">Overnight</span><span class="lang-fr">Durant la nuit</span></td>
+                        <td><span class="lang-en">🕒 Timer</span><span class="lang-fr">🕒 Minuterie</span></td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Humidity creeping up</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">Humidity creeping up</span><span class="lang-fr">Humidité qui augmente</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>1-2</td>
                     </tr>
                 </tbody>
@@ -957,32 +1194,35 @@
     <div id="spring-fall-modal" class="modal" onclick="if(event.target === this) closeModal('spring-fall-modal')">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>🌱 Spring/Fall Details</h2>
+                <h2>
+                    <span class="lang-en">🌱 Spring/Fall Details</span>
+                    <span class="lang-fr">🌱 Détails Printemps/Automne</span>
+                </h2>
                 <button class="close-btn" onclick="closeModal('spring-fall-modal')" aria-label="Close">✕</button>
             </div>
             
             <table class="detail-table">
                 <thead>
                     <tr>
-                        <th>Situation</th>
+                        <th><span class="lang-en">Situation</span><span class="lang-fr">Situation</span></th>
                         <th>Mode</th>
-                        <th>Speed</th>
+                        <th><span class="lang-en">Speed</span><span class="lang-fr">Vitesse</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Default</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">Default</span><span class="lang-fr">Par défaut</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>Humid days</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">Humid days</span><span class="lang-fr">Journées humides</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>2</td>
                     </tr>
                     <tr>
-                        <td>Cooking / showers</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">Cooking / showers</span><span class="lang-fr">Cuisson / douches</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>2</td>
                     </tr>
                 </tbody>
@@ -994,32 +1234,35 @@
     <div id="summer-modal" class="modal" onclick="if(event.target === this) closeModal('summer-modal')">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>☀️ Summer Details</h2>
+                <h2>
+                    <span class="lang-en">☀️ Summer Details</span>
+                    <span class="lang-fr">☀️ Détails Été</span>
+                </h2>
                 <button class="close-btn" onclick="closeModal('summer-modal')" aria-label="Close">✕</button>
             </div>
             
             <table class="detail-table">
                 <thead>
                     <tr>
-                        <th>Situation</th>
+                        <th><span class="lang-en">Situation</span><span class="lang-fr">Situation</span></th>
                         <th>Mode</th>
-                        <th>Speed</th>
+                        <th><span class="lang-en">Speed</span><span class="lang-fr">Vitesse</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Normal use</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">Normal use</span><span class="lang-fr">Utilisation normale</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>High humidity</td>
-                        <td>🔁 Exchange</td>
+                        <td><span class="lang-en">High humidity</span><span class="lang-fr">Haute humidité</span></td>
+                        <td><span class="lang-en">🔁 Exchange</span><span class="lang-fr">🔁 Échange</span></td>
                         <td>2</td>
                     </tr>
                     <tr>
-                        <td>Very hot / humid</td>
-                        <td>🕒 Timer</td>
+                        <td><span class="lang-en">Very hot / humid</span><span class="lang-fr">Très chaud / humide</span></td>
+                        <td><span class="lang-en">🕒 Timer</span><span class="lang-fr">🕒 Minuterie</span></td>
                         <td>1</td>
                     </tr>
                 </tbody>
@@ -1031,102 +1274,151 @@
     <div id="explanation-modal" class="modal" onclick="if(event.target === this) closeModal('explanation-modal')">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>How They Work Together</h2>
+                <h2>
+                    <span class="lang-en">How They Work Together</span>
+                    <span class="lang-fr">Comment Ils Fonctionnent Ensemble</span>
+                </h2>
                 <button class="close-btn" onclick="closeModal('explanation-modal')" aria-label="Close">✕</button>
             </div>
             
             <div class="warning-box">
-                <strong>⚠️ CRITICAL RULE:</strong><br>
-                Aldes controller humidity setting should ALWAYS be 10-15% HIGHER than GeneralAire setting
+                <p class="lang-en"><strong>⚠️ CRITICAL RULE:</strong><br>Aldes controller humidity setting should ALWAYS be 10-15% HIGHER than GeneralAire setting</p>
+                <p class="lang-fr"><strong>⚠️ RÈGLE CRITIQUE:</strong><br>Le réglage d'humidité du contrôleur Aldes devrait TOUJOURS être 10-15% PLUS ÉLEVÉ que le réglage GeneralAire</p>
             </div>
             
-            <h3>Why They Have Different Jobs:</h3>
+            <h3>
+                <span class="lang-en">Why They Have Different Jobs:</span>
+                <span class="lang-fr">Pourquoi Ils Ont des Rôles Différents:</span>
+            </h3>
             
             <div class="success-box">
-                <strong>GeneralAire Humidifier:</strong><br>
-                - ADDS moisture<br>
-                - Sets your desired comfort level<br>
-                - Example: 30% in winter (minimum for wood protection)
+                <p class="lang-en">
+                    <strong>GeneralAire Humidifier:</strong><br>
+                    - ADDS moisture<br>
+                    - Sets your desired comfort level<br>
+                    - Example: 30% in winter (minimum for wood protection)
+                </p>
+                <p class="lang-fr">
+                    <strong>Humidificateur GeneralAire:</strong><br>
+                    - AJOUTE de l'humidité<br>
+                    - Établit votre niveau de confort désiré<br>
+                    - Exemple: 30% en hiver (minimum pour la protection du bois)
+                </p>
             </div>
             
             <div class="info-note">
-                <strong>Aldes Controller HRV Humidity Trigger:</strong><br>
-                - REMOVES moisture (via ventilation)<br>
-                - Safety valve for excess humidity<br>
-                - Example: 40% in winter
+                <p class="lang-en">
+                    <strong>Aldes Controller HRV Humidity Trigger:</strong><br>
+                    - REMOVES moisture (via ventilation)<br>
+                    - Safety valve for excess humidity<br>
+                    - Example: 40% in winter
+                </p>
+                <p class="lang-fr">
+                    <strong>Déclencheur d'Humidité VRC du Contrôleur Aldes:</strong><br>
+                    - RETIRE l'humidité (via ventilation)<br>
+                    - Soupape de sécurité pour l'excès d'humidité<br>
+                    - Exemple: 40% en hiver
+                </p>
             </div>
             
-            <h3 style="color: var(--danger-color);">What Happens If You Match Them:</h3>
+            <h3 style="color: var(--danger-color);">
+                <span class="lang-en">What Happens If You Match Them:</span>
+                <span class="lang-fr">Ce Qui Arrive Si Vous Les Égalisez:</span>
+            </h3>
             
             <div class="warning-box">
-                If both are set to 30%:<br>
-                - Humidifier tries to maintain 30%<br>
-                - Aldes controller starts removing moisture at 30%<br>
-                - They fight each other<br>
-                - Result: Dry air + wasted energy
+                <p class="lang-en">
+                    If both are set to 30%:<br>
+                    - Humidifier tries to maintain 30%<br>
+                    - Aldes controller starts removing moisture at 30%<br>
+                    - They fight each other<br>
+                    - Result: Dry air + wasted energy
+                </p>
+                <p class="lang-fr">
+                    Si les deux sont réglés à 30%:<br>
+                    - L'humidificateur essaie de maintenir 30%<br>
+                    - Le contrôleur Aldes commence à retirer l'humidité à 30%<br>
+                    - Ils se combattent l'un l'autre<br>
+                    - Résultat: Air sec + énergie gaspillée
+                </p>
             </div>
             
-            <h3>Correct Settings:</h3>
+            <h3>
+                <span class="lang-en">Correct Settings:</span>
+                <span class="lang-fr">Réglages Corrects:</span>
+            </h3>
             
             <table class="detail-table">
                 <thead>
                     <tr>
-                        <th>Season</th>
+                        <th><span class="lang-en">Season</span><span class="lang-fr">Saison</span></th>
                         <th>GeneralAire</th>
-                        <th>Aldes Step</th>
+                        <th><span class="lang-en">Aldes Step</span><span class="lang-fr">Palier Aldes</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>🥶 Deep Winter</td>
+                        <td><span class="lang-en">🥶 Deep Winter</span><span class="lang-fr">🥶 Grand Froid</span></td>
                         <td>30-35%</td>
                         <td>40-45%</td>
                     </tr>
                     <tr>
-                        <td>❄️ Mild Winter</td>
+                        <td><span class="lang-en">❄️ Mild Winter</span><span class="lang-fr">❄️ Hiver Doux</span></td>
                         <td>30-35%</td>
                         <td>40-45%</td>
                     </tr>
                     <tr>
-                        <td>🌱 Spring/Fall</td>
+                        <td><span class="lang-en">🌱 Spring/Fall</span><span class="lang-fr">🌱 Printemps/Automne</span></td>
                         <td>30-40%</td>
                         <td>45-50%</td>
                     </tr>
                     <tr>
-                        <td>☀️ Summer</td>
-                        <td>OFF</td>
+                        <td><span class="lang-en">☀️ Summer</span><span class="lang-fr">☀️ Été</span></td>
+                        <td><span class="lang-en">OFF</span><span class="lang-fr">FERMÉ</span></td>
                         <td>55-60%</td>
                     </tr>
                 </tbody>
             </table>
             
             <div class="info-box">
-                <strong>🏠 Wood Protection Note:</strong> Maintaining 30-50% humidity year-round prevents wood shrinkage, cracking, and structural stress. Never let humidity drop below 30% in winter!
+                <p class="lang-en"><strong>🏠 Wood Protection Note:</strong> Maintaining 30-50% humidity year-round prevents wood shrinkage, cracking, and structural stress. Never let humidity drop below 30% in winter!</p>
+                <p class="lang-fr"><strong>🏠 Note sur la Protection du Bois:</strong> Maintenir 30-50% d'humidité à l'année prévient le rétrécissement du bois, les fissures et le stress structurel. Ne laissez jamais l'humidité descendre sous 30% en hiver!</p>
             </div>
         </div>
     </div>
     
     <script>
+        // Language toggle functionality
+        function toggleLanguage() {
+            document.body.classList.toggle('french');
+            const currentLang = document.body.classList.contains('french') ? 'fr' : 'en';
+            localStorage.setItem('preferred-language', currentLang);
+            document.documentElement.lang = currentLang;
+        }
+        
+        // Load saved language preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferred-language');
+            if (savedLang === 'fr') {
+                document.body.classList.add('french');
+                document.documentElement.lang = 'fr';
+            }
+        });
+        
         function showSettings(season) {
-            // Remove active class from all cards
             document.querySelectorAll('.temp-card').forEach(card => {
                 card.classList.remove('active');
             });
             
-            // Hide all panels
             document.querySelectorAll('.settings-panel').forEach(panel => {
                 panel.classList.remove('active');
             });
             
-            // Show selected panel
             const panel = document.getElementById(season);
             if (panel) {
                 panel.classList.add('active');
-                
-                // Add active class to clicked card
                 event.currentTarget.classList.add('active');
                 
-                // Scroll to panel smoothly with offset for header
                 setTimeout(() => {
                     const headerHeight = document.querySelector('.header').offsetHeight;
                     const panelTop = panel.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
@@ -1151,7 +1443,6 @@
             }
         }
         
-        // Close modal on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal.active').forEach(modal => {
@@ -1161,7 +1452,6 @@
             }
         });
         
-        // Prevent zoom on double tap (iOS)
         let lastTouchEnd = 0;
         document.addEventListener('touchend', (e) => {
             const now = Date.now();
@@ -1171,7 +1461,6 @@
             lastTouchEnd = now;
         }, false);
         
-        // Add keyboard navigation for temp cards
         document.querySelectorAll('.temp-card').forEach(card => {
             card.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -1181,7 +1470,6 @@
             });
         });
         
-        // Haptic feedback simulation for iOS
         function triggerHaptic() {
             if (window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate(10);
