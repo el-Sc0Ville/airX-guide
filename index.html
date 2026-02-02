@@ -72,19 +72,21 @@
         }
 
         .lang-toggle {
-            position: absolute;
-            top: max(env(safe-area-inset-top), 20px);
-            right: 20px;
-            background: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 1.1em;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.75em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(102,126,234,0.3);
+            box-shadow: 0 2px 6px rgba(102,126,234,0.25);
+            margin-bottom: 12px;
+            min-width: 60px;
         }
 
         .lang-toggle:active {
@@ -619,19 +621,125 @@
             transform: scale(0.98);
         }
 
+        /* EDUCATIONAL FOOTER */
         .footer {
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(10px);
-            padding: var(--spacing-md);
-            text-align: center;
+            padding: var(--spacing-lg);
             margin-top: var(--spacing-lg);
-            border-radius: var(--border-radius);
-            font-size: 0.85em;
-            color: #6e6e73;
+            border-radius: var(--border-radius-lg);
             box-shadow: var(--card-shadow);
         }
 
-        .footer p { line-height: 1.6; }
+        .footer-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .footer-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .golden-rule-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe8a1 100%);
+            border-left: 4px solid #ffc107;
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .golden-rule-box .rule-text {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #f57c00;
+            margin-bottom: 8px;
+        }
+
+        .golden-rule-box .rule-detail {
+            font-size: 0.9em;
+            color: #856404;
+            line-height: 1.5;
+        }
+
+        .system-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .system-card {
+            background: white;
+            border-radius: 12px;
+            padding: var(--spacing-md);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .system-card.humidifier {
+            border-top: 3px solid #2196F3;
+        }
+
+        .system-card.hrv {
+            border-top: 3px solid #FF9800;
+        }
+
+        .system-card h4 {
+            font-size: 0.95em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+
+        .system-card .job {
+            font-size: 0.85em;
+            margin-bottom: 6px;
+        }
+
+        .system-card .job-label {
+            font-weight: 600;
+            color: #6e6e73;
+        }
+
+        .system-card .job-value {
+            color: #1d1d1f;
+        }
+
+        .dont-do-box {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-left: 4px solid var(--danger-color);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+        }
+
+        .dont-do-box h4 {
+            font-size: 1em;
+            font-weight: 700;
+            color: #c62828;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dont-do-box ul {
+            margin-left: 20px;
+            color: #c62828;
+        }
+
+        .dont-do-box li {
+            font-size: 0.85em;
+            line-height: 1.6;
+            margin-bottom: 4px;
+        }
 
         .footer-link {
             color: var(--primary-color);
@@ -642,6 +750,7 @@
             padding: 12px;
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border-radius: 10px;
+            text-align: center;
         }
 
         .footer-link:active {
@@ -660,15 +769,14 @@
             .header h1 { font-size: 1.3em; }
             .tab-btn { font-size: 0.9em; padding: 12px 15px; }
             .next-item-text, .next-item-date { font-size: 14px; }
+            .system-comparison {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <button class="lang-toggle" onclick="toggleLanguage()">
-            <span class="lang-en">🇫🇷 FR</span>
-            <span class="lang-fr">🇨🇦 EN</span>
-        </button>
         <h1>
             <span class="lang-en">🏠 McNabb Reminder Tools</span>
             <span class="lang-fr">🏠 Outils de Rappel McNabb</span>
@@ -677,6 +785,10 @@
             <span class="lang-en">NDIP 2026</span>
             <span class="lang-fr">NDIP 2026</span>
         </p>
+        <button class="lang-toggle" onclick="toggleLanguage()">
+            <span class="lang-en">🇫🇷 FR</span>
+            <span class="lang-fr">🇨🇦 EN</span>
+        </button>
         
         <div class="tab-nav">
             <button class="tab-btn active" onclick="switchTab('collections')" id="tab-collections">
@@ -706,18 +818,6 @@
         <!-- HVAC TAB -->
         <div id="hvac-content" class="tab-content">
             <div class="content-wrapper">
-             
-                <div class="quick-access">
-                    <h3>
-                        <span class="lang-en">⚡ Quick Access</span>
-                        <span class="lang-fr">⚡ Accès Rapide</span>
-                    </h3>
-                    <button class="quick-btn" onclick="showModal('maintenance-modal')">
-                        <span class="lang-en">🔧 Maintenance Schedule & Links</span>
-                        <span class="lang-fr">🔧 Calendrier d'Entretien et Liens</span>
-                    </button>
-                </div>
-                
                 <div class="temp-grid">
                     <div class="temp-card winter-deep" onclick="showSettings('deep-winter')">
                         <span class="emoji">🥶</span>
@@ -768,7 +868,7 @@
                     </div>
                 </div>
                 
-                <!-- HVAC Settings Panels - Abbreviated for space -->
+                <!-- HVAC Settings Panels -->
                 <div id="deep-winter" class="settings-panel">
                     <h2>
                         <span class="lang-en">🥶 Deep Winter Settings</span>
@@ -911,25 +1011,154 @@
                         <strong class="lang-fr">⚠️ Important: N'humidifiez PAS lorsque le climatiseur fonctionne.</strong>
                     </div>
                 </div>
-                    <div class="install-prompt">
-                    <h2>
+
+                <div class="quick-access">
+                    <h3>
+                        <span class="lang-en">⚡ Quick Access</span>
+                        <span class="lang-fr">⚡ Accès Rapide</span>
+                    </h3>
+                    <button class="quick-btn" onclick="showModal('maintenance-modal')">
+                        <span class="lang-en">🔧 Maintenance Schedule & Links</span>
+                        <span class="lang-fr">🔧 Calendrier d'Entretien et Liens</span>
+                    </button>
+                </div>
+
+                <div class="install-prompt">
+                    <h3>
                         <span class="lang-en">📱 Add to Home Screen</span>
                         <span class="lang-fr">📱 Ajouter à l'Écran d'Accueil</span>
-                    </h2>
+                    </h3>
                     <p class="lang-en">Tap the Share button ⎙ and select "Add to Home Screen" for quick access!</p>
                     <p class="lang-fr">Appuyez sur le bouton Partager ⎙ et sélectionnez « Sur l'écran d'accueil » pour un accès rapide!</p>
                 </div>
+
                 <div class="footer">
-                    <p>
-                        <span class="lang-en">💡 <strong>Remember:</strong> Aldes controller humidity should always be 10-15% higher than GeneralAire</span>
-                        <span class="lang-fr">💡 <strong>Rappel:</strong> L'humidité du contrôleur Aldes devrait toujours être 10-15% plus élevée que le GeneralAire</span>
-                    </p>
+                    <div class="footer-section">
+                        <div class="footer-title">
+                            <span>🎓</span>
+                            <span class="lang-en">Understanding Your System</span>
+                            <span class="lang-fr">Comprendre Votre Système</span>
+                        </div>
+                        
+                        <div class="golden-rule-box">
+                            <div class="rule-text">
+                                <span class="lang-en">⭐ The Golden Rule</span>
+                                <span class="lang-fr">⭐ La Règle d'Or</span>
+                            </div>
+                            <div class="rule-detail">
+                                <span class="lang-en">Aldes humidity setting = GeneralAire setting + 10-15%</span>
+                                <span class="lang-fr">Réglage Aldes = Réglage GeneralAire + 10-15%</span>
+                            </div>
+                        </div>
+
+                        <div class="system-comparison">
+                            <div class="system-card humidifier">
+                                <h4>
+                                    <span class="lang-en">💧 GeneralAire Humidifier</span>
+                                    <span class="lang-fr">💧 Humidificateur GeneralAire</span>
+                                </h4>
+                                <div class="job">
+                                    <div class="job-label">
+                                        <span class="lang-en">Job:</span>
+                                        <span class="lang-fr">Rôle:</span>
+                                    </div>
+                                    <div class="job-value">
+                                        <span class="lang-en">ADDS moisture</span>
+                                        <span class="lang-fr">AJOUTE l'humidité</span>
+                                    </div>
+                                </div>
+                                <div class="job">
+                                    <div class="job-label">
+                                        <span class="lang-en">Purpose:</span>
+                                        <span class="lang-fr">But:</span>
+                                    </div>
+                                    <div class="job-value">
+                                        <span class="lang-en">Comfort level</span>
+                                        <span class="lang-fr">Niveau de confort</span>
+                                    </div>
+                                </div>
+                                <div class="job">
+                                    <div class="job-label">
+                                        <span class="lang-en">Example:</span>
+                                        <span class="lang-fr">Exemple:</span>
+                                    </div>
+                                    <div class="job-value">
+                                        <span class="lang-en">Set to 25% in winter</span>
+                                        <span class="lang-fr">Réglé à 25% en hiver</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="system-card hrv">
+                                <h4>
+                                    <span class="lang-en">🌬️ Aldes HRV</span>
+                                    <span class="lang-fr">🌬️ VRC Aldes</span>
+                                </h4>
+                                <div class="job">
+                                    <div class="job-label">
+                                        <span class="lang-en">Job:</span>
+                                        <span class="lang-fr">Rôle:</span>
+                                    </div>
+                                    <div class="job-value">
+                                        <span class="lang-en">REMOVES moisture</span>
+                                        <span class="lang-fr">ENLÈVE l'humidité</span>
+                                    </div>
+                                </div>
+                                <div class="job">
+                                    <div class="job-label">
+                                        <span class="lang-en">Purpose:</span>
+                                        <span class="lang-fr">But:</span>
+                                    </div>
+                                    <div class="job-value">
+                                        <span class="lang-en">Safety valve</span>
+                                        <span class="lang-fr">Soupape de sécurité</span>
+                                    </div>
+                                </div>
+                                <div class="job">
+                                    <div class="job-label">
+                                        <span class="lang-en">Example:</span>
+                                        <span class="lang-fr">Exemple:</span>
+                                    </div>
+                                    <div class="job-value">
+                                        <span class="lang-en">Set to 35% in winter</span>
+                                        <span class="lang-fr">Réglé à 35% en hiver</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dont-do-box">
+                            <h4>
+                                <span>❌</span>
+                                <span class="lang-en">What Happens If You Match Them (DON'T!)</span>
+                                <span class="lang-fr">Si Vous Les Réglez Pareil (NE PAS FAIRE!)</span>
+                            </h4>
+                            <ul>
+                                <li>
+                                    <span class="lang-en">Humidifier tries to maintain 25%</span>
+                                    <span class="lang-fr">L'humidificateur essaie de maintenir 25%</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">HRV starts ventilating aggressively at 25%</span>
+                                    <span class="lang-fr">Le VRC ventile agressivement à 25%</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">They fight each other constantly</span>
+                                    <span class="lang-fr">Ils se battent constamment</span>
+                                </li>
+                                <li>
+                                    <span class="lang-en">Result: Dry air + wasted energy + constant cycling</span>
+                                    <span class="lang-fr">Résultat: Air sec + énergie gaspillée + cycle constant</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Maintenance Modal (simplified) -->
+    <!-- Maintenance Modal -->
     <div id="maintenance-modal" class="modal" onclick="if(event.target === this) closeModal('maintenance-modal')">
         <div class="modal-content">
             <div class="modal-header">
