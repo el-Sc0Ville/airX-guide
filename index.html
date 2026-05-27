@@ -9,1453 +9,1046 @@
     <meta name="theme-color" content="#667eea">
     <title>🏠 McNabb Home Tools 2026</title>
     <style>
-        /* BASE STYLES */
+        /* ── RESET & TOKENS ───────────────────────────────────────────── */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
+
         :root {
-            --primary-color: #667eea;
-            --primary-dark: #5568d3;
-            --success-color: #34C759;
-            --warning-color: #FF9500;
-            --danger-color: #FF3B30;
-            --info-color: #5856D6;
-            --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --card-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --card-shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
-            --border-radius: 16px;
-            --border-radius-lg: 20px;
-            --spacing-sm: 12px;
-            --spacing-md: 16px;
-            --spacing-lg: 24px;
+            --primary:      #667eea;
+            --primary-dk:   #5568d3;
+            --success:      #34C759;
+            --warning:      #FF9500;
+            --danger:       #FF3B30;
+            --bg:           linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow-sm:    0 2px 12px rgba(0,0,0,0.07);
+            --shadow-md:    0 6px 24px rgba(0,0,0,0.11);
+            --r:            16px;
+            --r-lg:         20px;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: var(--background-gradient);
+            background: var(--bg);
             min-height: 100vh;
-            padding: 0;
             color: #2c3e50;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* LANGUAGE TOGGLE SYSTEM */
+        /* ── LANGUAGE SYSTEM ─────────────────────────────────────────── */
+        /* Default: show EN, hide FR */
         .lang-fr { display: none; }
         body.french .lang-en { display: none; }
-        body.french .lang-fr { display: block; }
-        body.french .lang-fr.inline { display: inline; }
+        body.french .lang-fr { display: initial; } /* respects block/inline per element */
 
-        /* HEADER */
+        /* ── HEADER ──────────────────────────────────────────────────── */
         .header {
-            background: rgba(255,255,255,0.98);
+            background: rgba(255,255,255,0.97);
             backdrop-filter: saturate(180%) blur(20px);
-            padding: max(env(safe-area-inset-top), 20px) 20px 0 20px;
-            text-align: center;
-            box-shadow: 0 1px 0 rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.08);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            padding: max(env(safe-area-inset-top), 14px) 16px 0;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
         .header h1 {
-            font-size: 1.5em;
+            font-size: 1.3em;
             font-weight: 700;
             color: #1d1d1f;
-            margin-bottom: 6px;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.4px;
+            line-height: 1.2;
         }
 
-        .header .subtitle {
-            font-size: 0.9em;
+        .header-sub {
+            font-size: 0.78em;
             color: #86868b;
             font-weight: 500;
-            margin-bottom: 15px;
+            margin-top: 2px;
         }
 
-        .lang-toggle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        .lang-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dk));
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 0.75em;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 6px rgba(102,126,234,0.25);
-            margin-bottom: 12px;
-            min-width: 60px;
+            transition: transform .15s, opacity .15s;
+            box-shadow: 0 2px 8px rgba(102,126,234,.35);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
+        .lang-btn:active { transform: scale(.93); opacity: .9; }
 
-        .lang-toggle:active {
-            transform: scale(0.95);
-            background: var(--primary-dark);
-        }
-
-        /* TAB NAVIGATION */
+        /* ── TAB NAV ─────────────────────────────────────────────────── */
         .tab-nav {
             display: flex;
-            gap: 0;
-            background: #f5f5f7;
-            overflow: hidden;
+            background: #f2f2f7;
+            margin: 0 -16px;
         }
 
         .tab-btn {
             flex: 1;
             background: transparent;
             border: none;
-            padding: 15px 20px;
-            font-size: 1em;
+            padding: 13px 8px;
+            font-size: .9em;
             font-weight: 600;
             color: #86868b;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
+            transition: all .2s;
+            border-bottom: 2.5px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
+        .tab-btn .ti { font-size: 1.1em; }
+        .tab-btn.active { background: white; color: var(--primary); border-bottom-color: var(--primary); }
+        .tab-btn:active { opacity: .7; }
 
-        .tab-btn:active { transform: scale(0.98); }
+        /* ── LAYOUT ──────────────────────────────────────────────────── */
+        .container { max-width: 640px; margin: 0 auto; }
 
-        .tab-btn.active {
-            background: white;
-            color: var(--primary-color);
-            border-bottom-color: var(--primary-color);
-        }
-
-        .tab-btn .emoji {
-            font-size: 1.2em;
-            margin-right: 6px;
-        }
-
-        /* CONTAINER */
-        .container {
-            max-width: 640px;
-            margin: 0 auto;
-            padding: 0;
-        }
-
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
+        .tab-content { display: none; animation: fadeUp .28s ease both; }
         .tab-content.active { display: block; }
 
-        @keyframes fadeIn {
+        @keyframes fadeUp {
             from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .content-wrapper {
-            padding: var(--spacing-lg) var(--spacing-md);
-            padding-bottom: max(env(safe-area-inset-bottom), 24px);
+        .pad {
+            padding: 20px 16px;
+            padding-bottom: max(env(safe-area-inset-bottom), 28px);
         }
 
-        /* COLLECTIONS STYLES */
-        .today-section {
-            background: #ff6b6b;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            color: white;
-        }
-
-        .today-section h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .today-section .no-pickup {
-            opacity: 0.9;
-            font-size: 16px;
-        }
-
-        .pickup-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 12px 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            font-size: 18px;
+        /* ── COLLECTIONS ─────────────────────────────────────────────── */
+        .date-line {
+            text-align: center;
+            font-size: .83em;
+            color: rgba(255,255,255,.82);
             font-weight: 500;
-            backdrop-filter: blur(5px);
+            margin-bottom: 14px;
+            letter-spacing: .15px;
         }
 
-        .pickup-item:last-child { margin-bottom: 0; }
-
-        .next-section {
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        /* Today card — dynamic color via JS class */
+        .today-card {
+            border-radius: var(--r-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            color: white;
+            box-shadow: var(--shadow-md);
         }
+        .today-card.busy { background: linear-gradient(135deg, #f97316, #ef4444); }
+        .today-card.free { background: linear-gradient(135deg, #10b981, #059669); }
 
-        .next-section h2 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #2c3e50;
-        }
-
-        .next-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-radius: 15px;
-            transition: transform 0.2s ease;
-        }
-
-        .next-item:active { transform: scale(0.98); }
-
-        .next-item.recyclables { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
-        .next-item.organics { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; }
-        .next-item.garbage { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; }
-        .next-item.bulkyItems { background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%); color: white; }
-        .next-item.leaves { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #2c3e50; }
-        .next-item.cityMeeting { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; }
-
-        .next-item-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .next-item-icon { font-size: 28px; }
-
-        .next-item-text {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .next-item-right { text-align: right; }
-
-        .next-item-date {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 3px;
-        }
-
-        .next-item-countdown {
-            font-size: 13px;
-            opacity: 0.9;
-        }
-
-        .current-date {
-            font-size: 14px;
-            color: #f5f5f5;
-            text-align: center;
+        .today-label {
+            font-size: .75em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: .8;
             margin-bottom: 10px;
         }
 
-        /* HVAC STYLES */
-        .install-prompt {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
-            backdrop-filter: blur(10px);
-            padding: var(--spacing-md);
-            border-radius: var(--border-radius);
-            margin-bottom: var(--spacing-lg);
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .install-prompt h3 {
-            color: var(--primary-color);
-            font-size: 1.1em;
+        .today-quiet {
+            font-size: 1.05em;
             font-weight: 600;
+            opacity: .95;
+        }
+
+        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        .pickup-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,.22);
+            padding: 9px 14px;
+            border-radius: 10px;
+            font-size: .98em;
+            font-weight: 600;
+        }
+
+        /* Section label above list */
+        .sec-label {
+            font-size: .72em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .9px;
+            color: rgba(255,255,255,.68);
             margin-bottom: 8px;
+            padding-left: 2px;
         }
 
-        .install-prompt p {
-            font-size: 0.9em;
-            color: #6e6e73;
-            line-height: 1.6;
-        }
-
-        .temp-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .temp-card {
+        /* Next pickups list */
+        .pickup-list {
             background: white;
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid transparent;
-            min-height: 140px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
-            min-width: 0;
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
-        .temp-card:active { transform: scale(0.96); }
+        .pickup-row {
+            display: flex;
+            align-items: center;
+            padding: 13px 15px;
+            border-bottom: 1px solid #f0f0f5;
+            transition: background .12s;
+        }
+        .pickup-row:last-child { border-bottom: none; }
+        .pickup-row:active { background: #f9f9fb; }
 
-        .temp-card.active {
-            border-color: var(--primary-color);
-            box-shadow: 0 8px 30px rgba(102,126,234,0.25);
+        .pi-icon {
+            width: 42px; height: 42px;
+            border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.35em;
+            flex-shrink: 0;
+            margin-right: 12px;
+        }
+        .pi-icon.recyclables { background: linear-gradient(135deg,#e0f2fe,#bae6fd); }
+        .pi-icon.organics    { background: linear-gradient(135deg,#dcfce7,#bbf7d0); }
+        .pi-icon.garbage     { background: linear-gradient(135deg,#fce7f3,#fbcfe8); }
+        .pi-icon.bulkyItems  { background: linear-gradient(135deg,#fff7ed,#fed7aa); }
+        .pi-icon.leaves      { background: linear-gradient(135deg,#fef9c3,#fde68a); }
+        .pi-icon.cityMeeting { background: linear-gradient(135deg,#ede9fe,#c4b5fd); }
+
+        .pi-info { flex: 1; min-width: 0; }
+
+        .pi-name {
+            font-size: .95em;
+            font-weight: 600;
+            color: #1d1d1f;
+            margin-bottom: 2px;
+        }
+
+        .pi-meta { display: flex; align-items: center; gap: 7px; }
+
+        .pi-date { font-size: .8em; color: #6e6e73; }
+
+        .badge {
+            font-size: .68em;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: .2px;
+            white-space: nowrap;
+        }
+        .badge.t  { background: #fee2e2; color: #ef4444; }
+        .badge.tm { background: #fff7ed; color: #f97316; }
+        .badge.sn { background: #fefce8; color: #ca8a04; }
+
+        .pi-countdown {
+            font-size: .83em;
+            font-weight: 600;
+            color: #86868b;
+            text-align: right;
+            min-width: 52px;
+            padding-left: 8px;
+        }
+
+        /* ── HVAC ────────────────────────────────────────────────────── */
+        .season-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .season-card {
+            border-radius: var(--r-lg);
+            padding: 18px 12px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: all .25s cubic-bezier(.4,0,.2,1);
+            border: 2.5px solid transparent;
+            min-height: 126px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .season-card:active { transform: scale(.97); }
+        .season-card.selected {
+            border-color: var(--primary);
+            box-shadow: 0 8px 28px rgba(102,126,234,.24);
             transform: translateY(-2px);
         }
+        .season-card .sc-emoji { font-size: 2.3em; margin-bottom: 7px; }
+        .season-card .sc-title { font-weight: 700; font-size: .95em; color: #1d1d1f; margin-bottom: 3px; }
+        .season-card .sc-range { font-size: .78em; color: #555; }
 
-        .temp-card .emoji {
-            font-size: 3em;
-            margin-bottom: 12px;
-        }
+        .s-deep-winter { background: linear-gradient(135deg,#e3f2fd,#bbdefb); }
+        .s-mild-winter { background: linear-gradient(135deg,#b3e5fc,#81d4fa); }
+        .s-spring-fall { background: linear-gradient(135deg,#c8e6c9,#a5d6a7); }
+        .s-summer      { background: linear-gradient(135deg,#ffe0b2,#ffcc80); }
 
-        .temp-card .title {
-            font-weight: 700;
-            font-size: 1.1em;
-            color: #1d1d1f;
-            margin-bottom: 6px;
-        }
-
-        .temp-card .subtitle {
-            font-size: 0.85em;
-            color: #86868b;
-        }
-
-        .winter-deep { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); }
-        .winter-mild { background: linear-gradient(135deg, #b3e5fc 0%, #81d4fa 100%); }
-        .spring-fall { background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%); }
-        .summer { background: linear-gradient(135deg, #ffe0b2 0%, #ffcc80 100%); }
-
+        /* Settings panel */
         .settings-panel {
             background: white;
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-            box-shadow: var(--card-shadow-hover);
+            border-radius: var(--r-lg);
+            padding: 20px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-md);
             display: none;
         }
-
         .settings-panel.active {
             display: block;
-            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideDown .3s cubic-bezier(.4,0,.2,1);
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-14px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .settings-panel h2 {
-            color: #1d1d1f;
-            font-size: 1.5em;
+        .panel-title {
+            font-size: 1.2em;
             font-weight: 700;
-            margin-bottom: var(--spacing-lg);
+            color: #1d1d1f;
             text-align: center;
+            margin-bottom: 16px;
         }
 
         .setting-row {
-            background: linear-gradient(135deg, #f5f5f7 0%, #fafafa 100%);
-            padding: var(--spacing-md);
+            background: #f8f8fa;
+            padding: 14px 15px;
             border-radius: 14px;
-            margin-bottom: var(--spacing-md);
-            border-left: 4px solid var(--primary-color);
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
         }
+        .setting-row:last-of-type { margin-bottom: 0; }
 
-        .setting-row .label {
-            font-size: 0.85em;
-            color: #6e6e73;
-            margin-bottom: 6px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .setting-row .value {
-            font-size: 1.8em;
+        .s-label {
+            font-size: .74em;
             font-weight: 700;
-            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: #6e6e73;
+            margin-bottom: 4px;
         }
 
-        .setting-row .note {
-            font-size: 0.85em;
+        .s-value {
+            font-size: 1.7em;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.1;
+        }
+
+        .s-note {
+            font-size: .8em;
             color: #86868b;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
-        .info-note {
-            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
-            padding: var(--spacing-md);
+        /* Humidity bar */
+        .hbar-wrap { margin-top: 9px; }
+        .hbar {
+            height: 5px;
+            background: #e5e5ea;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .hbar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--primary), #a855f7);
+            transition: width .45s ease;
+        }
+
+        /* Alert boxes */
+        .alert {
+            padding: 13px 14px;
             border-radius: 12px;
-            font-size: 0.9em;
-            color: #856404;
-            margin-top: var(--spacing-md);
+            margin: 12px 0 4px;
+            font-size: .87em;
             line-height: 1.6;
+            border-left: 4px solid;
         }
+        .alert.warn { background: linear-gradient(135deg,#ffebee,#ffcdd2); border-color: var(--danger); color: #c62828; }
+        .alert.info { background: linear-gradient(135deg,#e8eaf6,#c5cae9); border-color: #5856D6; color: #3f51b5; }
 
-        .info-box {
-            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            font-size: 0.9em;
-            color: #3f51b5;
-            margin-top: var(--spacing-md);
-            line-height: 1.6;
-            border-left: 4px solid var(--info-color);
-        }
-
-        .details-btn, .quick-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: 600;
-            width: 100%;
-            margin-top: var(--spacing-md);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
-        }
-
-        .details-btn:active, .quick-btn:active {
-            transform: scale(0.98);
-            background: var(--primary-dark);
-        }
-
-        .quick-access {
-            background: white;
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-            box-shadow: var(--card-shadow);
-        }
-
-        .quick-access h3 {
-            color: #1d1d1f;
-            font-size: 1.2em;
-            margin-bottom: var(--spacing-md);
-            text-align: center;
-        }
-
-        .quick-btn {
-            background: linear-gradient(135deg, var(--success-color) 0%, #28a745 100%);
+        /* Buttons */
+        .btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-bottom: 10px;
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            font-size: .97em;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all .18s;
+            margin-bottom: 12px;
+        }
+        .btn:active { transform: scale(.98); opacity: .9; }
+        .btn-blue  { background: linear-gradient(135deg,var(--primary),var(--primary-dk)); color: white; box-shadow: 0 4px 14px rgba(102,126,234,.35); }
+        .btn-green { background: linear-gradient(135deg,var(--success),#28a745); color: white; box-shadow: 0 4px 14px rgba(52,199,89,.3); }
+
+        /* Add-to-home strip */
+        .add-home {
+            background: rgba(255,255,255,.14);
+            border: 1px solid rgba(255,255,255,.22);
+            backdrop-filter: blur(8px);
+            border-radius: var(--r);
+            padding: 13px 15px;
+            text-align: center;
+            margin-bottom: 14px;
+            color: white;
+        }
+        .add-home strong { font-size: .88em; display: block; margin-bottom: 3px; }
+        .add-home span   { font-size: .78em; opacity: .85; line-height: 1.5; }
+
+        /* Educational section (collapsible) */
+        .edu-card {
+            background: white;
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* MODAL STYLES */
+        .edu-toggle {
+            width: 100%; background: none; border: none;
+            padding: 17px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; text-align: left;
+            font-size: .97em; font-weight: 700; color: #1d1d1f;
+        }
+        .edu-toggle:active { background: #f9f9fb; }
+        .edu-toggle-left { display: flex; align-items: center; gap: 8px; }
+        .edu-chevron { font-size: .72em; color: #86868b; transition: transform .3s; }
+        .edu-toggle.open .edu-chevron { transform: rotate(180deg); }
+
+        .edu-body { display: none; padding: 0 18px 18px; }
+        .edu-body.open { display: block; animation: fadeUp .22s ease; }
+
+        .golden-rule {
+            background: linear-gradient(135deg,#fff9e6,#ffe8a1);
+            border-left: 4px solid #ffc107;
+            padding: 13px 14px;
+            border-radius: 12px;
+            margin-bottom: 13px;
+        }
+        .gr-title  { font-size: .93em; font-weight: 700; color: #f57c00; margin-bottom: 4px; }
+        .gr-detail { font-size: .85em; color: #856404; line-height: 1.5; }
+
+        .sys-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 13px;
+        }
+
+        .sys-card {
+            background: #f8f8fa;
+            border-radius: 12px;
+            padding: 13px;
+        }
+        .sys-card.hum { border-top: 3px solid #2196F3; }
+        .sys-card.hrv { border-top: 3px solid #FF9800; }
+        .sys-card h4  { font-size: .87em; font-weight: 700; color: #1d1d1f; margin-bottom: 8px; }
+        .sys-row      { font-size: .8em; color: #6e6e73; line-height: 1.6; }
+        .sys-row strong { color: #1d1d1f; }
+
+        .dont-box {
+            background: linear-gradient(135deg,#ffebee,#ffcdd2);
+            border-left: 4px solid var(--danger);
+            padding: 13px 14px;
+            border-radius: 12px;
+        }
+        .dont-box h4 { font-size: .88em; font-weight: 700; color: #c62828; margin-bottom: 8px; }
+        .dont-box ul { margin-left: 17px; }
+        .dont-box li { font-size: .81em; color: #c62828; line-height: 1.65; margin-bottom: 2px; }
+
+        /* ── MODAL (bottom-sheet) ─────────────────────────────────────── */
         .modal {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.65);
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.55);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 1000;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
         }
+        .modal.active { display: flex; }
 
-        .modal-content {
+        .modal-sheet {
             background: white;
-            margin: 20px;
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
+            border-radius: 24px 24px 0 0;
+            padding: 22px 22px max(env(safe-area-inset-bottom),22px);
+            width: 100%;
             max-width: 640px;
-            width: calc(100% - 40px);
-            max-height: 85vh;
+            max-height: 88vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 -4px 40px rgba(0,0,0,.18);
+            animation: sheetUp .28s cubic-bezier(.4,0,.2,1);
+        }
+
+        @keyframes sheetUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-handle {
+            width: 38px; height: 4px;
+            background: #ddd;
+            border-radius: 2px;
+            margin: 0 auto 18px;
         }
 
         .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-lg);
-            padding-bottom: var(--spacing-md);
-            border-bottom: 1px solid #f0f0f0;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f0f0f5;
         }
-
-        .modal-header h2 {
-            color: #1d1d1f;
-            font-size: 1.5em;
-            font-weight: 700;
-        }
+        .modal-header h2 { font-size: 1.25em; font-weight: 700; color: #1d1d1f; }
 
         .close-btn {
-            background: var(--danger-color);
-            color: white;
+            background: #f2f2f7;
+            color: #6e6e73;
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 30px; height: 30px;
             border-radius: 50%;
-            font-size: 1.1em;
+            font-size: .95em;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            transition: background .13s;
         }
+        .close-btn:active { background: #e5e5ea; }
 
-        .close-btn:active {
-            transform: scale(0.9);
+        .maint-card {
+            background: #f8f8fa;
+            border-radius: var(--r);
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--success);
         }
+        .maint-card:last-child { margin-bottom: 0; }
+        .maint-card h4 { font-size: .97em; font-weight: 700; color: #1d1d1f; margin-bottom: 6px; }
 
-        .warning-box {
-            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-            border-left: 4px solid var(--danger-color);
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            margin: var(--spacing-md) 0;
-            font-size: 0.9em;
-            line-height: 1.6;
-            color: #c62828;
-        }
-
-        .success-box {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            border-left: 4px solid var(--success-color);
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            margin: var(--spacing-md) 0;
-            font-size: 0.9em;
-            line-height: 1.6;
-            color: #2e7d32;
-        }
-
-        .detail-table {
-            width: 100%;
-            margin: var(--spacing-md) 0;
-            border-collapse: separate;
-            border-spacing: 0;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        }
-
-        .detail-table th {
-            background: var(--primary-color);
+        .maint-badge {
+            background: var(--success);
             color: white;
-            padding: 14px 12px;
-            text-align: left;
-            font-size: 0.85em;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .detail-table td {
-            padding: 14px 12px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 0.9em;
-            background: white;
-        }
-
-        .detail-table tr:last-child td { border-bottom: none; }
-        .detail-table tbody tr:nth-child(even) td { background: #fafafa; }
-
-        .maintenance-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: var(--spacing-md);
-            margin-bottom: var(--spacing-md);
-            box-shadow: var(--card-shadow);
-            border-left: 4px solid var(--success-color);
-        }
-
-        .maintenance-card h4 {
-            color: #1d1d1f;
-            font-size: 1.1em;
-            margin-bottom: 8px;
-        }
-
-        .maintenance-card .frequency {
-            background: var(--success-color);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75em;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: .74em;
             font-weight: 600;
             display: inline-block;
             margin-bottom: 8px;
         }
 
-        .maintenance-card p {
-            color: #6e6e73;
-            font-size: 0.9em;
-            line-height: 1.5;
-            margin-bottom: 8px;
-        }
+        .maint-card p { font-size: .86em; color: #6e6e73; line-height: 1.5; margin-bottom: 10px; }
 
-        .product-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--primary-color);
+        .buy-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--primary);
             color: white;
-            padding: 8px 14px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-
-        .product-link:active {
-            background: var(--primary-dark);
-            transform: scale(0.98);
-        }
-
-        /* EDUCATIONAL FOOTER */
-        .footer {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            padding: var(--spacing-lg);
-            margin-top: var(--spacing-lg);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--card-shadow);
-        }
-
-        .footer-section {
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .footer-section:last-child {
-            margin-bottom: 0;
-        }
-
-        .footer-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: #1d1d1f;
-            margin-bottom: var(--spacing-md);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .golden-rule-box {
-            background: linear-gradient(135deg, #fff9e6 0%, #ffe8a1 100%);
-            border-left: 4px solid #ffc107;
-            padding: var(--spacing-md);
-            border-radius: 12px;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .golden-rule-box .rule-text {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: #f57c00;
-            margin-bottom: 8px;
-        }
-
-        .golden-rule-box .rule-detail {
-            font-size: 0.9em;
-            color: #856404;
-            line-height: 1.5;
-        }
-
-        .system-comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-md);
-        }
-
-        .system-card {
-            background: white;
-            border-radius: 12px;
-            padding: var(--spacing-md);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-
-        .system-card.humidifier {
-            border-top: 3px solid #2196F3;
-        }
-
-        .system-card.hrv {
-            border-top: 3px solid #FF9800;
-        }
-
-        .system-card h4 {
-            font-size: 0.95em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: #1d1d1f;
-        }
-
-        .system-card .job {
-            font-size: 0.85em;
-            margin-bottom: 6px;
-        }
-
-        .system-card .job-label {
-            font-weight: 600;
-            color: #6e6e73;
-        }
-
-        .system-card .job-value {
-            color: #1d1d1f;
-        }
-
-        .dont-do-box {
-            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-            border-left: 4px solid var(--danger-color);
-            padding: var(--spacing-md);
-            border-radius: 12px;
-        }
-
-        .dont-do-box h4 {
-            font-size: 1em;
-            font-weight: 700;
-            color: #c62828;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .dont-do-box ul {
-            margin-left: 20px;
-            color: #c62828;
-        }
-
-        .dont-do-box li {
-            font-size: 0.85em;
-            line-height: 1.6;
-            margin-bottom: 4px;
-        }
-
-        .footer-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            display: block;
-            margin-top: 12px;
-            padding: 12px;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 8px 15px;
             border-radius: 10px;
-            text-align: center;
+            text-decoration: none;
+            font-size: .83em;
+            font-weight: 600;
+            transition: opacity .15s;
+        }
+        .buy-link:active { opacity: .8; }
+
+        /* ── RESPONSIVE ──────────────────────────────────────────────── */
+        @media (min-width: 480px) {
+            .modal { align-items: center; padding: 20px; }
+            .modal-sheet { border-radius: 24px; }
         }
 
-        .footer-link:active {
-            background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
-            transform: scale(0.98);
-        }
-
-        .loading {
-            text-align: center;
-            color: #6e6e73;
-            padding: 40px;
-            font-size: 18px;
-        }
-
-        @media (max-width: 480px) {
-            .header h1 { font-size: 1.3em; }
-            .tab-btn { font-size: 0.9em; padding: 12px 15px; }
-            .next-item-text, .next-item-date { font-size: 14px; }
-            .system-comparison {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 380px) {
+            .header h1 { font-size: 1.12em; }
+            .tab-btn   { font-size: .82em; padding: 11px 5px; }
+            .sys-grid  { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body>
-    <div class="header">
-        <h1>
-            <span class="lang-en">🏠 McNabb Reminder Tools</span>
-            <span class="lang-fr">🏠 Outils de Rappel McNabb</span>
-        </h1>
-        <p class="subtitle">
-            <span class="lang-en">NDIP 2026</span>
-            <span class="lang-fr">NDIP 2026</span>
-        </p>
-        <button class="lang-toggle" onclick="toggleLanguage()">
-            <span class="lang-en">🇫🇷 FR</span>
-            <span class="lang-fr">🇨🇦 EN</span>
-        </button>
-        
-        <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('collections')" id="tab-collections">
-                <span class="emoji">🚛</span>
+<body class="french">
+
+    <!-- ── HEADER ─────────────────────────────────────────────────── -->
+    <header class="header">
+        <div class="header-row">
+            <div>
+                <h1>
+                    <span class="lang-en">🏠 McNabb Home Tools</span>
+                    <span class="lang-fr">🏠 Outils McNabb</span>
+                </h1>
+                <div class="header-sub">NDIP 2026</div>
+            </div>
+            <button class="lang-btn" onclick="toggleLang()">
+                <span class="lang-en">🇫🇷 FR</span>
+                <span class="lang-fr">🇨🇦 EN</span>
+            </button>
+        </div>
+
+        <nav class="tab-nav">
+            <button class="tab-btn active" id="tab-collections" onclick="switchTab('collections')">
+                <span class="ti">🚛</span>
                 <span class="lang-en">Curbside</span>
                 <span class="lang-fr">Collectes</span>
             </button>
-            <button class="tab-btn" onclick="switchTab('hvac')" id="tab-hvac">
-                <span class="emoji">💨</span>
+            <button class="tab-btn" id="tab-hvac" onclick="switchTab('hvac')">
+                <span class="ti">💨</span>
                 <span class="lang-en">HVAC</span>
                 <span class="lang-fr">Ventilation</span>
             </button>
-        </div>
-    </div>
+        </nav>
+    </header>
 
     <div class="container">
-        <!-- COLLECTIONS TAB -->
+
+        <!-- ── COLLECTIONS TAB ──────────────────────────────────────── -->
         <div id="collections-content" class="tab-content active">
-            <div class="content-wrapper">
-                <div class="current-date" id="current-date"></div>
-                <div id="collections-app-content" class="loading">
-                    <div>⏳ <span class="lang-en">Loading...</span><span class="lang-fr">Chargement...</span></div>
+            <div class="pad">
+                <div class="date-line" id="date-line"></div>
+                <div id="coll-render">
+                    <p style="text-align:center;color:rgba(255,255,255,.7);padding:40px 0">
+                        ⏳ <span class="lang-en">Loading…</span><span class="lang-fr">Chargement…</span>
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- HVAC TAB -->
+        <!-- ── HVAC TAB ──────────────────────────────────────────────── -->
         <div id="hvac-content" class="tab-content">
-            <div class="content-wrapper">
-                <div class="temp-grid">
-                    <div class="temp-card winter-deep" onclick="showSettings('deep-winter')">
-                        <span class="emoji">🥶</span>
-                        <div class="title">
-                            <span class="lang-en">Deep Winter</span>
-                            <span class="lang-fr">Grand Froid</span>
-                        </div>
-                        <div class="subtitle">
-                            <span class="lang-en">Below -15°C</span>
-                            <span class="lang-fr">Sous -15°C</span>
-                        </div>
+            <div class="pad">
+
+                <div class="sec-label lang-en">Select current outdoor conditions</div>
+                <div class="sec-label lang-fr">Sélectionnez les conditions actuelles</div>
+
+                <div class="season-grid">
+                    <div class="season-card s-deep-winter" onclick="showSettings('panel-deep-winter', this)">
+                        <div class="sc-emoji">🥶</div>
+                        <div class="sc-title"><span class="lang-en">Deep Winter</span><span class="lang-fr">Grand Froid</span></div>
+                        <div class="sc-range"><span class="lang-en">Below -15°C</span><span class="lang-fr">Sous -15°C</span></div>
                     </div>
-                    
-                    <div class="temp-card winter-mild" onclick="showSettings('mild-winter')">
-                        <span class="emoji">❄️</span>
-                        <div class="title">
-                            <span class="lang-en">Mild Winter</span>
-                            <span class="lang-fr">Hiver</span>
-                        </div>
-                        <div class="subtitle">
-                            <span class="lang-en">-15°C to 0°C</span>
-                            <span class="lang-fr">-15°C à 0°C</span>
-                        </div>
+                    <div class="season-card s-mild-winter" onclick="showSettings('panel-mild-winter', this)">
+                        <div class="sc-emoji">❄️</div>
+                        <div class="sc-title"><span class="lang-en">Mild Winter</span><span class="lang-fr">Hiver Doux</span></div>
+                        <div class="sc-range"><span class="lang-en">-15°C to 0°C</span><span class="lang-fr">-15°C à 0°C</span></div>
                     </div>
-                    
-                    <div class="temp-card spring-fall" onclick="showSettings('spring-fall')">
-                        <span class="emoji">🌱🍂</span>
-                        <div class="title">
-                            <span class="lang-en">Spring/Fall</span>
-                            <span class="lang-fr">Printemps/Automne</span>
-                        </div>
-                        <div class="subtitle">
-                            <span class="lang-en">0°C to 15°C</span>
-                            <span class="lang-fr">0°C à 15°C</span>
-                        </div>
+                    <div class="season-card s-spring-fall" onclick="showSettings('panel-spring-fall', this)">
+                        <div class="sc-emoji">🌱🍂</div>
+                        <div class="sc-title"><span class="lang-en">Spring / Fall</span><span class="lang-fr">Printemps/Automne</span></div>
+                        <div class="sc-range"><span class="lang-en">0°C to 15°C</span><span class="lang-fr">0°C à 15°C</span></div>
                     </div>
-                    
-                    <div class="temp-card summer" onclick="showSettings('summer')">
-                        <span class="emoji">☀️</span>
-                        <div class="title">
-                            <span class="lang-en">Summer</span>
-                            <span class="lang-fr">Été</span>
-                        </div>
-                        <div class="subtitle">
-                            <span class="lang-en">Above 15°C</span>
-                            <span class="lang-fr">Au-dessus de 15°C</span>
-                        </div>
+                    <div class="season-card s-summer" onclick="showSettings('panel-summer', this)">
+                        <div class="sc-emoji">☀️</div>
+                        <div class="sc-title"><span class="lang-en">Summer</span><span class="lang-fr">Été</span></div>
+                        <div class="sc-range"><span class="lang-en">Above 15°C</span><span class="lang-fr">Au-dessus de 15°C</span></div>
                     </div>
                 </div>
-                
-                <!-- HVAC Settings Panels -->
-                <div id="deep-winter" class="settings-panel">
-                    <h2>
+
+                <!-- Deep Winter -->
+                <div id="panel-deep-winter" class="settings-panel">
+                    <div class="panel-title">
                         <span class="lang-en">🥶 Deep Winter Settings</span>
                         <span class="lang-fr">🥶 Réglages Grand Froid</span>
-                    </h2>
-                    <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">GeneralAire Humidifier</span>
-                            <span class="lang-fr">Humidificateur GeneralAire</span>
-                        </div>
-                        <div class="value">30-35%</div>
-                        <div class="note">
-                            <span class="lang-en">Mode: Manual</span>
-                            <span class="lang-fr">Mode: Manuel</span>
-                        </div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Humidity Step</span>
-                            <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
-                        </div>
-                        <div class="value">40-45%</div>
-                        <div class="note">
-                            <span class="lang-en">Always 10-15% higher than humidifier</span>
-                            <span class="lang-fr">Toujours 10-15% plus élevé que l'humidificateur</span>
-                        </div>
+                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                        <div class="s-value">30–35%</div>
+                        <div class="s-note"><span class="lang-en">Mode: Manual</span><span class="lang-fr">Mode: Manuel</span></div>
+                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Mode & Speed</span>
-                            <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
-                        </div>
-                        <div class="value">
-                            <span class="lang-en">🕒 Timer / Speed 1</span>
-                            <span class="lang-fr">🕒 Minuterie / Vitesse 1</span>
-                        </div>
+                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                        <div class="s-value">40–45%</div>
+                        <div class="s-note"><span class="lang-en">Always 10–15% above humidifier</span><span class="lang-fr">Toujours 10–15% au-dessus de l'humidificateur</span></div>
+                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
                     </div>
-                    <div class="warning-box">
-                        <strong class="lang-en">⚠️ Important - Wood Protection: Never go below 30% humidity in winter. Maintain 30-50% year-round for wood stability.</strong>
-                        <strong class="lang-fr">⚠️ Important - Protection du Bois: Ne jamais descendre sous 30% d'humidité en hiver. Maintenez 30-50% à l'année.</strong>
+                    <div class="setting-row">
+                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                        <div class="s-value"><span class="lang-en">🕒 Timer · Speed 1</span><span class="lang-fr">🕒 Minuterie · Vitesse 1</span></div>
+                    </div>
+                    <div class="alert warn">
+                        <strong><span class="lang-en">⚠️ Never go below 30% in winter — protects wood floors &amp; trim.</span><span class="lang-fr">⚠️ Ne pas descendre sous 30% en hiver — protège planchers et boiseries.</span></strong>
                     </div>
                 </div>
 
-                <div id="mild-winter" class="settings-panel">
-                    <h2>
+                <!-- Mild Winter -->
+                <div id="panel-mild-winter" class="settings-panel">
+                    <div class="panel-title">
                         <span class="lang-en">❄️ Mild Winter Settings</span>
                         <span class="lang-fr">❄️ Réglages Hiver Doux</span>
-                    </h2>
-                    <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">GeneralAire Humidifier</span>
-                            <span class="lang-fr">Humidificateur GeneralAire</span>
-                        </div>
-                        <div class="value">30-35%</div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Humidity Step</span>
-                            <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
-                        </div>
-                        <div class="value">40-45%</div>
+                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                        <div class="s-value">30–35%</div>
+                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Mode & Speed</span>
-                            <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
-                        </div>
-                        <div class="value">
-                            <span class="lang-en">🔁 Exchange / Speed 1</span>
-                            <span class="lang-fr">🔁 Échange / Vitesse 1</span>
-                        </div>
+                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                        <div class="s-value">40–45%</div>
+                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
+                    </div>
+                    <div class="setting-row">
+                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                        <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
                     </div>
                 </div>
 
-                <div id="spring-fall" class="settings-panel">
-                    <h2>
-                        <span class="lang-en">🌱 Spring/Fall Settings</span>
+                <!-- Spring / Fall -->
+                <div id="panel-spring-fall" class="settings-panel">
+                    <div class="panel-title">
+                        <span class="lang-en">🌱 Spring / Fall Settings</span>
                         <span class="lang-fr">🌱 Réglages Printemps/Automne</span>
-                    </h2>
-                    <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">GeneralAire Humidifier</span>
-                            <span class="lang-fr">Humidificateur GeneralAire</span>
-                        </div>
-                        <div class="value">30-40%</div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Humidity Step</span>
-                            <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
-                        </div>
-                        <div class="value">45-50%</div>
+                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                        <div class="s-value">30–40%</div>
+                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:40%"></div></div></div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Mode & Speed</span>
-                            <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
-                        </div>
-                        <div class="value">
-                            <span class="lang-en">🔁 Exchange / Speed 1</span>
-                            <span class="lang-fr">🔁 Échange / Vitesse 1</span>
-                        </div>
+                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                        <div class="s-value">45–50%</div>
+                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:50%"></div></div></div>
+                    </div>
+                    <div class="setting-row">
+                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                        <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
                     </div>
                 </div>
 
-                <div id="summer" class="settings-panel">
-                    <h2>
+                <!-- Summer -->
+                <div id="panel-summer" class="settings-panel">
+                    <div class="panel-title">
                         <span class="lang-en">☀️ Summer Settings</span>
                         <span class="lang-fr">☀️ Réglages Été</span>
-                    </h2>
-                    <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">GeneralAire Humidifier</span>
-                            <span class="lang-fr">Humidificateur GeneralAire</span>
-                        </div>
-                        <div class="value">
-                            <span class="lang-en">OFF</span>
-                            <span class="lang-fr">FERMÉ</span>
-                        </div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Humidity Step</span>
-                            <span class="lang-fr">Contrôleur Aldes Palier d'Humidité</span>
-                        </div>
-                        <div class="value">55-60%</div>
+                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                        <div class="s-value"><span class="lang-en">OFF</span><span class="lang-fr">FERMÉ</span></div>
                     </div>
                     <div class="setting-row">
-                        <div class="label">
-                            <span class="lang-en">Aldes Controller Mode & Speed</span>
-                            <span class="lang-fr">Contrôleur Aldes Mode et Vitesse</span>
-                        </div>
-                        <div class="value">
-                            <span class="lang-en">🔁 Exchange / Speed 1</span>
-                            <span class="lang-fr">🔁 Échange / Vitesse 1</span>
-                        </div>
+                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                        <div class="s-value">55–60%</div>
+                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:60%"></div></div></div>
                     </div>
-                    <div class="warning-box">
-                        <strong class="lang-en">⚠️ Important: Do NOT humidify when AC is running.</strong>
-                        <strong class="lang-fr">⚠️ Important: N'humidifiez PAS lorsque le climatiseur fonctionne.</strong>
+                    <div class="setting-row">
+                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                        <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
+                    </div>
+                    <div class="alert warn">
+                        <strong><span class="lang-en">⚠️ Do NOT run the humidifier while AC is on.</span><span class="lang-fr">⚠️ N'utilisez PAS l'humidificateur lorsque le climatiseur fonctionne.</span></strong>
                     </div>
                 </div>
 
-                <div class="quick-access">
-                    <h3>
-                        <span class="lang-en">⚡ Quick Access</span>
-                        <span class="lang-fr">⚡ Accès Rapide</span>
-                    </h3>
-                    <button class="quick-btn" onclick="showModal('maintenance-modal')">
-                        <span class="lang-en">🔧 Maintenance Schedule & Links</span>
-                        <span class="lang-fr">🔧 Calendrier d'Entretien et Liens</span>
+                <!-- Maintenance button -->
+                <button class="btn btn-green" onclick="showModal('modal-maint')">
+                    🔧 <span class="lang-en">Maintenance Schedule &amp; Links</span><span class="lang-fr">Calendrier d'Entretien et Liens</span>
+                </button>
+
+                <!-- Add to home screen -->
+                <div class="add-home">
+                    <strong>📱 <span class="lang-en">Add to Home Screen</span><span class="lang-fr">Ajouter à l'Écran d'Accueil</span></strong>
+                    <span class="lang-en">Tap Share ⎙ → "Add to Home Screen" for instant access.</span>
+                    <span class="lang-fr">Appuyez sur Partager ⎙ → « Sur l'écran d'accueil ».</span>
+                </div>
+
+                <!-- Educational section (collapsible) -->
+                <div class="edu-card">
+                    <button class="edu-toggle" onclick="toggleEdu(this)">
+                        <span class="edu-toggle-left">
+                            🎓 <span class="lang-en">Understanding Your System</span><span class="lang-fr">Comprendre Votre Système</span>
+                        </span>
+                        <span class="edu-chevron">▼</span>
                     </button>
-                </div>
-
-                <div class="install-prompt">
-                    <h3>
-                        <span class="lang-en">📱 Add to Home Screen</span>
-                        <span class="lang-fr">📱 Ajouter à l'Écran d'Accueil</span>
-                    </h3>
-                    <p class="lang-en">Tap the Share button ⎙ and select "Add to Home Screen" for quick access!</p>
-                    <p class="lang-fr">Appuyez sur le bouton Partager ⎙ et sélectionnez « Sur l'écran d'accueil » pour un accès rapide!</p>
-                </div>
-
-                <div class="footer">
-                    <div class="footer-section">
-                        <div class="footer-title">
-                            <span>🎓</span>
-                            <span class="lang-en">Understanding Your System</span>
-                            <span class="lang-fr">Comprendre Votre Système</span>
-                        </div>
-                        
-                        <div class="golden-rule-box">
-                            <div class="rule-text">
-                                <span class="lang-en">⭐ The Golden Rule</span>
-                                <span class="lang-fr">⭐ La Règle d'Or</span>
-                            </div>
-                            <div class="rule-detail">
-                                <span class="lang-en">Aldes humidity setting = GeneralAire setting + 10-15%</span>
-                                <span class="lang-fr">Réglage Aldes = Réglage GeneralAire + 10-15%</span>
+                    <div class="edu-body">
+                        <div class="golden-rule">
+                            <div class="gr-title"><span class="lang-en">⭐ The Golden Rule</span><span class="lang-fr">⭐ La Règle d'Or</span></div>
+                            <div class="gr-detail">
+                                <span class="lang-en">Aldes humidity step = GeneralAire setting + 10–15%</span>
+                                <span class="lang-fr">Palier Aldes = Réglage GeneralAire + 10–15%</span>
                             </div>
                         </div>
 
-                        <div class="system-comparison">
-                            <div class="system-card humidifier">
-                                <h4>
-                                    <span class="lang-en">💧 GeneralAire Humidifier</span>
-                                    <span class="lang-fr">💧 Humidificateur GeneralAire</span>
-                                </h4>
-                                <div class="job">
-                                    <div class="job-label">
-                                        <span class="lang-en">Job:</span>
-                                        <span class="lang-fr">Rôle:</span>
-                                    </div>
-                                    <div class="job-value">
-                                        <span class="lang-en">ADDS moisture</span>
-                                        <span class="lang-fr">AJOUTE l'humidité</span>
-                                    </div>
-                                </div>
-                                <div class="job">
-                                    <div class="job-label">
-                                        <span class="lang-en">Purpose:</span>
-                                        <span class="lang-fr">But:</span>
-                                    </div>
-                                    <div class="job-value">
-                                        <span class="lang-en">Comfort level</span>
-                                        <span class="lang-fr">Niveau de confort</span>
-                                    </div>
-                                </div>
-                                <div class="job">
-                                    <div class="job-label">
-                                        <span class="lang-en">Example:</span>
-                                        <span class="lang-fr">Exemple:</span>
-                                    </div>
-                                    <div class="job-value">
-                                        <span class="lang-en">Set to 25% in winter</span>
-                                        <span class="lang-fr">Réglé à 25% en hiver</span>
-                                    </div>
-                                </div>
+                        <div class="sys-grid">
+                            <div class="sys-card hum">
+                                <h4><span class="lang-en">💧 GeneralAire Humidifier</span><span class="lang-fr">💧 Humidificateur GeneralAire</span></h4>
+                                <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">ADDS moisture</span><span class="lang-fr">AJOUTE l'humidité</span></div>
+                                <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Comfort</span><span class="lang-fr">Confort</span></div>
+                                <div class="sys-row"><strong><span class="lang-en">Winter ex.: </span><span class="lang-fr">Ex.: </span></strong><span class="lang-en">Set to 25%</span><span class="lang-fr">Réglé à 25%</span></div>
                             </div>
-
-                            <div class="system-card hrv">
-                                <h4>
-                                    <span class="lang-en">🌬️ Aldes HRV</span>
-                                    <span class="lang-fr">🌬️ VRC Aldes</span>
-                                </h4>
-                                <div class="job">
-                                    <div class="job-label">
-                                        <span class="lang-en">Job:</span>
-                                        <span class="lang-fr">Rôle:</span>
-                                    </div>
-                                    <div class="job-value">
-                                        <span class="lang-en">REMOVES moisture</span>
-                                        <span class="lang-fr">ENLÈVE l'humidité</span>
-                                    </div>
-                                </div>
-                                <div class="job">
-                                    <div class="job-label">
-                                        <span class="lang-en">Purpose:</span>
-                                        <span class="lang-fr">But:</span>
-                                    </div>
-                                    <div class="job-value">
-                                        <span class="lang-en">Safety valve</span>
-                                        <span class="lang-fr">Soupape de sécurité</span>
-                                    </div>
-                                </div>
-                                <div class="job">
-                                    <div class="job-label">
-                                        <span class="lang-en">Example:</span>
-                                        <span class="lang-fr">Exemple:</span>
-                                    </div>
-                                    <div class="job-value">
-                                        <span class="lang-en">Set to 35% in winter</span>
-                                        <span class="lang-fr">Réglé à 35% en hiver</span>
-                                    </div>
-                                </div>
+                            <div class="sys-card hrv">
+                                <h4><span class="lang-en">🌬️ Aldes HRV</span><span class="lang-fr">🌬️ VRC Aldes</span></h4>
+                                <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">REMOVES moisture</span><span class="lang-fr">ENLÈVE l'humidité</span></div>
+                                <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Safety valve</span><span class="lang-fr">Soupape de sécurité</span></div>
+                                <div class="sys-row"><strong><span class="lang-en">Winter ex.: </span><span class="lang-fr">Ex.: </span></strong><span class="lang-en">Set to 35%</span><span class="lang-fr">Réglé à 35%</span></div>
                             </div>
                         </div>
 
-                        <div class="dont-do-box">
-                            <h4>
-                                <span>❌</span>
-                                <span class="lang-en">What Happens If You Match Them (DON'T!)</span>
-                                <span class="lang-fr">Si Vous Les Réglez Pareil (NE PAS FAIRE!)</span>
-                            </h4>
+                        <div class="dont-box">
+                            <h4>❌ <span class="lang-en">If You Match Both Settings (DON'T!)</span><span class="lang-fr">Si Vous Les Réglez Pareil (À ÉVITER!)</span></h4>
                             <ul>
-                                <li>
-                                    <span class="lang-en">Humidifier tries to maintain 25%</span>
-                                    <span class="lang-fr">L'humidificateur essaie de maintenir 25%</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en">HRV starts ventilating aggressively at 25%</span>
-                                    <span class="lang-fr">Le VRC ventile agressivement à 25%</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en">They fight each other constantly</span>
-                                    <span class="lang-fr">Ils se battent constamment</span>
-                                </li>
-                                <li>
-                                    <span class="lang-en">Result: Dry air + wasted energy + constant cycling</span>
-                                    <span class="lang-fr">Résultat: Air sec + énergie gaspillée + cycle constant</span>
-                                </li>
+                                <li><span class="lang-en">Humidifier tries to maintain 25%</span><span class="lang-fr">L'humidificateur essaie de maintenir 25%</span></li>
+                                <li><span class="lang-en">HRV ventilates aggressively at 25%</span><span class="lang-fr">Le VRC ventile agressivement à 25%</span></li>
+                                <li><span class="lang-en">They fight each other constantly</span><span class="lang-fr">Ils se battent constamment</span></li>
+                                <li><span class="lang-en">Result: dry air + wasted energy + constant cycling</span><span class="lang-fr">Résultat: air sec + énergie gaspillée + cycles constants</span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <!-- Maintenance Modal -->
-    <div id="maintenance-modal" class="modal" onclick="if(event.target === this) closeModal('maintenance-modal')">
-        <div class="modal-content">
+    <!-- ── MAINTENANCE MODAL ──────────────────────────────────────── -->
+    <div id="modal-maint" class="modal" onclick="if(event.target===this)closeModal('modal-maint')">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
             <div class="modal-header">
-                <h2>
-                    <span class="lang-en">🔧 Maintenance Schedule</span>
-                    <span class="lang-fr">🔧 Calendrier d'Entretien</span>
-                </h2>
-                <button class="close-btn" onclick="closeModal('maintenance-modal')">✕</button>
+                <h2>🔧 <span class="lang-en">Maintenance Schedule</span><span class="lang-fr">Calendrier d'Entretien</span></h2>
+                <button class="close-btn" onclick="closeModal('modal-maint')">✕</button>
             </div>
-            <div class="maintenance-card">
-                <h4>
-                    <span class="lang-en">🌡️ Furnace Filter</span>
-                    <span class="lang-fr">🌡️ Filtre de Fournaise</span>
-                </h4>
-                <span class="frequency">
-                    <span class="lang-en">Every 3 months</span>
-                    <span class="lang-fr">Aux 3 mois</span>
-                </span>
-                <p class="lang-en">Replace your furnace filter regularly to maintain air quality and system efficiency.</p>
-                <p class="lang-fr">Remplacez votre filtre de fournaise régulièrement pour maintenir la qualité de l'air.</p>
-                <a href="https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4" class="product-link" target="_blank">
-                    <span class="lang-en">🛒 Buy Filters</span>
-                    <span class="lang-fr">🛒 Acheter Filtres</span>
+
+            <div class="maint-card">
+                <h4>🌡️ <span class="lang-en">Furnace Filter</span><span class="lang-fr">Filtre de Fournaise</span></h4>
+                <span class="maint-badge"><span class="lang-en">Every 3 months</span><span class="lang-fr">Aux 3 mois</span></span>
+                <p>
+                    <span class="lang-en">Replace regularly to maintain air quality and system efficiency.</span>
+                    <span class="lang-fr">Remplacez régulièrement pour maintenir la qualité de l'air et l'efficacité du système.</span>
+                </p>
+                <a href="https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4" class="buy-link" target="_blank">
+                    🛒 <span class="lang-en">Buy Filters</span><span class="lang-fr">Acheter Filtres</span>
                 </a>
             </div>
-            <div class="maintenance-card">
-                <h4>
-                    <span class="lang-en">💧 Humidifier Pad</span>
-                    <span class="lang-fr">💧 Tampon Humidificateur</span>
-                </h4>
-                <span class="frequency">
-                    <span class="lang-en">Annually</span>
-                    <span class="lang-fr">Annuellement</span>
-                </span>
-                <p class="lang-en">Replace at the beginning of each heating season (September/October).</p>
-                <p class="lang-fr">Remplacez au début de chaque saison de chauffage (septembre/octobre).</p>
-                <a href="https://a.co/d/5AEBEDE" class="product-link" target="_blank">
-                    <span class="lang-en">🛒 Buy Pad</span>
-                    <span class="lang-fr">🛒 Acheter Tampon</span>
+
+            <div class="maint-card">
+                <h4>💧 <span class="lang-en">Humidifier Pad</span><span class="lang-fr">Tampon Humidificateur</span></h4>
+                <span class="maint-badge"><span class="lang-en">Annually</span><span class="lang-fr">Annuellement</span></span>
+                <p>
+                    <span class="lang-en">Replace at the start of each heating season (September / October).</span>
+                    <span class="lang-fr">Remplacez au début de chaque saison de chauffage (septembre / octobre).</span>
+                </p>
+                <a href="https://a.co/d/5AEBEDE" class="buy-link" target="_blank">
+                    🛒 <span class="lang-en">Buy Pad</span><span class="lang-fr">Acheter Tampon</span>
                 </a>
             </div>
         </div>
     </div>
 
     <script>
-        // ==================== COLLECTIONS JAVASCRIPT ====================
-        const SCHEDULE = {
-            recyclables: ['2026-01-12', '2026-01-26', '2026-02-09', '2026-02-23', '2026-03-09', '2026-03-23', '2026-04-06', '2026-04-20', '2026-05-04', '2026-05-18', '2026-06-01', '2026-06-15', '2026-06-29', '2026-07-13', '2026-07-27', '2026-08-10', '2026-08-24', '2026-09-07', '2026-09-21', '2026-10-05', '2026-10-19', '2026-11-02', '2026-11-16', '2026-11-30', '2026-12-14', '2026-12-28'],
-            organics: ['2026-01-07', '2026-01-14', '2026-01-21', '2026-01-28', '2026-02-04', '2026-02-11', '2026-02-18', '2026-02-25', '2026-03-04', '2026-03-11', '2026-03-18', '2026-03-25', '2026-04-01', '2026-04-08', '2026-04-15', '2026-04-22', '2026-04-29', '2026-05-06', '2026-05-13', '2026-05-20', '2026-05-27', '2026-06-03', '2026-06-10', '2026-06-17', '2026-06-24', '2026-07-01', '2026-07-08', '2026-07-15', '2026-07-22', '2026-07-29', '2026-08-05', '2026-08-12', '2026-08-19', '2026-08-26', '2026-09-02', '2026-09-09', '2026-09-16', '2026-09-23', '2026-09-30', '2026-10-07', '2026-10-14', '2026-10-21', '2026-10-28', '2026-11-04', '2026-11-11', '2026-11-18', '2026-11-25', '2026-12-02', '2026-12-09', '2026-12-16', '2026-12-23', '2026-12-30'],
-            garbage: ['2026-01-02', '2026-01-15', '2026-01-29', '2026-02-12', '2026-02-26', '2026-03-12', '2026-03-26', '2026-04-09', '2026-04-23', '2026-05-07', '2026-05-21', '2026-06-04', '2026-06-18', '2026-07-02', '2026-07-16', '2026-07-30', '2026-08-13', '2026-08-27', '2026-09-10', '2026-09-24', '2026-10-08', '2026-10-22', '2026-11-05', '2026-11-19', '2026-12-03', '2026-12-17', '2026-12-31'],
-            bulkyItems: ['2026-02-19','2026-03-19','2026-04-16', '2026-05-21','2026-06-18', '2026-07-16','2026-08-20','2026-09-17','2026-10-15', '2026-11-19','2026-12-17'],
-            leaves: ['2026-05-06', '2026-05-20', '2026-06-03', '2026-06-17', '2026-07-01', '2026-07-15', '2026-07-29', '2026-08-12', '2026-08-26', '2026-09-09', '2026-09-23', '2026-10-07', '2026-10-21', '2026-11-04', '2026-11-11', '2026-11-18'],
-            cityMeeting: ['2026-01-20', '2026-02-10', '2026-03-10', '2026-04-14', '2026-05-12', '2026-06-09', '2026-07-14', '2026-08-11', '2026-09-08', '2026-10-13', '2026-11-10', '2026-12-08']
-        };
+    // ── DATA ──────────────────────────────────────────────────────────
+    const SCHEDULE = {
+        recyclables: ['2026-01-12','2026-01-26','2026-02-09','2026-02-23','2026-03-09','2026-03-23','2026-04-06','2026-04-20','2026-05-04','2026-05-18','2026-06-01','2026-06-15','2026-06-29','2026-07-13','2026-07-27','2026-08-10','2026-08-24','2026-09-07','2026-09-21','2026-10-05','2026-10-19','2026-11-02','2026-11-16','2026-11-30','2026-12-14','2026-12-28'],
+        organics:    ['2026-01-07','2026-01-14','2026-01-21','2026-01-28','2026-02-04','2026-02-11','2026-02-18','2026-02-25','2026-03-04','2026-03-11','2026-03-18','2026-03-25','2026-04-01','2026-04-08','2026-04-15','2026-04-22','2026-04-29','2026-05-06','2026-05-13','2026-05-20','2026-05-27','2026-06-03','2026-06-10','2026-06-17','2026-06-24','2026-07-01','2026-07-08','2026-07-15','2026-07-22','2026-07-29','2026-08-05','2026-08-12','2026-08-19','2026-08-26','2026-09-02','2026-09-09','2026-09-16','2026-09-23','2026-09-30','2026-10-07','2026-10-14','2026-10-21','2026-10-28','2026-11-04','2026-11-11','2026-11-18','2026-11-25','2026-12-02','2026-12-09','2026-12-16','2026-12-23','2026-12-30'],
+        garbage:     ['2026-01-02','2026-01-15','2026-01-29','2026-02-12','2026-02-26','2026-03-12','2026-03-26','2026-04-09','2026-04-23','2026-05-07','2026-05-21','2026-06-04','2026-06-18','2026-07-02','2026-07-16','2026-07-30','2026-08-13','2026-08-27','2026-09-10','2026-09-24','2026-10-08','2026-10-22','2026-11-05','2026-11-19','2026-12-03','2026-12-17','2026-12-31'],
+        bulkyItems:  ['2026-02-19','2026-03-19','2026-04-16','2026-05-21','2026-06-18','2026-07-16','2026-08-20','2026-09-17','2026-10-15','2026-11-19','2026-12-17'],
+        leaves:      ['2026-05-06','2026-05-20','2026-06-03','2026-06-17','2026-07-01','2026-07-15','2026-07-29','2026-08-12','2026-08-26','2026-09-09','2026-09-23','2026-10-07','2026-10-21','2026-11-04','2026-11-11','2026-11-18'],
+        cityMeeting: ['2026-01-20','2026-02-10','2026-03-10','2026-04-14','2026-05-12','2026-06-09','2026-07-14','2026-08-11','2026-09-08','2026-10-13','2026-11-10','2026-12-08']
+    };
 
-        const TRANSLATIONS = {
-            fr: {
-                title: '📅 Collectes NDIP 2026',
-                today: "Aujourd'hui",
-                noPickupToday: "Aucune collecte aujourd'hui",
-                nextPickups: 'Prochaines collectes',
-                recyclables: 'Recyclage',
-                organics: 'Compost',
-                garbage: 'Ordures',
-                bulkyItems: 'Rebuts volumineux',
-                leaves: 'Résidus verts',
-                cityMeeting: 'Séance du conseil',
-                tomorrow: 'Demain',
-                inDays: 'dans {n} jours',
-                inDay: 'dans 1 jour',
-                today_lower: "aujourd'hui"
-            },
-            en: {
-                title: '📅 NDIP Collections 2026',
-                today: 'Today',
-                noPickupToday: 'No pickup today',
-                nextPickups: 'Next Pickups',
-                recyclables: 'Recycling',
-                organics: 'Compost',
-                garbage: 'Garbage',
-                bulkyItems: 'Bulky Items',
-                leaves: 'Leaves',
-                cityMeeting: 'City Meeting',
-                tomorrow: 'Tomorrow',
-                inDays: 'in {n} days',
-                inDay: 'in 1 day',
-                today_lower: 'today'
-            }
-        };
+    const ICONS = { recyclables:'♻️', organics:'🌱', garbage:'🗑️', bulkyItems:'🛋️', leaves:'🍂', cityMeeting:'🏛️' };
 
-        const ICONS = {
-            recyclables: '♻️',
-            organics: '🌱',
-            garbage: '🗑️',
-            bulkyItems: '🛋️',
-            leaves: '🍂',
-            cityMeeting: '🏛️'
-        };
-
-        let currentLang = 'fr';
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'fr' ? 'en' : 'fr';
-            document.body.classList.toggle('french', currentLang === 'fr');
-            document.documentElement.lang = currentLang;
-            localStorage.setItem('preferred-language', currentLang);
-            renderCollections();
+    const LABELS = {
+        fr: {
+            recyclables:'Recyclage', organics:'Compost', garbage:'Ordures',
+            bulkyItems:'Rebuts volumineux', leaves:'Résidus verts', cityMeeting:'Séance du conseil',
+            today:"Aujourd'hui", noPickup:"Aucune collecte — bonne journée 🌿",
+            next:'Prochaines collectes',
+            t0:"auj.", t1:"demain", tn:"dans {n} j"
+        },
+        en: {
+            recyclables:'Recycling', organics:'Compost', garbage:'Garbage',
+            bulkyItems:'Bulky Items', leaves:'Leaves', cityMeeting:'City Meeting',
+            today:'Today', noPickup:'No pickup today — enjoy your day 🌿',
+            next:'Next Pickups',
+            t0:'today', t1:'tomorrow', tn:'in {n} days'
         }
+    };
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            
-            document.getElementById('tab-' + tabName).classList.add('active');
-            document.getElementById(tabName + '-content').classList.add('active');
-            
-            localStorage.setItem('active-tab', tabName);
-        }
+    // ── STATE ─────────────────────────────────────────────────────────
+    let lang = 'fr';
 
-        function t(key) {
-            return TRANSLATIONS[currentLang][key] || key;
-        }
+    const L = k => LABELS[lang][k] || k;
 
-        function formatDate(dateStr, lang) {
-            const date = new Date(dateStr + 'T12:00:00');
-            const options = { weekday: 'short', month: 'short', day: 'numeric' };
-            return date.toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA', options);
-        }
+    // ── DATE HELPERS ──────────────────────────────────────────────────
+    function todayISO() {
+        const d = new Date();
+        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
 
-        function getCurrentDate() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            return now.toLocaleDateString(currentLang === 'fr' ? 'fr-CA' : 'en-CA', options);
-        }
+    function daysFrom(iso) {
+        return Math.round((new Date(iso+'T12:00:00') - new Date(todayISO()+'T12:00:00')) / 86400000);
+    }
 
-        function getTodayString() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
+    function fmtDate(iso) {
+        return new Date(iso+'T12:00:00').toLocaleDateString(lang==='fr'?'fr-CA':'en-CA',
+            { weekday:'short', month:'short', day:'numeric' });
+    }
 
-        function getDaysUntil(dateStr) {
-            const today = new Date(getTodayString() + 'T12:00:00');
-            const target = new Date(dateStr + 'T12:00:00');
-            const diffTime = target - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays;
-        }
+    function countdownTxt(days) {
+        if (days === 0) return L('t0');
+        if (days === 1) return L('t1');
+        return L('tn').replace('{n}', days);
+    }
 
-        function getCountdownText(days) {
-            if (days === 0) return t('today_lower');
-            if (days === 1) return t('tomorrow');
-            return t('inDays').replace('{n}', days);
-        }
+    // ── RENDER COLLECTIONS ────────────────────────────────────────────
+    function renderCollections() {
+        document.getElementById('date-line').textContent =
+            new Date().toLocaleDateString(lang==='fr'?'fr-CA':'en-CA',
+                { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-        function getNextDate(dates) {
-            const today = getTodayString();
-            const futureDates = dates.filter(d => d >= today).sort();
-            return futureDates[0] || null;
-        }
+        const today = todayISO();
+        const types = Object.keys(SCHEDULE);
 
-        function getTodayPickups() {
-            const today = getTodayString();
-            const pickups = [];
-            Object.keys(SCHEDULE).forEach(type => {
-                if (SCHEDULE[type].includes(today)) {
-                    pickups.push({
-                        type,
-                        name: t(type),
-                        icon: ICONS[type]
-                    });
-                }
+        // Pickups today
+        const todayItems = types.filter(t => SCHEDULE[t].includes(today));
+
+        // Next pickups (include today, sorted, max 8)
+        const upcoming = types
+            .map(type => {
+                const next = SCHEDULE[type].filter(d => d >= today).sort()[0];
+                if (!next) return null;
+                return { type, days: daysFrom(next), date: next };
+            })
+            .filter(Boolean)
+            .sort((a, b) => a.days - b.days)
+            .slice(0, 8);
+
+        // Today card
+        let html = `
+            <div class="today-card ${todayItems.length ? 'busy' : 'free'}">
+                <div class="today-label">${L('today')}</div>
+        `;
+        if (!todayItems.length) {
+            html += `<div class="today-quiet">${L('noPickup')}</div>`;
+        } else {
+            html += `<div class="chip-row">`;
+            todayItems.forEach(type => {
+                html += `<div class="pickup-chip">${ICONS[type]} ${L(type)}</div>`;
             });
-            return pickups;
+            html += `</div>`;
         }
+        html += `</div>`;
 
-        function getNextPickups() {
-            const pickups = [];
-            Object.keys(SCHEDULE).forEach(type => {
-                if (SCHEDULE[type].length === 0) return;
-                const nextDate = getNextDate(SCHEDULE[type]);
-                if (nextDate) {
-                    const daysUntil = getDaysUntil(nextDate);
-                    pickups.push({
-                        type,
-                        name: t(type),
-                        icon: ICONS[type],
-                        date: nextDate,
-                        daysUntil,
-                        formattedDate: formatDate(nextDate, currentLang),
-                        countdown: getCountdownText(daysUntil)
-                    });
-                }
-            });
-            return pickups.sort((a, b) => a.daysUntil - b.daysUntil);
-        }
-
-        function renderCollections() {
-            document.getElementById('current-date').textContent = getCurrentDate();
-            const todayPickups = getTodayPickups();
-            const nextPickups = getNextPickups();
-
-            let html = `
-                <div class="today-section">
-                    <h2><span class="icon">🔔</span> ${t('today')}</h2>
-            `;
-
-            if (todayPickups.length === 0) {
-                html += `<div class="no-pickup">${t('noPickupToday')}</div>`;
-            } else {
-                todayPickups.forEach(pickup => {
-                    html += `<div class="pickup-item">${pickup.icon} ${pickup.name}</div>`;
-                });
-            }
-
-            html += `</div><div class="next-section"><h2>${t('nextPickups')}</h2>`;
-
-            nextPickups.forEach(pickup => {
-                html += `
-                    <div class="next-item ${pickup.type}">
-                        <div class="next-item-left">
-                            <div class="next-item-icon">${pickup.icon}</div>
-                            <div class="next-item-text">${pickup.name}</div>
-                        </div>
-                        <div class="next-item-right">
-                            <div class="next-item-date">${pickup.formattedDate}</div>
-                            <div class="next-item-countdown">${pickup.countdown}</div>
+        // Next pickups list
+        html += `<div class="sec-label">${L('next')}</div><div class="pickup-list">`;
+        upcoming.forEach(({ type, days, date }) => {
+            const badgeClass = days === 0 ? 't' : days === 1 ? 'tm' : days <= 4 ? 'sn' : '';
+            const badgeTxt   = days <= 4 ? countdownTxt(days) : '';
+            html += `
+                <div class="pickup-row">
+                    <div class="pi-icon ${type}">${ICONS[type]}</div>
+                    <div class="pi-info">
+                        <div class="pi-name">${L(type)}</div>
+                        <div class="pi-meta">
+                            <span class="pi-date">${fmtDate(date)}</span>
+                            ${badgeClass ? `<span class="badge ${badgeClass}">${badgeTxt}</span>` : ''}
                         </div>
                     </div>
-                `;
+                    <div class="pi-countdown">${countdownTxt(days)}</div>
+                </div>`;
+        });
+        html += `</div>`;
+
+        document.getElementById('coll-render').innerHTML = html;
+    }
+
+    // ── LANGUAGE ──────────────────────────────────────────────────────
+    function toggleLang() {
+        lang = lang === 'fr' ? 'en' : 'fr';
+        document.body.classList.toggle('french', lang === 'fr');
+        document.documentElement.lang = lang;
+        localStorage.setItem('mcnabb-lang', lang);
+        renderCollections();
+    }
+
+    // ── TABS ──────────────────────────────────────────────────────────
+    function switchTab(name) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.getElementById('tab-' + name).classList.add('active');
+        document.getElementById(name + '-content').classList.add('active');
+        localStorage.setItem('mcnabb-tab', name);
+    }
+
+    // ── HVAC: season cards ────────────────────────────────────────────
+    // NOTE: pass `this` from onclick so we don't rely on deprecated window.event
+    function showSettings(panelId, cardEl) {
+        document.querySelectorAll('.season-card').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+
+        cardEl.classList.add('selected');
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+        panel.classList.add('active');
+
+        // Smooth-scroll panel into view below sticky header
+        setTimeout(() => {
+            const hh = document.querySelector('.header').offsetHeight;
+            const top = panel.getBoundingClientRect().top + window.pageYOffset - hh - 14;
+            window.scrollTo({ top, behavior: 'smooth' });
+        }, 80);
+    }
+
+    // ── EDUCATIONAL ACCORDION ─────────────────────────────────────────
+    function toggleEdu(btn) {
+        btn.classList.toggle('open');
+        btn.nextElementSibling.classList.toggle('open');
+    }
+
+    // ── MODAL ─────────────────────────────────────────────────────────
+    function showModal(id) {
+        const m = document.getElementById(id);
+        if (m) { m.classList.add('active'); document.body.style.overflow = 'hidden'; }
+    }
+
+    function closeModal(id) {
+        const m = document.getElementById(id);
+        if (m) { m.classList.remove('active'); document.body.style.overflow = ''; }
+    }
+
+    // ── INIT ──────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        // Restore language preference (default: French)
+        const savedLang = localStorage.getItem('mcnabb-lang');
+        if (savedLang) {
+            lang = savedLang;
+            document.body.classList.toggle('french', lang === 'fr');
+            document.documentElement.lang = lang;
+        }
+        // body already has class="french" in HTML for instant correct render
+
+        // Restore tab
+        const savedTab = localStorage.getItem('mcnabb-tab');
+        if (savedTab) switchTab(savedTab);
+
+        renderCollections();
+        setInterval(renderCollections, 60000); // refresh every minute
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.modal.active').forEach(m => {
+                m.classList.remove('active');
+                document.body.style.overflow = '';
             });
-
-            html += `</div>`;
-            document.getElementById('collections-app-content').innerHTML = html;
         }
-
-        // ==================== HVAC JAVASCRIPT ====================
-        function showSettings(season) {
-            document.querySelectorAll('.temp-card').forEach(card => card.classList.remove('active'));
-            document.querySelectorAll('.settings-panel').forEach(panel => panel.classList.remove('active'));
-            
-            const panel = document.getElementById(season);
-            if (panel) {
-                panel.classList.add('active');
-                event.currentTarget.classList.add('active');
-                setTimeout(() => {
-                    const headerHeight = document.querySelector('.header').offsetHeight;
-                    const panelTop = panel.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-                    window.scrollTo({ top: panelTop, behavior: 'smooth' });
-                }, 100);
-            }
-        }
-
-        function showModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // ==================== INITIALIZATION ====================
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('preferred-language');
-            if (savedLang) {
-                currentLang = savedLang;
-                document.body.classList.toggle('french', currentLang === 'fr');
-                document.documentElement.lang = currentLang;
-            }
-            
-            const savedTab = localStorage.getItem('active-tab');
-            if (savedTab && savedTab !== 'collections') {
-                switchTab(savedTab);
-            }
-            
-            renderCollections();
-            setInterval(renderCollections, 60000);
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.modal.active').forEach(modal => {
-                    modal.classList.remove('active');
-                });
-                document.body.style.overflow = '';
-            }
-        });
+    });
     </script>
 </body>
 </html>
