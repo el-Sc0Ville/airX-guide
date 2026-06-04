@@ -5,1050 +5,1255 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="McNabb Home Tools">
-    <meta name="theme-color" content="#667eea">
-    <title>🏠 McNabb Home Tools 2026</title>
+    <meta name="apple-mobile-web-app-title" content="McNabb">
+    <meta name="theme-color" content="#5c6bc0">
+    <title>🏠 McNabb · NDIP 2026</title>
     <style>
-        /* ── RESET & TOKENS ───────────────────────────────────────────── */
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    /* ── RESET & TOKENS ───────────────────────────────────────────── */
+    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
-        :root {
-            --primary:      #667eea;
-            --primary-dk:   #5568d3;
-            --success:      #34C759;
-            --warning:      #FF9500;
-            --danger:       #FF3B30;
-            --bg:           linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --shadow-sm:    0 2px 12px rgba(0,0,0,0.07);
-            --shadow-md:    0 6px 24px rgba(0,0,0,0.11);
-            --r:            16px;
-            --r-lg:         20px;
-        }
+    :root {
+        --primary:    #5c6bc0;
+        --primary-dk: #4a55a2;
+        --success:    #2e7d32;
+        --success-lt: #43a047;
+        --danger:     #c62828;
+        --danger-lt:  #ef5350;
+        --warn:       #e65100;
+        --info:       #01579b;
+        --bg:         linear-gradient(160deg, #5c6bc0 0%, #7b3fa0 100%);
+        --shadow-sm:  0 2px 12px rgba(0,0,0,.07);
+        --shadow-md:  0 6px 24px rgba(0,0,0,.12);
+        --r:          14px;
+        --r-lg:       20px;
+        --nav-h:      58px;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
-            color: #2c3e50;
-            -webkit-font-smoothing: antialiased;
-        }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+        background: var(--bg);
+        min-height: 100vh;
+        color: #1a1a2e;
+        -webkit-font-smoothing: antialiased;
+    }
 
-        /* ── LANGUAGE SYSTEM ─────────────────────────────────────────── */
-        /* Default: show EN, hide FR */
-        .lang-fr { display: none; }
-        body.french .lang-en { display: none; }
-        body.french .lang-fr { display: initial; } /* respects block/inline per element */
+    /* ── LANGUAGE ──────────────────────────────────────────────────── */
+    .lang-fr { display: none; }
+    body.french .lang-en { display: none; }
+    body.french .lang-fr { display: initial; }
 
-        /* ── HEADER ──────────────────────────────────────────────────── */
-        .header {
-            background: rgba(255,255,255,0.97);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            padding: max(env(safe-area-inset-top), 14px) 16px 0;
-            box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.08);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    /* ── HEADER ────────────────────────────────────────────────────── */
+    .app-header {
+        position: sticky; top: 0; z-index: 200;
+        background: rgba(255,255,255,.97);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        padding: max(env(safe-area-inset-top),13px) 16px 11px;
+        display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.06);
+    }
 
-        .header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
+    .brand { display: flex; align-items: center; gap: 10px; }
 
-        .header h1 {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: #1d1d1f;
-            letter-spacing: -0.4px;
-            line-height: 1.2;
-        }
+    .brand-icon {
+        width: 36px; height: 36px;
+        background: var(--bg);
+        border-radius: 9px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.25em;
+        box-shadow: 0 2px 8px rgba(92,107,192,.35);
+        flex-shrink: 0;
+    }
 
-        .header-sub {
-            font-size: 0.78em;
-            color: #86868b;
-            font-weight: 500;
-            margin-top: 2px;
-        }
+    .brand-name { font-size: 1.08em; font-weight: 700; color: #1d1d1f; letter-spacing: -.3px; }
+    .brand-sub  { font-size: .7em; color: #86868b; font-weight: 500; margin-top: 1px; }
 
-        .lang-btn {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dk));
-            color: white;
-            border: none;
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform .15s, opacity .15s;
-            box-shadow: 0 2px 8px rgba(102,126,234,.35);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-        .lang-btn:active { transform: scale(.93); opacity: .9; }
+    .lang-btn {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dk));
+        color: white; border: none;
+        padding: 7px 13px; border-radius: 20px;
+        font-size: .78em; font-weight: 700;
+        cursor: pointer; white-space: nowrap; flex-shrink: 0;
+        box-shadow: 0 2px 8px rgba(92,107,192,.35);
+        transition: transform .15s, opacity .15s;
+    }
+    .lang-btn:active { transform: scale(.93); opacity: .9; }
 
-        /* ── TAB NAV ─────────────────────────────────────────────────── */
-        .tab-nav {
-            display: flex;
-            background: #f2f2f7;
-            margin: 0 -16px;
-        }
+    /* ── BOTTOM NAV ────────────────────────────────────────────────── */
+    .bottom-nav {
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+        background: rgba(255,255,255,.97);
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        border-top: 1px solid rgba(0,0,0,.09);
+        display: flex;
+        padding-bottom: env(safe-area-inset-bottom);
+        box-shadow: 0 -4px 20px rgba(0,0,0,.08);
+    }
 
-        .tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: 13px 8px;
-            font-size: .9em;
-            font-weight: 600;
-            color: #86868b;
-            cursor: pointer;
-            transition: all .2s;
-            border-bottom: 2.5px solid transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .tab-btn .ti { font-size: 1.1em; }
-        .tab-btn.active { background: white; color: var(--primary); border-bottom-color: var(--primary); }
-        .tab-btn:active { opacity: .7; }
+    .nav-btn {
+        flex: 1; background: none; border: none;
+        padding: 9px 4px 7px;
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+        cursor: pointer; color: #8e8e93;
+        font-size: .67em; font-weight: 600;
+        transition: color .2s;
+        position: relative;
+    }
+    .nav-icon { font-size: 1.5em; transition: transform .2s; }
+    .nav-btn.active { color: var(--primary); }
+    .nav-btn.active .nav-icon { transform: translateY(-1px); }
+    .nav-btn:active .nav-icon { transform: scale(.88); }
 
-        /* ── LAYOUT ──────────────────────────────────────────────────── */
-        .container { max-width: 640px; margin: 0 auto; }
+    .nav-dot {
+        width: 5px; height: 5px; border-radius: 50%;
+        position: absolute; top: 7px; right: calc(50% - 19px);
+        display: none; box-shadow: 0 0 0 1.5px white;
+    }
+    .nav-btn.has-green .nav-dot { display: block; background: #43a047; }
+    .nav-btn.has-blue  .nav-dot { display: block; background: #039be5; }
 
-        .tab-content { display: none; animation: fadeUp .28s ease both; }
-        .tab-content.active { display: block; }
+    /* ── LAYOUT ────────────────────────────────────────────────────── */
+    .page { display: none; animation: fadeUp .27s ease both; }
+    .page.active { display: block; }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 
-        .pad {
-            padding: 20px 16px;
-            padding-bottom: max(env(safe-area-inset-bottom), 28px);
-        }
+    .pad {
+        padding: 16px 15px;
+        padding-bottom: calc(var(--nav-h) + max(env(safe-area-inset-bottom), 14px) + 12px);
+        max-width: 640px; margin: 0 auto;
+    }
 
-        /* ── COLLECTIONS ─────────────────────────────────────────────── */
-        .date-line {
-            text-align: center;
-            font-size: .83em;
-            color: rgba(255,255,255,.82);
-            font-weight: 500;
-            margin-bottom: 14px;
-            letter-spacing: .15px;
-        }
+    /* ── COMMON ────────────────────────────────────────────────────── */
+    .date-line {
+        text-align: center; font-size: .81em;
+        color: rgba(255,255,255,.78); font-weight: 500;
+        margin-bottom: 12px; letter-spacing: .1px;
+    }
 
-        /* Today card — dynamic color via JS class */
-        .today-card {
-            border-radius: var(--r-lg);
-            padding: 20px;
-            margin-bottom: 16px;
-            color: white;
-            box-shadow: var(--shadow-md);
-        }
-        .today-card.busy { background: linear-gradient(135deg, #f97316, #ef4444); }
-        .today-card.free { background: linear-gradient(135deg, #10b981, #059669); }
+    .sec-label {
+        font-size: .7em; font-weight: 700;
+        text-transform: uppercase; letter-spacing: .9px;
+        color: rgba(255,255,255,.65);
+        margin: 14px 0 8px 2px;
+    }
 
-        .today-label {
-            font-size: .75em;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            opacity: .8;
-            margin-bottom: 10px;
-        }
+    /* Smart tip banner */
+    .smart-tip {
+        border-radius: var(--r); padding: 12px 13px;
+        display: flex; align-items: flex-start; gap: 10px;
+        margin-bottom: 13px; font-size: .85em; line-height: 1.55;
+        border-left: 4px solid; box-shadow: var(--shadow-sm);
+    }
+    .smart-tip.green { background: linear-gradient(135deg,#e8f5e9,#f1f8e9); border-color: var(--success-lt); color: #1b5e20; }
+    .smart-tip.blue  { background: linear-gradient(135deg,#e3f2fd,#e1f5fe); border-color: #039be5; color: #01579b; }
+    .smart-tip.orange{ background: linear-gradient(135deg,#fff3e0,#fff8e1); border-color: var(--warn); color: #bf360c; }
+    .smart-tip.red   { background: linear-gradient(135deg,#ffebee,#fce4ec); border-color: var(--danger-lt); color: #b71c1c; }
+    .st-icon { font-size: 1.35em; flex-shrink: 0; line-height: 1; }
+    .st-text  { }
+    .st-title { font-weight: 700; margin-bottom: 2px; font-size: 1em; }
+    .st-detail{ font-size: .92em; opacity: .85; }
 
-        .today-quiet {
-            font-size: 1.05em;
-            font-weight: 600;
-            opacity: .95;
-        }
+    /* Alerts */
+    .alert {
+        padding: 12px 13px; border-radius: 11px; border-left: 4px solid;
+        margin: 10px 0 3px; font-size: .84em; line-height: 1.6;
+    }
+    .alert.warn { background: linear-gradient(135deg,#ffebee,#ffcdd2); border-color: var(--danger-lt); color: var(--danger); }
+    .alert.info { background: linear-gradient(135deg,#e3f2fd,#bbdefb); border-color: #039be5; color: var(--info); }
 
-        .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    /* Buttons */
+    .btn {
+        display: flex; align-items: center; justify-content: center; gap: 7px;
+        border: none; padding: 14px; border-radius: 13px;
+        font-size: .94em; font-weight: 600; width: 100%;
+        cursor: pointer; transition: transform .15s, opacity .15s; margin-bottom: 11px;
+    }
+    .btn:active { transform: scale(.98); opacity: .9; }
+    .btn-green { background: linear-gradient(135deg,var(--success),var(--success-lt)); color: white; box-shadow: 0 4px 14px rgba(46,125,50,.3); }
+    .btn-purple{ background: linear-gradient(135deg,var(--primary),var(--primary-dk)); color: white; box-shadow: 0 4px 14px rgba(92,107,192,.3); }
 
-        .pickup-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: rgba(255,255,255,.22);
-            padding: 9px 14px;
-            border-radius: 10px;
-            font-size: .98em;
-            font-weight: 600;
-        }
+    /* Add to home strip */
+    .add-home {
+        background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.2);
+        border-radius: var(--r); padding: 11px 14px;
+        text-align: center; margin-bottom: 12px; color: white;
+    }
+    .add-home strong { font-size: .84em; display: block; margin-bottom: 2px; }
+    .add-home span   { font-size: .74em; opacity: .82; line-height: 1.5; }
 
-        /* Section label above list */
-        .sec-label {
-            font-size: .72em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .9px;
-            color: rgba(255,255,255,.68);
-            margin-bottom: 8px;
-            padding-left: 2px;
-        }
+    /* Accordion */
+    .edu-card { background: white; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 12px; }
+    .edu-toggle {
+        width: 100%; background: none; border: none;
+        padding: 15px 16px;
+        display: flex; align-items: center; justify-content: space-between;
+        cursor: pointer; font-size: .94em; font-weight: 700; color: #1d1d1f;
+    }
+    .edu-toggle:active { background: #f9f9fb; }
+    .edu-tl { display: flex; align-items: center; gap: 7px; }
+    .edu-ch { font-size: .68em; color: #86868b; transition: transform .3s; }
+    .edu-toggle.open .edu-ch { transform: rotate(180deg); }
+    .edu-body { display: none; padding: 0 16px 16px; }
+    .edu-body.open { display: block; animation: fadeUp .22s ease; }
 
-        /* Next pickups list */
-        .pickup-list {
-            background: white;
-            border-radius: var(--r-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
+    /* ── COLLECTIONS ───────────────────────────────────────────────── */
+    .today-card {
+        border-radius: var(--r-lg); padding: 19px;
+        margin-bottom: 13px; color: white; box-shadow: var(--shadow-md);
+    }
+    .today-card.busy { background: linear-gradient(135deg,#e53935,#f4511e); }
+    .today-card.free { background: linear-gradient(135deg,#2e7d32,#43a047); }
 
-        .pickup-row {
-            display: flex;
-            align-items: center;
-            padding: 13px 15px;
-            border-bottom: 1px solid #f0f0f5;
-            transition: background .12s;
-        }
-        .pickup-row:last-child { border-bottom: none; }
-        .pickup-row:active { background: #f9f9fb; }
+    .today-lbl {
+        font-size: .7em; font-weight: 800; text-transform: uppercase;
+        letter-spacing: 1px; opacity: .78; margin-bottom: 9px;
+    }
+    .today-msg { font-size: .98em; font-weight: 600; opacity: .94; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+    .pickup-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(255,255,255,.22); padding: 7px 12px;
+        border-radius: 9px; font-size: .92em; font-weight: 600;
+    }
 
-        .pi-icon {
-            width: 42px; height: 42px;
-            border-radius: 11px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.35em;
-            flex-shrink: 0;
-            margin-right: 12px;
-        }
-        .pi-icon.recyclables { background: linear-gradient(135deg,#e0f2fe,#bae6fd); }
-        .pi-icon.organics    { background: linear-gradient(135deg,#dcfce7,#bbf7d0); }
-        .pi-icon.garbage     { background: linear-gradient(135deg,#fce7f3,#fbcfe8); }
-        .pi-icon.bulkyItems  { background: linear-gradient(135deg,#fff7ed,#fed7aa); }
-        .pi-icon.leaves      { background: linear-gradient(135deg,#fef9c3,#fde68a); }
-        .pi-icon.cityMeeting { background: linear-gradient(135deg,#ede9fe,#c4b5fd); }
+    .pickup-list { background: white; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .pickup-row {
+        display: flex; align-items: center; padding: 12px 13px;
+        border-bottom: 1px solid #f0f0f5; transition: background .12s;
+    }
+    .pickup-row:last-child { border-bottom: none; }
+    .pickup-row:active { background: #f9f9fb; }
 
-        .pi-info { flex: 1; min-width: 0; }
+    .pi-icon {
+        width: 40px; height: 40px; border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.25em; flex-shrink: 0; margin-right: 11px;
+    }
+    .pi-icon.recyclables { background: linear-gradient(135deg,#e3f2fd,#90caf9); }
+    .pi-icon.organics    { background: linear-gradient(135deg,#e8f5e9,#a5d6a7); }
+    .pi-icon.garbage     { background: linear-gradient(135deg,#fce4ec,#f48fb1); }
+    .pi-icon.bulkyItems  { background: linear-gradient(135deg,#fff3e0,#ffcc80); }
+    .pi-icon.leaves      { background: linear-gradient(135deg,#f9fbe7,#dce775); }
+    .pi-icon.cityMeeting { background: linear-gradient(135deg,#ede7f6,#b39ddb); }
 
-        .pi-name {
-            font-size: .95em;
-            font-weight: 600;
-            color: #1d1d1f;
-            margin-bottom: 2px;
-        }
+    .pi-info { flex: 1; min-width: 0; }
+    .pi-name { font-size: .91em; font-weight: 600; color: #1d1d1f; margin-bottom: 2px; }
+    .pi-meta { display: flex; align-items: center; gap: 6px; }
+    .pi-date { font-size: .77em; color: #6e6e73; }
 
-        .pi-meta { display: flex; align-items: center; gap: 7px; }
+    .badge { font-size: .64em; font-weight: 700; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; }
+    .badge.t  { background: #ffebee; color: #c62828; }
+    .badge.tm { background: #fff3e0; color: #e65100; }
+    .badge.sn { background: #fffde7; color: #f57f17; }
 
-        .pi-date { font-size: .8em; color: #6e6e73; }
+    .pi-cd { font-size: .79em; font-weight: 600; color: #86868b; text-align: right; min-width: 50px; padding-left: 8px; }
 
-        .badge {
-            font-size: .68em;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: .2px;
-            white-space: nowrap;
-        }
-        .badge.t  { background: #fee2e2; color: #ef4444; }
-        .badge.tm { background: #fff7ed; color: #f97316; }
-        .badge.sn { background: #fefce8; color: #ca8a04; }
+    /* ── WATERING ──────────────────────────────────────────────────── */
+    .water-hero {
+        border-radius: var(--r-lg); padding: 20px;
+        margin-bottom: 13px; color: white; box-shadow: var(--shadow-md);
+        display: flex; align-items: center; gap: 15px;
+    }
+    .water-hero.open    { background: linear-gradient(135deg,#1b5e20,#2e7d32); }
+    .water-hero.tonight { background: linear-gradient(135deg,#0d47a1,#1565c0); }
+    .water-hero.closed  { background: linear-gradient(135deg,#b71c1c,#c62828); }
 
-        .pi-countdown {
-            font-size: .83em;
-            font-weight: 600;
-            color: #86868b;
-            text-align: right;
-            min-width: 52px;
-            padding-left: 8px;
-        }
+    .wh-icon   { font-size: 2.5em; flex-shrink: 0; }
+    .wh-status { font-size: .67em; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: .75; margin-bottom: 3px; }
+    .wh-title  { font-size: 1.08em; font-weight: 700; line-height: 1.25; margin-bottom: 4px; }
+    .wh-sub    { font-size: .84em; opacity: .87; }
 
-        /* ── HVAC ────────────────────────────────────────────────────── */
-        .season-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
+    .manual-card {
+        background: linear-gradient(135deg,#e8f5e9,#f1f8e9);
+        border-left: 4px solid var(--success-lt);
+        border-radius: var(--r); padding: 13px 14px;
+        display: flex; align-items: center; gap: 11px;
+        margin-bottom: 13px; box-shadow: var(--shadow-sm);
+    }
+    .mc-icon  { font-size: 1.5em; }
+    .mc-title { font-size: .9em; font-weight: 700; color: #1b5e20; }
+    .mc-sub   { font-size: .78em; color: #388e3c; margin-top: 2px; }
 
-        .season-card {
-            border-radius: var(--r-lg);
-            padding: 18px 12px;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            cursor: pointer;
-            transition: all .25s cubic-bezier(.4,0,.2,1);
-            border: 2.5px solid transparent;
-            min-height: 126px;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-        }
-        .season-card:active { transform: scale(.97); }
-        .season-card.selected {
-            border-color: var(--primary);
-            box-shadow: 0 8px 28px rgba(102,126,234,.24);
-            transform: translateY(-2px);
-        }
-        .season-card .sc-emoji { font-size: 2.3em; margin-bottom: 7px; }
-        .season-card .sc-title { font-weight: 700; font-size: .95em; color: #1d1d1f; margin-bottom: 3px; }
-        .season-card .sc-range { font-size: .78em; color: #555; }
+    /* Week grid */
+    .week-grid {
+        display: grid; grid-template-columns: repeat(7,1fr); gap: 4px;
+        background: white; border-radius: var(--r-lg);
+        padding: 12px 9px; box-shadow: var(--shadow-sm); margin-bottom: 13px;
+    }
+    .day-cell  { border-radius: 8px; padding: 8px 2px; text-align: center; }
+    .day-cell.wd  { background: linear-gradient(135deg,#c8e6c9,#a5d6a7); }
+    .day-cell.nwd { background: #f5f5f5; }
+    .day-cell.now { box-shadow: 0 0 0 2.5px var(--primary); }
 
-        .s-deep-winter { background: linear-gradient(135deg,#e3f2fd,#bbdefb); }
-        .s-mild-winter { background: linear-gradient(135deg,#b3e5fc,#81d4fa); }
-        .s-spring-fall { background: linear-gradient(135deg,#c8e6c9,#a5d6a7); }
-        .s-summer      { background: linear-gradient(135deg,#ffe0b2,#ffcc80); }
+    .dc-name  { font-size: .58em; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+    .dc-emoji { font-size: 1em; margin-bottom: 2px; }
+    .dc-time  { font-size: .5em; font-weight: 600; opacity: .85; line-height: 1.3; }
 
-        /* Settings panel */
-        .settings-panel {
-            background: white;
-            border-radius: var(--r-lg);
-            padding: 20px;
-            margin-bottom: 14px;
-            box-shadow: var(--shadow-md);
-            display: none;
-        }
-        .settings-panel.active {
-            display: block;
-            animation: slideDown .3s cubic-bezier(.4,0,.2,1);
-        }
+    .day-cell.wd  .dc-name { color: #1b5e20; }
+    .day-cell.nwd .dc-name { color: #9e9e9e; }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-14px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+    /* ── WEATHER / HVAC ────────────────────────────────────────────── */
+    .weather-widget {
+        border-radius: var(--r-lg); padding: 18px 20px;
+        margin-bottom: 13px; color: white; box-shadow: var(--shadow-md);
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .ww-left   { display: flex; flex-direction: column; align-items: flex-start; }
+    .ww-emoji  { font-size: 1.9em; margin-bottom: 3px; }
+    .ww-temp   { font-size: 2.5em; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+    .ww-feels  { font-size: .75em; opacity: .72; margin-top: 3px; }
 
-        .panel-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            color: #1d1d1f;
-            text-align: center;
-            margin-bottom: 16px;
-        }
+    .ww-right  { text-align: right; flex-shrink: 0; }
+    .ww-place  { font-size: .68em; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; opacity: .7; margin-bottom: 5px; }
+    .ww-cond   { font-size: .85em; font-weight: 600; margin-bottom: 8px; }
+    .ww-suggest{
+        background: rgba(255,255,255,.2);
+        border-radius: 9px; padding: 6px 10px;
+        font-size: .8em; font-weight: 700;
+        text-align: center; white-space: nowrap;
+    }
 
-        .setting-row {
-            background: #f8f8fa;
-            padding: 14px 15px;
-            border-radius: 14px;
-            margin-bottom: 10px;
-            border-left: 4px solid var(--primary);
-        }
-        .setting-row:last-of-type { margin-bottom: 0; }
+    .ww-bg-deep  { background: linear-gradient(135deg,#0d1b2a,#1a237e); }
+    .ww-bg-cold  { background: linear-gradient(135deg,#1a237e,#283593); }
+    .ww-bg-mild  { background: linear-gradient(135deg,#1b5e20,#2e7d32); }
+    .ww-bg-warm  { background: linear-gradient(135deg,#e65100,#bf360c); }
 
-        .s-label {
-            font-size: .74em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            color: #6e6e73;
-            margin-bottom: 4px;
-        }
+    .ww-loading {
+        background: rgba(255,255,255,.15);
+        border-radius: var(--r-lg); padding: 20px;
+        text-align: center; color: rgba(255,255,255,.7);
+        font-size: .9em; margin-bottom: 13px;
+    }
 
-        .s-value {
-            font-size: 1.7em;
-            font-weight: 700;
-            color: var(--primary);
-            line-height: 1.1;
-        }
+    /* Season grid */
+    .season-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;
+    }
+    .season-card {
+        border-radius: var(--r-lg); padding: 16px 10px;
+        text-align: center; box-shadow: var(--shadow-sm);
+        cursor: pointer; transition: all .25s cubic-bezier(.4,0,.2,1);
+        border: 2.5px solid transparent;
+        min-height: 118px; display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+    }
+    .season-card:active { transform: scale(.97); }
+    .season-card.selected {
+        border-color: var(--primary);
+        box-shadow: 0 8px 26px rgba(92,107,192,.25);
+        transform: translateY(-2px);
+    }
+    .sc-emoji { font-size: 2.1em; margin-bottom: 6px; }
+    .sc-title { font-weight: 700; font-size: .9em; color: #1d1d1f; margin-bottom: 3px; }
+    .sc-range { font-size: .74em; color: #555; }
 
-        .s-note {
-            font-size: .8em;
-            color: #86868b;
-            margin-top: 4px;
-        }
+    .s-dw { background: linear-gradient(135deg,#e3f2fd,#bbdefb); }
+    .s-mw { background: linear-gradient(135deg,#e8eaf6,#c5cae9); }
+    .s-sf { background: linear-gradient(135deg,#e8f5e9,#c8e6c9); }
+    .s-su { background: linear-gradient(135deg,#fff8e1,#ffe082); }
 
-        /* Humidity bar */
-        .hbar-wrap { margin-top: 9px; }
-        .hbar {
-            height: 5px;
-            background: #e5e5ea;
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        .hbar-fill {
-            height: 100%;
-            border-radius: 3px;
-            background: linear-gradient(90deg, var(--primary), #a855f7);
-            transition: width .45s ease;
-        }
+    /* Settings panel */
+    .settings-panel {
+        background: white; border-radius: var(--r-lg);
+        padding: 18px; margin-bottom: 12px;
+        box-shadow: var(--shadow-md); display: none;
+    }
+    .settings-panel.active {
+        display: block; animation: slideDown .28s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes slideDown {
+        from { opacity:0; transform:translateY(-12px); }
+        to   { opacity:1; transform:translateY(0); }
+    }
 
-        /* Alert boxes */
-        .alert {
-            padding: 13px 14px;
-            border-radius: 12px;
-            margin: 12px 0 4px;
-            font-size: .87em;
-            line-height: 1.6;
-            border-left: 4px solid;
-        }
-        .alert.warn { background: linear-gradient(135deg,#ffebee,#ffcdd2); border-color: var(--danger); color: #c62828; }
-        .alert.info { background: linear-gradient(135deg,#e8eaf6,#c5cae9); border-color: #5856D6; color: #3f51b5; }
+    .panel-title { font-size: 1.12em; font-weight: 700; color: #1d1d1f; text-align: center; margin-bottom: 13px; }
 
-        /* Buttons */
-        .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            border: none;
-            padding: 15px;
-            border-radius: 14px;
-            font-size: .97em;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            transition: all .18s;
-            margin-bottom: 12px;
-        }
-        .btn:active { transform: scale(.98); opacity: .9; }
-        .btn-blue  { background: linear-gradient(135deg,var(--primary),var(--primary-dk)); color: white; box-shadow: 0 4px 14px rgba(102,126,234,.35); }
-        .btn-green { background: linear-gradient(135deg,var(--success),#28a745); color: white; box-shadow: 0 4px 14px rgba(52,199,89,.3); }
+    .setting-row {
+        background: #f8f8fa; padding: 12px 13px;
+        border-radius: 12px; margin-bottom: 8px;
+        border-left: 4px solid var(--primary);
+    }
+    .s-label {
+        font-size: .71em; font-weight: 700; text-transform: uppercase;
+        letter-spacing: .5px; color: #6e6e73; margin-bottom: 3px;
+    }
+    .s-value { font-size: 1.6em; font-weight: 700; color: var(--primary); line-height: 1.1; }
+    .s-note  { font-size: .78em; color: #86868b; margin-top: 3px; }
 
-        /* Add-to-home strip */
-        .add-home {
-            background: rgba(255,255,255,.14);
-            border: 1px solid rgba(255,255,255,.22);
-            backdrop-filter: blur(8px);
-            border-radius: var(--r);
-            padding: 13px 15px;
-            text-align: center;
-            margin-bottom: 14px;
-            color: white;
-        }
-        .add-home strong { font-size: .88em; display: block; margin-bottom: 3px; }
-        .add-home span   { font-size: .78em; opacity: .85; line-height: 1.5; }
+    .hbar-wrap { margin-top: 7px; }
+    .hbar      { height: 4px; background: #e0e0e0; border-radius: 2px; overflow: hidden; }
+    .hbar-fill {
+        height: 100%; border-radius: 2px;
+        background: linear-gradient(90deg, var(--primary), #7b3fa0);
+        transition: width .4s ease;
+    }
 
-        /* Educational section (collapsible) */
-        .edu-card {
-            background: white;
-            border-radius: var(--r-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
+    /* HVAC educational sub-styles */
+    .golden-rule {
+        background: linear-gradient(135deg,#fffde7,#fff9c4);
+        border-left: 4px solid #f9a825;
+        padding: 12px 13px; border-radius: 11px; margin-bottom: 11px;
+    }
+    .gr-title  { font-size: .88em; font-weight: 700; color: #e65100; margin-bottom: 3px; }
+    .gr-detail { font-size: .82em; color: #bf360c; line-height: 1.5; }
 
-        .edu-toggle {
-            width: 100%; background: none; border: none;
-            padding: 17px 18px;
-            display: flex; align-items: center; justify-content: space-between;
-            cursor: pointer; text-align: left;
-            font-size: .97em; font-weight: 700; color: #1d1d1f;
-        }
-        .edu-toggle:active { background: #f9f9fb; }
-        .edu-toggle-left { display: flex; align-items: center; gap: 8px; }
-        .edu-chevron { font-size: .72em; color: #86868b; transition: transform .3s; }
-        .edu-toggle.open .edu-chevron { transform: rotate(180deg); }
+    .sys-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 11px; }
+    .sys-card { background: #f8f8fa; border-radius: 10px; padding: 11px; }
+    .sys-card.hum { border-top: 3px solid #1976d2; }
+    .sys-card.hrv { border-top: 3px solid #f57c00; }
+    .sys-card h4  { font-size: .83em; font-weight: 700; color: #1d1d1f; margin-bottom: 7px; }
+    .sys-row { font-size: .78em; color: #6e6e73; line-height: 1.6; }
+    .sys-row strong { color: #1d1d1f; }
 
-        .edu-body { display: none; padding: 0 18px 18px; }
-        .edu-body.open { display: block; animation: fadeUp .22s ease; }
+    .dont-box {
+        background: linear-gradient(135deg,#ffebee,#ffcdd2);
+        border-left: 4px solid var(--danger-lt);
+        padding: 12px 13px; border-radius: 11px;
+    }
+    .dont-box h4 { font-size: .85em; font-weight: 700; color: var(--danger); margin-bottom: 7px; }
+    .dont-box ul { margin-left: 16px; }
+    .dont-box li { font-size: .79em; color: var(--danger); line-height: 1.65; }
 
-        .golden-rule {
-            background: linear-gradient(135deg,#fff9e6,#ffe8a1);
-            border-left: 4px solid #ffc107;
-            padding: 13px 14px;
-            border-radius: 12px;
-            margin-bottom: 13px;
-        }
-        .gr-title  { font-size: .93em; font-weight: 700; color: #f57c00; margin-bottom: 4px; }
-        .gr-detail { font-size: .85em; color: #856404; line-height: 1.5; }
+    /* ── MODAL ─────────────────────────────────────────────────────── */
+    .modal {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,.55);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        z-index: 300; align-items: flex-end; justify-content: center;
+    }
+    .modal.active { display: flex; }
 
-        .sys-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 13px;
-        }
+    .modal-sheet {
+        background: white; border-radius: 22px 22px 0 0;
+        padding: 20px 20px max(env(safe-area-inset-bottom),22px);
+        width: 100%; max-width: 640px; max-height: 88vh; overflow-y: auto;
+        box-shadow: 0 -4px 40px rgba(0,0,0,.18);
+        animation: sheetUp .25s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes sheetUp { from { transform:translateY(40px);opacity:0; } to { transform:translateY(0);opacity:1; } }
 
-        .sys-card {
-            background: #f8f8fa;
-            border-radius: 12px;
-            padding: 13px;
-        }
-        .sys-card.hum { border-top: 3px solid #2196F3; }
-        .sys-card.hrv { border-top: 3px solid #FF9800; }
-        .sys-card h4  { font-size: .87em; font-weight: 700; color: #1d1d1f; margin-bottom: 8px; }
-        .sys-row      { font-size: .8em; color: #6e6e73; line-height: 1.6; }
-        .sys-row strong { color: #1d1d1f; }
+    .modal-handle { width: 34px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 15px; }
+    .modal-hdr {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f5;
+    }
+    .modal-hdr h2 { font-size: 1.18em; font-weight: 700; color: #1d1d1f; }
+    .close-btn {
+        background: #f2f2f7; color: #6e6e73; border: none;
+        width: 29px; height: 29px; border-radius: 50%;
+        font-size: .88em; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 700; transition: background .13s;
+    }
+    .close-btn:active { background: #e5e5ea; }
 
-        .dont-box {
-            background: linear-gradient(135deg,#ffebee,#ffcdd2);
-            border-left: 4px solid var(--danger);
-            padding: 13px 14px;
-            border-radius: 12px;
-        }
-        .dont-box h4 { font-size: .88em; font-weight: 700; color: #c62828; margin-bottom: 8px; }
-        .dont-box ul { margin-left: 17px; }
-        .dont-box li { font-size: .81em; color: #c62828; line-height: 1.65; margin-bottom: 2px; }
+    .maint-card {
+        background: #f8f8fa; border-radius: var(--r);
+        padding: 13px; margin-bottom: 10px;
+        border-left: 4px solid var(--success-lt);
+    }
+    .maint-card:last-child { margin-bottom: 0; }
+    .maint-card h4 { font-size: .92em; font-weight: 700; color: #1d1d1f; margin-bottom: 5px; }
+    .maint-badge {
+        background: var(--success); color: white;
+        padding: 3px 9px; border-radius: 20px;
+        font-size: .71em; font-weight: 600; display: inline-block; margin-bottom: 7px;
+    }
+    .maint-card p { font-size: .83em; color: #6e6e73; line-height: 1.5; margin-bottom: 9px; }
+    .buy-link {
+        display: inline-flex; align-items: center; gap: 5px;
+        background: var(--primary); color: white;
+        padding: 7px 13px; border-radius: 9px;
+        text-decoration: none; font-size: .8em; font-weight: 600;
+    }
+    .buy-link:active { opacity: .8; }
 
-        /* ── MODAL (bottom-sheet) ─────────────────────────────────────── */
-        .modal {
-            display: none;
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,.55);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            z-index: 1000;
-            align-items: flex-end;
-            justify-content: center;
-        }
-        .modal.active { display: flex; }
-
-        .modal-sheet {
-            background: white;
-            border-radius: 24px 24px 0 0;
-            padding: 22px 22px max(env(safe-area-inset-bottom),22px);
-            width: 100%;
-            max-width: 640px;
-            max-height: 88vh;
-            overflow-y: auto;
-            box-shadow: 0 -4px 40px rgba(0,0,0,.18);
-            animation: sheetUp .28s cubic-bezier(.4,0,.2,1);
-        }
-
-        @keyframes sheetUp {
-            from { transform: translateY(40px); opacity: 0; }
-            to   { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-handle {
-            width: 38px; height: 4px;
-            background: #ddd;
-            border-radius: 2px;
-            margin: 0 auto 18px;
-        }
-
-        .modal-header {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid #f0f0f5;
-        }
-        .modal-header h2 { font-size: 1.25em; font-weight: 700; color: #1d1d1f; }
-
-        .close-btn {
-            background: #f2f2f7;
-            color: #6e6e73;
-            border: none;
-            width: 30px; height: 30px;
-            border-radius: 50%;
-            font-size: .95em;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700;
-            transition: background .13s;
-        }
-        .close-btn:active { background: #e5e5ea; }
-
-        .maint-card {
-            background: #f8f8fa;
-            border-radius: var(--r);
-            padding: 15px;
-            margin-bottom: 12px;
-            border-left: 4px solid var(--success);
-        }
-        .maint-card:last-child { margin-bottom: 0; }
-        .maint-card h4 { font-size: .97em; font-weight: 700; color: #1d1d1f; margin-bottom: 6px; }
-
-        .maint-badge {
-            background: var(--success);
-            color: white;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: .74em;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 8px;
-        }
-
-        .maint-card p { font-size: .86em; color: #6e6e73; line-height: 1.5; margin-bottom: 10px; }
-
-        .buy-link {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: var(--primary);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: .83em;
-            font-weight: 600;
-            transition: opacity .15s;
-        }
-        .buy-link:active { opacity: .8; }
-
-        /* ── RESPONSIVE ──────────────────────────────────────────────── */
-        @media (min-width: 480px) {
-            .modal { align-items: center; padding: 20px; }
-            .modal-sheet { border-radius: 24px; }
-        }
-
-        @media (max-width: 380px) {
-            .header h1 { font-size: 1.12em; }
-            .tab-btn   { font-size: .82em; padding: 11px 5px; }
-            .sys-grid  { grid-template-columns: 1fr; }
-        }
+    /* ── RESPONSIVE ────────────────────────────────────────────────── */
+    @media (min-width: 480px) {
+        .modal { align-items: center; padding: 20px; }
+        .modal-sheet { border-radius: 22px; }
+    }
+    @media (max-width: 360px) {
+        .pad { padding-left: 11px; padding-right: 11px; }
+        .sys-grid { grid-template-columns: 1fr; }
+        .dc-time { font-size: .46em; }
+    }
     </style>
 </head>
 <body class="french">
 
-    <!-- ── HEADER ─────────────────────────────────────────────────── -->
-    <header class="header">
-        <div class="header-row">
+    <!-- ── HEADER ──────────────────────────────────────────────────── -->
+    <header class="app-header">
+        <div class="brand">
+            <div class="brand-icon">🏠</div>
             <div>
-                <h1>
-                    <span class="lang-en">🏠 McNabb Home Tools</span>
-                    <span class="lang-fr">🏠 Outils McNabb</span>
-                </h1>
-                <div class="header-sub">NDIP 2026</div>
+                <div class="brand-name">McNabb</div>
+                <div class="brand-sub">NDIP · 2026</div>
             </div>
-            <button class="lang-btn" onclick="toggleLang()">
-                <span class="lang-en">🇫🇷 FR</span>
-                <span class="lang-fr">🇨🇦 EN</span>
-            </button>
         </div>
-
-        <nav class="tab-nav">
-            <button class="tab-btn active" id="tab-collections" onclick="switchTab('collections')">
-                <span class="ti">🚛</span>
-                <span class="lang-en">Curbside</span>
-                <span class="lang-fr">Collectes</span>
-            </button>
-            <button class="tab-btn" id="tab-hvac" onclick="switchTab('hvac')">
-                <span class="ti">💨</span>
-                <span class="lang-en">HVAC</span>
-                <span class="lang-fr">Ventilation</span>
-            </button>
-        </nav>
+        <button class="lang-btn" onclick="toggleLang()">
+            <span class="lang-en">🇫🇷 FR</span>
+            <span class="lang-fr">🇨🇦 EN</span>
+        </button>
     </header>
 
-    <div class="container">
+    <!-- ── PAGES ───────────────────────────────────────────────────── -->
 
-        <!-- ── COLLECTIONS TAB ──────────────────────────────────────── -->
-        <div id="collections-content" class="tab-content active">
-            <div class="pad">
-                <div class="date-line" id="date-line"></div>
-                <div id="coll-render">
-                    <p style="text-align:center;color:rgba(255,255,255,.7);padding:40px 0">
-                        ⏳ <span class="lang-en">Loading…</span><span class="lang-fr">Chargement…</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- ── HVAC TAB ──────────────────────────────────────────────── -->
-        <div id="hvac-content" class="tab-content">
-            <div class="pad">
-
-                <div class="sec-label lang-en">Select current outdoor conditions</div>
-                <div class="sec-label lang-fr">Sélectionnez les conditions actuelles</div>
-
-                <div class="season-grid">
-                    <div class="season-card s-deep-winter" onclick="showSettings('panel-deep-winter', this)">
-                        <div class="sc-emoji">🥶</div>
-                        <div class="sc-title"><span class="lang-en">Deep Winter</span><span class="lang-fr">Grand Froid</span></div>
-                        <div class="sc-range"><span class="lang-en">Below -15°C</span><span class="lang-fr">Sous -15°C</span></div>
-                    </div>
-                    <div class="season-card s-mild-winter" onclick="showSettings('panel-mild-winter', this)">
-                        <div class="sc-emoji">❄️</div>
-                        <div class="sc-title"><span class="lang-en">Mild Winter</span><span class="lang-fr">Hiver Doux</span></div>
-                        <div class="sc-range"><span class="lang-en">-15°C to 0°C</span><span class="lang-fr">-15°C à 0°C</span></div>
-                    </div>
-                    <div class="season-card s-spring-fall" onclick="showSettings('panel-spring-fall', this)">
-                        <div class="sc-emoji">🌱🍂</div>
-                        <div class="sc-title"><span class="lang-en">Spring / Fall</span><span class="lang-fr">Printemps/Automne</span></div>
-                        <div class="sc-range"><span class="lang-en">0°C to 15°C</span><span class="lang-fr">0°C à 15°C</span></div>
-                    </div>
-                    <div class="season-card s-summer" onclick="showSettings('panel-summer', this)">
-                        <div class="sc-emoji">☀️</div>
-                        <div class="sc-title"><span class="lang-en">Summer</span><span class="lang-fr">Été</span></div>
-                        <div class="sc-range"><span class="lang-en">Above 15°C</span><span class="lang-fr">Au-dessus de 15°C</span></div>
-                    </div>
-                </div>
-
-                <!-- Deep Winter -->
-                <div id="panel-deep-winter" class="settings-panel">
-                    <div class="panel-title">
-                        <span class="lang-en">🥶 Deep Winter Settings</span>
-                        <span class="lang-fr">🥶 Réglages Grand Froid</span>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                        <div class="s-value">30–35%</div>
-                        <div class="s-note"><span class="lang-en">Mode: Manual</span><span class="lang-fr">Mode: Manuel</span></div>
-                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                        <div class="s-value">40–45%</div>
-                        <div class="s-note"><span class="lang-en">Always 10–15% above humidifier</span><span class="lang-fr">Toujours 10–15% au-dessus de l'humidificateur</span></div>
-                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                        <div class="s-value"><span class="lang-en">🕒 Timer · Speed 1</span><span class="lang-fr">🕒 Minuterie · Vitesse 1</span></div>
-                    </div>
-                    <div class="alert warn">
-                        <strong><span class="lang-en">⚠️ Never go below 30% in winter — protects wood floors &amp; trim.</span><span class="lang-fr">⚠️ Ne pas descendre sous 30% en hiver — protège planchers et boiseries.</span></strong>
-                    </div>
-                </div>
-
-                <!-- Mild Winter -->
-                <div id="panel-mild-winter" class="settings-panel">
-                    <div class="panel-title">
-                        <span class="lang-en">❄️ Mild Winter Settings</span>
-                        <span class="lang-fr">❄️ Réglages Hiver Doux</span>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                        <div class="s-value">30–35%</div>
-                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                        <div class="s-value">40–45%</div>
-                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                        <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
-                    </div>
-                </div>
-
-                <!-- Spring / Fall -->
-                <div id="panel-spring-fall" class="settings-panel">
-                    <div class="panel-title">
-                        <span class="lang-en">🌱 Spring / Fall Settings</span>
-                        <span class="lang-fr">🌱 Réglages Printemps/Automne</span>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                        <div class="s-value">30–40%</div>
-                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:40%"></div></div></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                        <div class="s-value">45–50%</div>
-                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:50%"></div></div></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                        <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
-                    </div>
-                </div>
-
-                <!-- Summer -->
-                <div id="panel-summer" class="settings-panel">
-                    <div class="panel-title">
-                        <span class="lang-en">☀️ Summer Settings</span>
-                        <span class="lang-fr">☀️ Réglages Été</span>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                        <div class="s-value"><span class="lang-en">OFF</span><span class="lang-fr">FERMÉ</span></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                        <div class="s-value">55–60%</div>
-                        <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:60%"></div></div></div>
-                    </div>
-                    <div class="setting-row">
-                        <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                        <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
-                    </div>
-                    <div class="alert warn">
-                        <strong><span class="lang-en">⚠️ Do NOT run the humidifier while AC is on.</span><span class="lang-fr">⚠️ N'utilisez PAS l'humidificateur lorsque le climatiseur fonctionne.</span></strong>
-                    </div>
-                </div>
-
-                <!-- Maintenance button -->
-                <button class="btn btn-green" onclick="showModal('modal-maint')">
-                    🔧 <span class="lang-en">Maintenance Schedule &amp; Links</span><span class="lang-fr">Calendrier d'Entretien et Liens</span>
-                </button>
-
-                <!-- Add to home screen -->
-                <div class="add-home">
-                    <strong>📱 <span class="lang-en">Add to Home Screen</span><span class="lang-fr">Ajouter à l'Écran d'Accueil</span></strong>
-                    <span class="lang-en">Tap Share ⎙ → "Add to Home Screen" for instant access.</span>
-                    <span class="lang-fr">Appuyez sur Partager ⎙ → « Sur l'écran d'accueil ».</span>
-                </div>
-
-                <!-- Educational section (collapsible) -->
-                <div class="edu-card">
-                    <button class="edu-toggle" onclick="toggleEdu(this)">
-                        <span class="edu-toggle-left">
-                            🎓 <span class="lang-en">Understanding Your System</span><span class="lang-fr">Comprendre Votre Système</span>
-                        </span>
-                        <span class="edu-chevron">▼</span>
-                    </button>
-                    <div class="edu-body">
-                        <div class="golden-rule">
-                            <div class="gr-title"><span class="lang-en">⭐ The Golden Rule</span><span class="lang-fr">⭐ La Règle d'Or</span></div>
-                            <div class="gr-detail">
-                                <span class="lang-en">Aldes humidity step = GeneralAire setting + 10–15%</span>
-                                <span class="lang-fr">Palier Aldes = Réglage GeneralAire + 10–15%</span>
-                            </div>
-                        </div>
-
-                        <div class="sys-grid">
-                            <div class="sys-card hum">
-                                <h4><span class="lang-en">💧 GeneralAire Humidifier</span><span class="lang-fr">💧 Humidificateur GeneralAire</span></h4>
-                                <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">ADDS moisture</span><span class="lang-fr">AJOUTE l'humidité</span></div>
-                                <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Comfort</span><span class="lang-fr">Confort</span></div>
-                                <div class="sys-row"><strong><span class="lang-en">Winter ex.: </span><span class="lang-fr">Ex.: </span></strong><span class="lang-en">Set to 25%</span><span class="lang-fr">Réglé à 25%</span></div>
-                            </div>
-                            <div class="sys-card hrv">
-                                <h4><span class="lang-en">🌬️ Aldes HRV</span><span class="lang-fr">🌬️ VRC Aldes</span></h4>
-                                <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">REMOVES moisture</span><span class="lang-fr">ENLÈVE l'humidité</span></div>
-                                <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Safety valve</span><span class="lang-fr">Soupape de sécurité</span></div>
-                                <div class="sys-row"><strong><span class="lang-en">Winter ex.: </span><span class="lang-fr">Ex.: </span></strong><span class="lang-en">Set to 35%</span><span class="lang-fr">Réglé à 35%</span></div>
-                            </div>
-                        </div>
-
-                        <div class="dont-box">
-                            <h4>❌ <span class="lang-en">If You Match Both Settings (DON'T!)</span><span class="lang-fr">Si Vous Les Réglez Pareil (À ÉVITER!)</span></h4>
-                            <ul>
-                                <li><span class="lang-en">Humidifier tries to maintain 25%</span><span class="lang-fr">L'humidificateur essaie de maintenir 25%</span></li>
-                                <li><span class="lang-en">HRV ventilates aggressively at 25%</span><span class="lang-fr">Le VRC ventile agressivement à 25%</span></li>
-                                <li><span class="lang-en">They fight each other constantly</span><span class="lang-fr">Ils se battent constamment</span></li>
-                                <li><span class="lang-en">Result: dry air + wasted energy + constant cycling</span><span class="lang-fr">Résultat: air sec + énergie gaspillée + cycles constants</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
+    <!-- COLLECTIONS -->
+    <div class="page active" id="page-collections">
+        <div class="pad">
+            <div class="date-line" id="coll-date"></div>
+            <div id="coll-render">
+                <p style="text-align:center;color:rgba(255,255,255,.7);padding:40px 0">
+                    ⏳ <span class="lang-en">Loading…</span><span class="lang-fr">Chargement…</span>
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- ── MAINTENANCE MODAL ──────────────────────────────────────── -->
+    <!-- WATERING -->
+    <div class="page" id="page-watering">
+        <div class="pad">
+            <div class="date-line" id="water-date"></div>
+            <div id="water-render"></div>
+        </div>
+    </div>
+
+    <!-- HVAC -->
+    <div class="page" id="page-hvac">
+        <div class="pad">
+            <div id="weather-card" class="ww-loading">
+                🌡️ <span class="lang-en">Fetching weather…</span><span class="lang-fr">Chargement météo…</span>
+            </div>
+
+            <div id="hvac-smart-tip"></div>
+
+            <div class="sec-label lang-en">Select conditions (or auto-detected above)</div>
+            <div class="sec-label lang-fr">Conditions (ou détectées automatiquement ci-dessus)</div>
+
+            <div class="season-grid">
+                <div class="season-card s-dw" data-season="deep-winter" onclick="showSettings('panel-dw',this)">
+                    <div class="sc-emoji">🥶</div>
+                    <div class="sc-title"><span class="lang-en">Deep Winter</span><span class="lang-fr">Grand Froid</span></div>
+                    <div class="sc-range"><span class="lang-en">Below -15°C</span><span class="lang-fr">Sous -15°C</span></div>
+                </div>
+                <div class="season-card s-mw" data-season="mild-winter" onclick="showSettings('panel-mw',this)">
+                    <div class="sc-emoji">❄️</div>
+                    <div class="sc-title"><span class="lang-en">Mild Winter</span><span class="lang-fr">Hiver Doux</span></div>
+                    <div class="sc-range"><span class="lang-en">-15°C to 0°C</span><span class="lang-fr">-15°C à 0°C</span></div>
+                </div>
+                <div class="season-card s-sf" data-season="spring-fall" onclick="showSettings('panel-sf',this)">
+                    <div class="sc-emoji">🌿</div>
+                    <div class="sc-title"><span class="lang-en">Spring / Fall</span><span class="lang-fr">Printemps/Automne</span></div>
+                    <div class="sc-range"><span class="lang-en">0°C to 15°C</span><span class="lang-fr">0°C à 15°C</span></div>
+                </div>
+                <div class="season-card s-su" data-season="summer" onclick="showSettings('panel-su',this)">
+                    <div class="sc-emoji">☀️</div>
+                    <div class="sc-title"><span class="lang-en">Summer</span><span class="lang-fr">Été</span></div>
+                    <div class="sc-range"><span class="lang-en">Above 15°C</span><span class="lang-fr">Au-dessus de 15°C</span></div>
+                </div>
+            </div>
+
+            <!-- Deep Winter -->
+            <div id="panel-dw" class="settings-panel">
+                <div class="panel-title"><span class="lang-en">🥶 Deep Winter Settings</span><span class="lang-fr">🥶 Réglages Grand Froid</span></div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                    <div class="s-value">30–35%</div>
+                    <div class="s-note"><span class="lang-en">Mode: Manual</span><span class="lang-fr">Mode: Manuel</span></div>
+                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                    <div class="s-value">40–45%</div>
+                    <div class="s-note"><span class="lang-en">Always 10–15% above humidifier (prevents fighting)</span><span class="lang-fr">Toujours 10–15% au-dessus de l'humidificateur (évite les conflits)</span></div>
+                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                    <div class="s-value"><span class="lang-en">🕒 Timer · Speed 1</span><span class="lang-fr">🕒 Minuterie · Vitesse 1</span></div>
+                    <div class="s-note"><span class="lang-en">Timer limits cold air infiltration in extreme cold</span><span class="lang-fr">La minuterie limite l'infiltration d'air froid extrême</span></div>
+                </div>
+                <div class="alert warn">
+                    <strong><span class="lang-en">⚠️ Never below 30% — protects hardwood floors. If condensation appears on windows, reduce by 5%.</span><span class="lang-fr">⚠️ Jamais sous 30% — protège les planchers. Si de la condensation apparaît sur les fenêtres, réduisez de 5%.</span></strong>
+                </div>
+            </div>
+
+            <!-- Mild Winter -->
+            <div id="panel-mw" class="settings-panel">
+                <div class="panel-title"><span class="lang-en">❄️ Mild Winter Settings</span><span class="lang-fr">❄️ Réglages Hiver Doux</span></div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                    <div class="s-value">30–35%</div>
+                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                    <div class="s-value">40–45%</div>
+                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                    <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
+                    <div class="s-note"><span class="lang-en">Continuous heat-recovery exchange is fine at this range</span><span class="lang-fr">L'échange continu est approprié à cette plage de température</span></div>
+                </div>
+            </div>
+
+            <!-- Spring / Fall -->
+            <div id="panel-sf" class="settings-panel">
+                <div class="panel-title"><span class="lang-en">🌿 Spring / Fall Settings</span><span class="lang-fr">🌿 Réglages Printemps/Automne</span></div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                    <div class="s-value">30–40%</div>
+                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:40%"></div></div></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                    <div class="s-value">45–50%</div>
+                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:50%"></div></div></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                    <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
+                </div>
+                <div class="alert info">
+                    <span class="lang-en">💡 On mild sunny days (10–18°C), consider opening windows a crack instead of running the HRV at full speed — free ventilation!</span>
+                    <span class="lang-fr">💡 Par beau temps doux (10–18°C), envisagez d'entrouvrir les fenêtres plutôt que de faire tourner le VRC — ventilation gratuite!</span>
+                </div>
+            </div>
+
+            <!-- Summer -->
+            <div id="panel-su" class="settings-panel">
+                <div class="panel-title"><span class="lang-en">☀️ Summer Settings</span><span class="lang-fr">☀️ Réglages Été</span></div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
+                    <div class="s-value"><span class="lang-en">OFF</span><span class="lang-fr">FERMÉ</span></div>
+                    <div class="s-note"><span class="lang-en">AC already dehumidifies — humidifying fights it and wastes energy</span><span class="lang-fr">Le clim déshumidifie déjà — humidifier simultanément gaspille de l'énergie</span></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
+                    <div class="s-value">55–60%</div>
+                    <div class="s-note"><span class="lang-en">HRV kicks in only if indoor humidity gets too high</span><span class="lang-fr">Le VRC s'active seulement si l'humidité intérieure monte trop</span></div>
+                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:60%"></div></div></div>
+                </div>
+                <div class="setting-row">
+                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
+                    <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
+                </div>
+                <div class="alert warn">
+                    <strong><span class="lang-en">⚠️ Do NOT run the humidifier while AC is on.</span><span class="lang-fr">⚠️ N'utilisez PAS l'humidificateur lorsque le climatiseur fonctionne.</span></strong>
+                </div>
+            </div>
+
+            <button class="btn btn-green" onclick="showModal('modal-maint')">
+                🔧 <span class="lang-en">Maintenance Schedule &amp; Links</span><span class="lang-fr">Calendrier d'Entretien et Liens</span>
+            </button>
+
+            <div class="add-home">
+                <strong>📱 <span class="lang-en">Add to Home Screen</span><span class="lang-fr">Ajouter à l'Écran d'Accueil</span></strong>
+                <span class="lang-en">Tap Share ⎙ → "Add to Home Screen"</span>
+                <span class="lang-fr">Appuyez sur Partager ⎙ → « Sur l'écran d'accueil »</span>
+            </div>
+
+            <!-- Educational accordion -->
+            <div class="edu-card">
+                <button class="edu-toggle" onclick="toggleEdu(this)">
+                    <span class="edu-tl">🎓 <span class="lang-en">Understanding Your System</span><span class="lang-fr">Comprendre Votre Système</span></span>
+                    <span class="edu-ch">▼</span>
+                </button>
+                <div class="edu-body">
+                    <div class="golden-rule">
+                        <div class="gr-title"><span class="lang-en">⭐ The Golden Rule</span><span class="lang-fr">⭐ La Règle d'Or</span></div>
+                        <div class="gr-detail">
+                            <span class="lang-en">Aldes humidity step = GeneralAire setting + 10–15%<br>This gap prevents the two systems from fighting each other.</span>
+                            <span class="lang-fr">Palier Aldes = Réglage GeneralAire + 10–15%<br>Cet écart évite que les deux systèmes se combattent.</span>
+                        </div>
+                    </div>
+                    <div class="sys-grid">
+                        <div class="sys-card hum">
+                            <h4><span class="lang-en">💧 GeneralAire</span><span class="lang-fr">💧 GeneralAire</span></h4>
+                            <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">ADDS moisture</span><span class="lang-fr">AJOUTE l'humidité</span></div>
+                            <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Comfort + wood protection</span><span class="lang-fr">Confort + protection du bois</span></div>
+                        </div>
+                        <div class="sys-card hrv">
+                            <h4><span class="lang-en">🌬️ Aldes HRV</span><span class="lang-fr">🌬️ VRC Aldes</span></h4>
+                            <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">Exchanges + REMOVES excess moisture</span><span class="lang-fr">Échange + ENLÈVE l'excès d'humidité</span></div>
+                            <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Fresh air + safety valve</span><span class="lang-fr">Air frais + soupape de sécurité</span></div>
+                        </div>
+                    </div>
+                    <div class="dont-box">
+                        <h4>❌ <span class="lang-en">If You Match Both Settings (DON'T)</span><span class="lang-fr">Si Vous Les Réglez Pareil (À ÉVITER)</span></h4>
+                        <ul>
+                            <li><span class="lang-en">Humidifier adds moisture to reach 30%</span><span class="lang-fr">L'humidificateur monte à 30%</span></li>
+                            <li><span class="lang-en">HRV kicks in at 30% and removes it</span><span class="lang-fr">Le VRC s'active à 30% et l'enlève</span></li>
+                            <li><span class="lang-en">They fight → dry air + wasted energy + constant cycling</span><span class="lang-fr">Résultat: air sec + énergie gaspillée + cycles constants</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── BOTTOM NAV ───────────────────────────────────────────────── -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" id="nav-collections" onclick="showPage('collections')">
+            <div class="nav-dot"></div>
+            <span class="nav-icon">🚛</span>
+            <span class="lang-en">Curbside</span><span class="lang-fr">Collectes</span>
+        </button>
+        <button class="nav-btn" id="nav-watering" onclick="showPage('watering')">
+            <div class="nav-dot"></div>
+            <span class="nav-icon">💧</span>
+            <span class="lang-en">Watering</span><span class="lang-fr">Arrosage</span>
+        </button>
+        <button class="nav-btn" id="nav-hvac" onclick="showPage('hvac')">
+            <div class="nav-dot"></div>
+            <span class="nav-icon">🌡️</span>
+            <span class="lang-en">HVAC</span><span class="lang-fr">HVAC</span>
+        </button>
+    </nav>
+
+    <!-- ── MAINTENANCE MODAL ────────────────────────────────────────── -->
     <div id="modal-maint" class="modal" onclick="if(event.target===this)closeModal('modal-maint')">
         <div class="modal-sheet">
             <div class="modal-handle"></div>
-            <div class="modal-header">
+            <div class="modal-hdr">
                 <h2>🔧 <span class="lang-en">Maintenance Schedule</span><span class="lang-fr">Calendrier d'Entretien</span></h2>
                 <button class="close-btn" onclick="closeModal('modal-maint')">✕</button>
             </div>
-
             <div class="maint-card">
                 <h4>🌡️ <span class="lang-en">Furnace Filter</span><span class="lang-fr">Filtre de Fournaise</span></h4>
                 <span class="maint-badge"><span class="lang-en">Every 3 months</span><span class="lang-fr">Aux 3 mois</span></span>
-                <p>
-                    <span class="lang-en">Replace regularly to maintain air quality and system efficiency.</span>
-                    <span class="lang-fr">Remplacez régulièrement pour maintenir la qualité de l'air et l'efficacité du système.</span>
-                </p>
+                <p><span class="lang-en">Replace regularly to maintain air quality and system efficiency.</span><span class="lang-fr">Remplacez régulièrement pour la qualité de l'air et l'efficacité du système.</span></p>
                 <a href="https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4" class="buy-link" target="_blank">
                     🛒 <span class="lang-en">Buy Filters</span><span class="lang-fr">Acheter Filtres</span>
                 </a>
             </div>
-
             <div class="maint-card">
                 <h4>💧 <span class="lang-en">Humidifier Pad</span><span class="lang-fr">Tampon Humidificateur</span></h4>
-                <span class="maint-badge"><span class="lang-en">Annually</span><span class="lang-fr">Annuellement</span></span>
-                <p>
-                    <span class="lang-en">Replace at the start of each heating season (September / October).</span>
-                    <span class="lang-fr">Remplacez au début de chaque saison de chauffage (septembre / octobre).</span>
-                </p>
+                <span class="maint-badge"><span class="lang-en">Annually (Sep/Oct)</span><span class="lang-fr">Annuellement (sept/oct)</span></span>
+                <p><span class="lang-en">Replace at the start of each heating season.</span><span class="lang-fr">Remplacez au début de chaque saison de chauffage.</span></p>
                 <a href="https://a.co/d/5AEBEDE" class="buy-link" target="_blank">
                     🛒 <span class="lang-en">Buy Pad</span><span class="lang-fr">Acheter Tampon</span>
                 </a>
             </div>
+            <div class="maint-card">
+                <h4>🌬️ <span class="lang-en">HRV Filter Cleaning</span><span class="lang-fr">Nettoyage des Filtres du VRC</span></h4>
+                <span class="maint-badge"><span class="lang-en">Every 6 months</span><span class="lang-fr">Aux 6 mois</span></span>
+                <p><span class="lang-en">Clean or replace HRV filters (typically Apr & Oct). Also inspect the heat-exchange core annually.</span><span class="lang-fr">Nettoyez ou remplacez les filtres du VRC (typiquement avr. & oct.). Inspectez aussi le noyau d'échange annuellement.</span></p>
+            </div>
         </div>
     </div>
 
-    <script>
-    // ── DATA ──────────────────────────────────────────────────────────
-    const SCHEDULE = {
-        recyclables: ['2026-01-12','2026-01-26','2026-02-09','2026-02-23','2026-03-09','2026-03-23','2026-04-06','2026-04-20','2026-05-04','2026-05-18','2026-06-01','2026-06-15','2026-06-29','2026-07-13','2026-07-27','2026-08-10','2026-08-24','2026-09-07','2026-09-21','2026-10-05','2026-10-19','2026-11-02','2026-11-16','2026-11-30','2026-12-14','2026-12-28'],
-        organics:    ['2026-01-07','2026-01-14','2026-01-21','2026-01-28','2026-02-04','2026-02-11','2026-02-18','2026-02-25','2026-03-04','2026-03-11','2026-03-18','2026-03-25','2026-04-01','2026-04-08','2026-04-15','2026-04-22','2026-04-29','2026-05-06','2026-05-13','2026-05-20','2026-05-27','2026-06-03','2026-06-10','2026-06-17','2026-06-24','2026-07-01','2026-07-08','2026-07-15','2026-07-22','2026-07-29','2026-08-05','2026-08-12','2026-08-19','2026-08-26','2026-09-02','2026-09-09','2026-09-16','2026-09-23','2026-09-30','2026-10-07','2026-10-14','2026-10-21','2026-10-28','2026-11-04','2026-11-11','2026-11-18','2026-11-25','2026-12-02','2026-12-09','2026-12-16','2026-12-23','2026-12-30'],
-        garbage:     ['2026-01-02','2026-01-15','2026-01-29','2026-02-12','2026-02-26','2026-03-12','2026-03-26','2026-04-09','2026-04-23','2026-05-07','2026-05-21','2026-06-04','2026-06-18','2026-07-02','2026-07-16','2026-07-30','2026-08-13','2026-08-27','2026-09-10','2026-09-24','2026-10-08','2026-10-22','2026-11-05','2026-11-19','2026-12-03','2026-12-17','2026-12-31'],
-        bulkyItems:  ['2026-02-19','2026-03-19','2026-04-16','2026-05-21','2026-06-18','2026-07-16','2026-08-20','2026-09-17','2026-10-15','2026-11-19','2026-12-17'],
-        leaves:      ['2026-05-06','2026-05-20','2026-06-03','2026-06-17','2026-07-01','2026-07-15','2026-07-29','2026-08-12','2026-08-26','2026-09-09','2026-09-23','2026-10-07','2026-10-21','2026-11-04','2026-11-11','2026-11-18'],
-        cityMeeting: ['2026-01-20','2026-02-10','2026-03-10','2026-04-14','2026-05-12','2026-06-09','2026-07-14','2026-08-11','2026-09-08','2026-10-13','2026-11-10','2026-12-08']
-    };
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const SCHEDULE = {
+    recyclables: ['2026-01-12','2026-01-26','2026-02-09','2026-02-23','2026-03-09','2026-03-23','2026-04-06','2026-04-20','2026-05-04','2026-05-18','2026-06-01','2026-06-15','2026-06-29','2026-07-13','2026-07-27','2026-08-10','2026-08-24','2026-09-07','2026-09-21','2026-10-05','2026-10-19','2026-11-02','2026-11-16','2026-11-30','2026-12-14','2026-12-28'],
+    organics:    ['2026-01-07','2026-01-14','2026-01-21','2026-01-28','2026-02-04','2026-02-11','2026-02-18','2026-02-25','2026-03-04','2026-03-11','2026-03-18','2026-03-25','2026-04-01','2026-04-08','2026-04-15','2026-04-22','2026-04-29','2026-05-06','2026-05-13','2026-05-20','2026-05-27','2026-06-03','2026-06-10','2026-06-17','2026-06-24','2026-07-01','2026-07-08','2026-07-15','2026-07-22','2026-07-29','2026-08-05','2026-08-12','2026-08-19','2026-08-26','2026-09-02','2026-09-09','2026-09-16','2026-09-23','2026-09-30','2026-10-07','2026-10-14','2026-10-21','2026-10-28','2026-11-04','2026-11-11','2026-11-18','2026-11-25','2026-12-02','2026-12-09','2026-12-16','2026-12-23','2026-12-30'],
+    garbage:     ['2026-01-02','2026-01-15','2026-01-29','2026-02-12','2026-02-26','2026-03-12','2026-03-26','2026-04-09','2026-04-23','2026-05-07','2026-05-21','2026-06-04','2026-06-18','2026-07-02','2026-07-16','2026-07-30','2026-08-13','2026-08-27','2026-09-10','2026-09-24','2026-10-08','2026-10-22','2026-11-05','2026-11-19','2026-12-03','2026-12-17','2026-12-31'],
+    bulkyItems:  ['2026-02-19','2026-03-19','2026-04-16','2026-05-21','2026-06-18','2026-07-16','2026-08-20','2026-09-17','2026-10-15','2026-11-19','2026-12-17'],
+    leaves:      ['2026-05-06','2026-05-20','2026-06-03','2026-06-17','2026-07-01','2026-07-15','2026-07-29','2026-08-12','2026-08-26','2026-09-09','2026-09-23','2026-10-07','2026-10-21','2026-11-04','2026-11-11','2026-11-18'],
+    cityMeeting: ['2026-01-20','2026-02-10','2026-03-10','2026-04-14','2026-05-12','2026-06-09','2026-07-14','2026-08-11','2026-09-08','2026-10-13','2026-11-10','2026-12-08']
+};
 
-    const ICONS = { recyclables:'♻️', organics:'🌱', garbage:'🗑️', bulkyItems:'🛋️', leaves:'🍂', cityMeeting:'🏛️' };
+const ICONS = { recyclables:'♻️', organics:'🌱', garbage:'🗑️', bulkyItems:'🛋️', leaves:'🍂', cityMeeting:'🏛️' };
 
-    const LABELS = {
-        fr: {
-            recyclables:'Recyclage', organics:'Compost', garbage:'Ordures',
-            bulkyItems:'Rebuts volumineux', leaves:'Résidus verts', cityMeeting:'Séance du conseil',
-            today:"Aujourd'hui", noPickup:"Aucune collecte — bonne journée 🌿",
-            next:'Prochaines collectes',
-            t0:"auj.", t1:"demain", tn:"dans {n} j"
-        },
-        en: {
-            recyclables:'Recycling', organics:'Compost', garbage:'Garbage',
-            bulkyItems:'Bulky Items', leaves:'Leaves', cityMeeting:'City Meeting',
-            today:'Today', noPickup:'No pickup today — enjoy your day 🌿',
-            next:'Next Pickups',
-            t0:'today', t1:'tomorrow', tn:'in {n} days'
-        }
-    };
-
-    // ── STATE ─────────────────────────────────────────────────────────
-    let lang = 'fr';
-
-    const L = k => LABELS[lang][k] || k;
-
-    // ── DATE HELPERS ──────────────────────────────────────────────────
-    function todayISO() {
-        const d = new Date();
-        return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const LBL = {
+    fr: {
+        recyclables:'Recyclage', organics:'Compost', garbage:'Ordures',
+        bulkyItems:'Rebuts volumineux', leaves:'Résidus verts', cityMeeting:'Séance du conseil',
+        today:"Aujourd'hui", noPickup:"Aucune collecte — belle journée 🌿",
+        next:'Prochaines collectes', t0:"auj.", t1:"demain", tn:"dans {n} j"
+    },
+    en: {
+        recyclables:'Recycling', organics:'Compost', garbage:'Garbage',
+        bulkyItems:'Bulky Items', leaves:'Leaves', cityMeeting:'City Meeting',
+        today:'Today', noPickup:'No pickup today — enjoy your day 🌿',
+        next:'Next Pickups', t0:'today', t1:'tomorrow', tn:'in {n} days'
     }
+};
 
-    function daysFrom(iso) {
-        return Math.round((new Date(iso+'T12:00:00') - new Date(todayISO()+'T12:00:00')) / 86400000);
-    }
+const SEASONS_META = {
+    'deep-winter': { emoji:'🥶', fr:'Grand Froid', en:'Deep Winter', panelId:'panel-dw' },
+    'mild-winter': { emoji:'❄️', fr:'Hiver Doux',  en:'Mild Winter', panelId:'panel-mw' },
+    'spring-fall': { emoji:'🌿', fr:'Printemps/Automne', en:'Spring/Fall', panelId:'panel-sf' },
+    'summer':      { emoji:'☀️', fr:'Été',         en:'Summer',     panelId:'panel-su' },
+};
 
-    function fmtDate(iso) {
-        return new Date(iso+'T12:00:00').toLocaleDateString(lang==='fr'?'fr-CA':'en-CA',
-            { weekday:'short', month:'short', day:'numeric' });
-    }
+// WMO weather code → info
+function wmoInfo(code) {
+    if (code === 0)             return { emoji:'☀️',  fr:'Ciel dégagé',             en:'Clear sky',        rain:false };
+    if (code === 1)             return { emoji:'🌤️', fr:'Généralement dégagé',     en:'Mainly clear',     rain:false };
+    if (code === 2)             return { emoji:'⛅',  fr:'Partiellement nuageux',   en:'Partly cloudy',    rain:false };
+    if (code === 3)             return { emoji:'☁️',  fr:'Nuageux',                 en:'Overcast',         rain:false };
+    if ([45,48].includes(code)) return { emoji:'🌫️', fr:'Brouillard',              en:'Fog',              rain:false };
+    if (code >= 51 && code<=57) return { emoji:'🌦️', fr:'Bruine',                  en:'Drizzle',          rain:true  };
+    if (code >= 61 && code<=65) return { emoji:'🌧️', fr:'Pluie',                   en:'Rain',             rain:true  };
+    if (code >= 66 && code<=67) return { emoji:'🌨️', fr:'Pluie verglaçante',       en:'Freezing rain',    rain:true  };
+    if (code >= 71 && code<=77) return { emoji:'❄️',  fr:'Neige',                   en:'Snow',             rain:false };
+    if (code >= 80 && code<=82) return { emoji:'🌦️', fr:'Averses de pluie',         en:'Rain showers',     rain:true  };
+    if (code >= 85 && code<=86) return { emoji:'🌨️', fr:'Averses de neige',         en:'Snow showers',     rain:false };
+    if (code >= 95)             return { emoji:'⛈️', fr:'Orage',                   en:'Thunderstorm',     rain:true  };
+    return { emoji:'🌤️', fr:'Variable', en:'Mixed', rain:false };
+}
 
-    function countdownTxt(days) {
-        if (days === 0) return L('t0');
-        if (days === 1) return L('t1');
-        return L('tn').replace('{n}', days);
-    }
+// ── STATE ─────────────────────────────────────────────────────────────
+let lang = 'fr';
+let currentPage = 'collections';
+let weatherData = null;   // { temp, feelsLike, code }
+let weatherAt = 0;        // timestamp of last fetch
+const WEATHER_TTL = 30 * 60 * 1000; // 30 min cache
+const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=45.3668&longitude=-73.9325&current=temperature_2m,apparent_temperature,weathercode&timezone=America%2FToronto&forecast_days=1';
 
-    // ── RENDER COLLECTIONS ────────────────────────────────────────────
-    function renderCollections() {
-        document.getElementById('date-line').textContent =
-            new Date().toLocaleDateString(lang==='fr'?'fr-CA':'en-CA',
-                { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+const L = k => LBL[lang][k] || k;
 
-        const today = todayISO();
-        const types = Object.keys(SCHEDULE);
+// ── HELPERS ───────────────────────────────────────────────────────────
+function todayISO() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
-        // Pickups today
-        const todayItems = types.filter(t => SCHEDULE[t].includes(today));
+function daysFrom(iso) {
+    return Math.round((new Date(iso+'T12:00:00') - new Date(todayISO()+'T12:00:00')) / 86400000);
+}
 
-        // Next pickups (include today, sorted, max 8)
-        const upcoming = types
-            .map(type => {
-                const next = SCHEDULE[type].filter(d => d >= today).sort()[0];
-                if (!next) return null;
-                return { type, days: daysFrom(next), date: next };
-            })
-            .filter(Boolean)
-            .sort((a, b) => a.days - b.days)
-            .slice(0, 8);
+function fmtDate(iso) {
+    return new Date(iso+'T12:00:00').toLocaleDateString(
+        lang==='fr' ? 'fr-CA' : 'en-CA',
+        { weekday:'short', month:'short', day:'numeric' }
+    );
+}
 
-        // Today card
-        let html = `
-            <div class="today-card ${todayItems.length ? 'busy' : 'free'}">
-                <div class="today-label">${L('today')}</div>
-        `;
-        if (!todayItems.length) {
-            html += `<div class="today-quiet">${L('noPickup')}</div>`;
-        } else {
-            html += `<div class="chip-row">`;
-            todayItems.forEach(type => {
-                html += `<div class="pickup-chip">${ICONS[type]} ${L(type)}</div>`;
-            });
-            html += `</div>`;
-        }
+function cdTxt(days) {
+    if (days===0) return L('t0');
+    if (days===1) return L('t1');
+    return L('tn').replace('{n}', days);
+}
+
+function tempToSeason(t) {
+    if (t < -15) return 'deep-winter';
+    if (t <   0) return 'mild-winter';
+    if (t <  15) return 'spring-fall';
+    return 'summer';
+}
+
+// ── COLLECTIONS ───────────────────────────────────────────────────────
+function renderCollections() {
+    const today = todayISO();
+    const now = new Date();
+    const types = Object.keys(SCHEDULE);
+
+    document.getElementById('coll-date').textContent =
+        now.toLocaleDateString(lang==='fr'?'fr-CA':'en-CA',
+            { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    const todayItems = types.filter(t => SCHEDULE[t].includes(today));
+    const upcoming = types
+        .map(type => {
+            const next = SCHEDULE[type].filter(d => d >= today).sort()[0];
+            if (!next) return null;
+            return { type, days: daysFrom(next), date: next };
+        })
+        .filter(Boolean).sort((a,b) => a.days-b.days).slice(0,8);
+
+    let html = `<div class="today-card ${todayItems.length?'busy':'free'}">
+        <div class="today-lbl">${L('today')}</div>`;
+    if (!todayItems.length) {
+        html += `<div class="today-msg">${L('noPickup')}</div>`;
+    } else {
+        html += `<div class="chip-row">`;
+        todayItems.forEach(type => { html += `<div class="pickup-chip">${ICONS[type]} ${L(type)}</div>`; });
         html += `</div>`;
+    }
+    html += `</div><div class="sec-label">${L('next')}</div><div class="pickup-list">`;
 
-        // Next pickups list
-        html += `<div class="sec-label">${L('next')}</div><div class="pickup-list">`;
-        upcoming.forEach(({ type, days, date }) => {
-            const badgeClass = days === 0 ? 't' : days === 1 ? 'tm' : days <= 4 ? 'sn' : '';
-            const badgeTxt   = days <= 4 ? countdownTxt(days) : '';
-            html += `
-                <div class="pickup-row">
-                    <div class="pi-icon ${type}">${ICONS[type]}</div>
-                    <div class="pi-info">
-                        <div class="pi-name">${L(type)}</div>
-                        <div class="pi-meta">
-                            <span class="pi-date">${fmtDate(date)}</span>
-                            ${badgeClass ? `<span class="badge ${badgeClass}">${badgeTxt}</span>` : ''}
-                        </div>
+    upcoming.forEach(({ type, days, date }) => {
+        const bc = days===0?'t':days===1?'tm':days<=4?'sn':'';
+        html += `
+            <div class="pickup-row">
+                <div class="pi-icon ${type}">${ICONS[type]}</div>
+                <div class="pi-info">
+                    <div class="pi-name">${L(type)}</div>
+                    <div class="pi-meta">
+                        <span class="pi-date">${fmtDate(date)}</span>
+                        ${bc ? `<span class="badge ${bc}">${cdTxt(days)}</span>` : ''}
                     </div>
-                    <div class="pi-countdown">${countdownTxt(days)}</div>
+                </div>
+                <div class="pi-cd">${cdTxt(days)}</div>
+            </div>`;
+    });
+    html += `</div>`;
+
+    document.getElementById('coll-render').innerHTML = html;
+    document.getElementById('nav-collections').classList.toggle('has-green', todayItems.length > 0);
+}
+
+// ── WATERING ──────────────────────────────────────────────────────────
+const AUTO_DAYS = new Set([2, 5]); // Tue=2, Fri=5 (JS: 0=Sun)
+
+function renderWatering() {
+    const now = new Date();
+    const dow = now.getDay();
+    const h   = now.getHours();
+    const min = now.getMinutes();
+    const month = now.getMonth() + 1;
+
+    document.getElementById('water-date').textContent =
+        now.toLocaleDateString(lang==='fr'?'fr-CA':'en-CA',
+            { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    const isAutoDay = AUTO_DAYS.has(dow);
+    const inWindow  = isAutoDay && h >= 20 && h < 22;
+    const beforeWin = isAutoDay && h < 20;
+    const noPermit  = month >= 7 && month <= 8;
+
+    // Next window
+    let nextInfo = null;
+    if (!inWindow) {
+        for (let i = 0; i <= 7; i++) {
+            const d = (dow + i) % 7;
+            if (AUTO_DAYS.has(d)) {
+                if (i === 0 && h >= 22) continue;
+                const dt = new Date(now); dt.setDate(dt.getDate() + i);
+                nextInfo = { days: i, dow: d, date: dt };
+                break;
+            }
+        }
+    }
+
+    const dayFr = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    const dayEn = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+    // Hero card
+    let heroClass, heroIcon, heroStatus, heroTitle, heroSub;
+    if (inWindow) {
+        heroClass = 'open'; heroIcon = '💧';
+        heroStatus = lang==='fr' ? 'Maintenant' : 'Right Now';
+        heroTitle  = lang==='fr' ? 'Arrosage automatique permis' : 'Automatic watering allowed';
+        heroSub    = lang==='fr' ? 'Fenêtre ouverte jusqu\'à 22h00' : 'Window open until 10:00 pm';
+    } else if (beforeWin) {
+        heroClass = 'tonight'; heroIcon = '🌙';
+        const minsLeft = (20 - h) * 60 - min;
+        const hh = Math.floor(minsLeft/60), mm = minsLeft%60;
+        const ts = hh > 0 ? `${hh}h${mm>0?String(mm).padStart(2,'0'):''}` : `${mm}min`;
+        heroStatus = lang==='fr' ? 'Ce soir' : 'Tonight';
+        heroTitle  = lang==='fr' ? 'Arrosage automatique 20h–22h' : 'Automatic watering 8pm–10pm';
+        heroSub    = lang==='fr' ? `Dans ${ts}` : `In ${ts}`;
+    } else {
+        heroClass = 'closed'; heroIcon = '🚫';
+        heroStatus = lang==='fr' ? "Aujourd'hui" : 'Today';
+        heroTitle  = lang==='fr' ? 'Pas d\'arrosage automatique' : 'No automatic watering today';
+        if (nextInfo) {
+            const names = lang==='fr' ? dayFr : dayEn;
+            const dn = nextInfo.days===0 ? (lang==='fr'?"auj.":'today')
+                      : nextInfo.days===1 ? (lang==='fr'?'demain':'tomorrow')
+                      : names[nextInfo.dow];
+            heroSub = lang==='fr' ? `Prochain: ${dn} à 20h` : `Next: ${dn} at 8pm`;
+        }
+    }
+
+    // Weather-aware watering tip
+    let waterTipHTML = '';
+    if (weatherData) {
+        const wmo = wmoInfo(weatherData.code);
+        const temp = weatherData.temp;
+        if (wmo.rain && temp > 0) {
+            waterTipHTML = `
+                <div class="smart-tip blue">
+                    <div class="st-icon">🌧️</div>
+                    <div class="st-text">
+                        <div class="st-title">${lang==='fr'?'Pluie en cours':'Rain detected'}</div>
+                        <div class="st-detail">${lang==='fr'?'Vous pourriez ne pas avoir besoin d\'arroser ce soir — laissez la nature faire son travail.':'You may not need to water tonight — let nature do the work.'}</div>
+                    </div>
                 </div>`;
-        });
-        html += `</div>`;
-
-        document.getElementById('coll-render').innerHTML = html;
+        } else if (temp > 28) {
+            waterTipHTML = `
+                <div class="smart-tip orange">
+                    <div class="st-icon">🌡️</div>
+                    <div class="st-text">
+                        <div class="st-title">${lang==='fr'?'Forte chaleur':'Heat alert'}</div>
+                        <div class="st-detail">${lang==='fr'?'Arrosez le soir (20h–22h) pour limiter l\'évaporation — l\'eau ira directement aux racines.':'Water in the evening (8–10pm) to minimize evaporation — water reaches the roots directly.'}</div>
+                    </div>
+                </div>`;
+        } else if (temp < 5 && temp > 0) {
+            waterTipHTML = `
+                <div class="smart-tip green">
+                    <div class="st-icon">🌡️</div>
+                    <div class="st-text">
+                        <div class="st-title">${lang==='fr'?'Températures fraîches':'Cool temperatures'}</div>
+                        <div class="st-detail">${lang==='fr'?'L\'arrosage est minimal en temps frais — surveillez l\'humidité du sol.':'Minimal watering needed in cool weather — monitor soil moisture.'}</div>
+                    </div>
+                </div>`;
+        }
     }
 
-    // ── LANGUAGE ──────────────────────────────────────────────────────
-    function toggleLang() {
-        lang = lang === 'fr' ? 'en' : 'fr';
-        document.body.classList.toggle('french', lang === 'fr');
-        document.documentElement.lang = lang;
-        localStorage.setItem('mcnabb-lang', lang);
-        renderCollections();
-    }
+    // Week grid (Mon–Sun)
+    const ORDER = [1,2,3,4,5,6,0];
+    const gridCells = ORDER.map(d => {
+        const isWD = AUTO_DAYS.has(d), isToday = d === dow;
+        const name = (lang==='fr' ? dayFr : dayEn)[d];
+        return `<div class="day-cell ${isWD?'wd':'nwd'} ${isToday?'now':''}">
+            <div class="dc-name">${name}</div>
+            <div class="dc-emoji">${isWD?'💧':'🚫'}</div>
+            ${isWD ? `<div class="dc-time">${lang==='fr'?'20–22h':'8–10p'}</div>` : ''}
+        </div>`;
+    }).join('');
 
-    // ── TABS ──────────────────────────────────────────────────────────
-    function switchTab(name) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById('tab-' + name).classList.add('active');
-        document.getElementById(name + '-content').classList.add('active');
-        localStorage.setItem('mcnabb-tab', name);
-    }
+    // Permit block
+    const noPermitBanner = noPermit ? `
+        <div class="alert warn"><strong>${lang==='fr'?'⚠️ Aucun permis émis du 1er juillet au 31 août inclusivement.':'⚠️ No permits issued July 1 – August 31 (inclusive).'}</strong></div>` : '';
+    const permitBody = lang==='fr' ? `
+        ${noPermitBanner}
+        <div class="sys-row" style="margin-bottom:8px"><strong>Avec un permis:</strong> Arrosage tous les jours de 6h à 8h et de 20h à 22h</div>
+        <div class="sys-row" style="margin-bottom:8px"><strong>Durée:</strong> 15 jours suivant le début des travaux</div>
+        <div class="sys-row"><strong>Pour:</strong> Nouvelle pelouse, plantation (végétaux, arbres, arbustes), nouvel aménagement paysager</div>` : `
+        ${noPermitBanner}
+        <div class="sys-row" style="margin-bottom:8px"><strong>With a permit:</strong> Watering every day 6am–8am and 8pm–10pm</div>
+        <div class="sys-row" style="margin-bottom:8px"><strong>Duration:</strong> 15 days following start of work</div>
+        <div class="sys-row"><strong>For:</strong> New lawn, new planting (plants, trees, shrubs), new landscaping</div>`;
 
-    // ── HVAC: season cards ────────────────────────────────────────────
-    // NOTE: pass `this` from onclick so we don't rely on deprecated window.event
-    function showSettings(panelId, cardEl) {
+    document.getElementById('water-render').innerHTML = `
+        <div class="water-hero ${heroClass}">
+            <div class="wh-icon">${heroIcon}</div>
+            <div>
+                <div class="wh-status">${heroStatus}</div>
+                <div class="wh-title">${heroTitle}</div>
+                ${heroSub ? `<div class="wh-sub">${heroSub}</div>` : ''}
+            </div>
+        </div>
+
+        ${waterTipHTML}
+
+        <div class="manual-card">
+            <div class="mc-icon">✅</div>
+            <div>
+                <div class="mc-title">${lang==='fr'?'Arrosage manuel — Toujours permis':'Manual Watering — Always Allowed'}</div>
+                <div class="mc-sub">${lang==='fr'?'Boyau muni d\'un dispositif à fermeture automatique':'Hose with automatic shut-off device'}</div>
+            </div>
+        </div>
+
+        <div class="sec-label">${lang==='fr'?'Horaire — Système automatique':'Schedule — Automatic systems'}</div>
+        <div class="week-grid">${gridCells}</div>
+
+        <div class="edu-card">
+            <button class="edu-toggle" onclick="toggleEdu(this)">
+                <span class="edu-tl">📋 ${lang==='fr'?'Permis d\'arrosage':'Watering Permit'}</span>
+                <span class="edu-ch">▼</span>
+            </button>
+            <div class="edu-body">${permitBody}</div>
+        </div>
+    `;
+
+    // Nav alert: green dot when window is open, blue dot when tonight
+    const navW = document.getElementById('nav-watering');
+    navW.classList.toggle('has-green', inWindow);
+    navW.classList.toggle('has-blue', beforeWin && !inWindow);
+}
+
+// ── WEATHER + HVAC ────────────────────────────────────────────────────
+async function fetchWeather() {
+    if (weatherData && (Date.now() - weatherAt) < WEATHER_TTL) {
+        renderHvac(); return;
+    }
+    try {
+        const resp = await fetch(WEATHER_URL);
+        const data = await resp.json();
+        weatherData = {
+            temp:      data.current.temperature_2m,
+            feelsLike: data.current.apparent_temperature,
+            code:      data.current.weathercode
+        };
+        weatherAt = Date.now();
+    } catch {
+        weatherData = null;
+    }
+    renderHvac();
+    renderWatering(); // refresh watering tip with weather data
+}
+
+function renderHvac() {
+    // Weather card
+    const wCard = document.getElementById('weather-card');
+    if (weatherData) {
+        const { temp, feelsLike, code } = weatherData;
+        const wmo    = wmoInfo(code);
+        const season = tempToSeason(temp);
+        const smeta  = SEASONS_META[season];
+        const bgCls  = temp < -15 ? 'ww-bg-deep' : temp < 0 ? 'ww-bg-cold' : temp < 15 ? 'ww-bg-mild' : 'ww-bg-warm';
+
+        wCard.innerHTML = `
+            <div class="weather-widget ${bgCls}">
+                <div class="ww-left">
+                    <div class="ww-emoji">${wmo.emoji}</div>
+                    <div class="ww-temp">${Math.round(temp)}°C</div>
+                    <div class="ww-feels">${lang==='fr'?'Ressenti':'Feels'} ${Math.round(feelsLike)}°C</div>
+                </div>
+                <div class="ww-right">
+                    <div class="ww-place">NDIP · ${lang==='fr'?'Maintenant':'Now'}</div>
+                    <div class="ww-cond">${lang==='fr' ? wmo.fr : wmo.en}</div>
+                    <div class="ww-suggest">${smeta.emoji} ${lang==='fr'?smeta.fr:smeta.en}</div>
+                </div>
+            </div>`;
+
+        // Auto-select season
         document.querySelectorAll('.season-card').forEach(c => c.classList.remove('selected'));
         document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+        const card  = document.querySelector(`.season-card[data-season="${season}"]`);
+        const panel = document.getElementById(smeta.panelId);
+        if (card)  card.classList.add('selected');
+        if (panel) panel.classList.add('active');
 
-        cardEl.classList.add('selected');
-        const panel = document.getElementById(panelId);
-        if (!panel) return;
-        panel.classList.add('active');
+        // Smart HVAC tip
+        const tipEl = document.getElementById('hvac-smart-tip');
+        const tip = getHvacSmartTip(temp, feelsLike, code, season);
+        tipEl.innerHTML = tip ? `
+            <div class="smart-tip ${tip.color}">
+                <div class="st-icon">${tip.icon}</div>
+                <div class="st-text">
+                    <div class="st-title">${lang==='fr'?tip.fr.title:tip.en.title}</div>
+                    <div class="st-detail">${lang==='fr'?tip.fr.detail:tip.en.detail}</div>
+                </div>
+            </div>` : '';
+    } else {
+        wCard.innerHTML = `
+            <div class="ww-loading">
+                🌡️ ${lang==='fr'?'Météo non disponible — sélectionnez la saison manuellement ci-dessous.':'Weather unavailable — select season manually below.'}
+            </div>`;
+        document.getElementById('hvac-smart-tip').innerHTML = '';
+    }
+}
 
-        // Smooth-scroll panel into view below sticky header
-        setTimeout(() => {
-            const hh = document.querySelector('.header').offsetHeight;
-            const top = panel.getBoundingClientRect().top + window.pageYOffset - hh - 14;
-            window.scrollTo({ top, behavior: 'smooth' });
-        }, 80);
+function getHvacSmartTip(temp, feelsLike, code, season) {
+    const wmo = wmoInfo(code);
+
+    if (temp > 28) return {
+        color:'orange', icon:'❄️',
+        fr: { title:'Forte chaleur — climatiseur recommandé', detail:'Gardez les fenêtres fermées, l\'humidificateur éteint, et laissez le VRC gérer la qualité de l\'air.' },
+        en: { title:'Hot day — AC recommended', detail:'Keep windows closed, humidifier OFF, and let the HRV manage air quality.' }
+    };
+    if (temp > 15 && temp <= 28 && !wmo.rain && [0,1,2].includes(code)) return {
+        color:'green', icon:'🪟',
+        fr: { title:'Beau temps doux — ventilation naturelle possible', detail:'Envisagez d\'entrouvrir les fenêtres plutôt que de faire tourner le VRC à pleine vitesse. Économisez de l\'énergie!' },
+        en: { title:'Pleasant weather — natural ventilation possible', detail:'Consider cracking windows instead of running the HRV at full speed. Save energy!' }
+    };
+    if (wmo.rain && temp > 5) return {
+        color:'blue', icon:'🌧️',
+        fr: { title:'Pluie — l\'air extérieur est humide', detail:'Le VRC évacuera l\'excès d\'humidité intérieure. Vérifiez que le palier Aldes est bien réglé.' },
+        en: { title:'Rain — outdoor air is humid', detail:'The HRV will help remove excess indoor moisture. Verify the Aldes humidity step is correctly set.' }
+    };
+    if (temp < -20) return {
+        color:'red', icon:'🥶',
+        fr: { title:'Froid extrême — surveillez les fenêtres', detail:'Si de la condensation apparaît sur les vitres, réduisez l\'humidificateur de 5%. Le mode Minuterie du VRC est essentiel.' },
+        en: { title:'Extreme cold — watch your windows', detail:'If condensation appears on glass, reduce humidifier setting by 5%. HRV Timer mode is essential now.' }
+    };
+    if (temp < -10) return {
+        color:'blue', icon:'💧',
+        fr: { title:'Air extérieur très sec', detail:'L\'humidificateur travaillera plus fort. Vérifiez le tampon régulièrement et maintenez 30–35% pour protéger les planchers.' },
+        en: { title:'Very dry outdoor air', detail:'Humidifier will work harder. Check the pad regularly and maintain 30–35% to protect wood floors.' }
+    };
+    return null;
+}
+
+// ── TABS ──────────────────────────────────────────────────────────────
+function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    currentPage = name;
+    localStorage.setItem('mcnabb-page', name);
+
+    if (name === 'collections') renderCollections();
+    if (name === 'watering')    renderWatering();
+    if (name === 'hvac')        fetchWeather();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── LANGUAGE ──────────────────────────────────────────────────────────
+function toggleLang() {
+    lang = lang === 'fr' ? 'en' : 'fr';
+    document.body.classList.toggle('french', lang === 'fr');
+    document.documentElement.lang = lang;
+    localStorage.setItem('mcnabb-lang', lang);
+    if (currentPage === 'collections') renderCollections();
+    if (currentPage === 'watering')    renderWatering();
+    if (currentPage === 'hvac')        renderHvac();
+}
+
+// ── HVAC MANUAL OVERRIDE ──────────────────────────────────────────────
+function showSettings(panelId, cardEl) {
+    document.querySelectorAll('.season-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+    cardEl.classList.add('selected');
+    const panel = document.getElementById(panelId);
+    if (!panel) return;
+    panel.classList.add('active');
+    setTimeout(() => {
+        const hh  = document.querySelector('.app-header').offsetHeight;
+        const top = panel.getBoundingClientRect().top + window.pageYOffset - hh - 14;
+        window.scrollTo({ top, behavior: 'smooth' });
+    }, 80);
+}
+
+// ── ACCORDION ─────────────────────────────────────────────────────────
+function toggleEdu(btn) {
+    btn.classList.toggle('open');
+    btn.nextElementSibling.classList.toggle('open');
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────
+function showModal(id) { const m=document.getElementById(id); if(m){m.classList.add('active');document.body.style.overflow='hidden';} }
+function closeModal(id){ const m=document.getElementById(id); if(m){m.classList.remove('active');document.body.style.overflow='';} }
+
+// ── INIT ──────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    // Restore language
+    const sl = localStorage.getItem('mcnabb-lang');
+    if (sl) {
+        lang = sl;
+        document.body.classList.toggle('french', lang==='fr');
+        document.documentElement.lang = lang;
     }
 
-    // ── EDUCATIONAL ACCORDION ─────────────────────────────────────────
-    function toggleEdu(btn) {
-        btn.classList.toggle('open');
-        btn.nextElementSibling.classList.toggle('open');
+    // Restore page
+    const sp = localStorage.getItem('mcnabb-page');
+    if (sp && sp !== 'collections') {
+        // Manually activate without triggering showPage (avoid double renders)
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('page-' + sp)?.classList.add('active');
+        document.getElementById('nav-' + sp)?.classList.add('active');
+        currentPage = sp;
     }
 
-    // ── MODAL ─────────────────────────────────────────────────────────
-    function showModal(id) {
-        const m = document.getElementById(id);
-        if (m) { m.classList.add('active'); document.body.style.overflow = 'hidden'; }
-    }
+    // Initial renders
+    renderCollections();
+    renderWatering();
+    fetchWeather();
 
-    function closeModal(id) {
-        const m = document.getElementById(id);
-        if (m) { m.classList.remove('active'); document.body.style.overflow = ''; }
-    }
-
-    // ── INIT ──────────────────────────────────────────────────────────
-    document.addEventListener('DOMContentLoaded', () => {
-        // Restore language preference (default: French)
-        const savedLang = localStorage.getItem('mcnabb-lang');
-        if (savedLang) {
-            lang = savedLang;
-            document.body.classList.toggle('french', lang === 'fr');
-            document.documentElement.lang = lang;
-        }
-        // body already has class="french" in HTML for instant correct render
-
-        // Restore tab
-        const savedTab = localStorage.getItem('mcnabb-tab');
-        if (savedTab) switchTab(savedTab);
-
+    // Periodic refresh (every 60s)
+    setInterval(() => {
         renderCollections();
-        setInterval(renderCollections, 60000); // refresh every minute
-    });
+        renderWatering();
+        if ((Date.now() - weatherAt) > WEATHER_TTL) fetchWeather();
+    }, 60000);
+});
 
-    // Close modals with Escape key
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.modal.active').forEach(m => {
-                m.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        }
-    });
-    </script>
+// Escape closes modals
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal.active').forEach(m => {
+            m.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    }
+});
+</script>
 </body>
 </html>
