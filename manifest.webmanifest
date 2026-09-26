@@ -1,0 +1,17 @@
+{
+  "name": "McNabb · Maison",
+  "short_name": "McNabb",
+  "description": "Collectes, arrosage et climat intérieur, Notre-Dame-de-l’Île-Perrot",
+  "lang": "fr-CA",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F1F4F7",
+  "theme_color": "#0F4863",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

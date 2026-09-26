@@ -1,1298 +1,1384 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="McNabb">
-    <meta name="theme-color" content="#5c6bc0">
-    <title>🏠 McNabb · NDIP 2026</title>
-    <style>
-    /* ── RESET & TOKENS ───────────────────────────────────────────── */
-    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="McNabb">
+<meta name="application-name" content="McNabb">
+<meta name="theme-color" content="#0F4863">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="Collectes, arrosage et climat intérieur de la maison, à Notre-Dame-de-l’Île-Perrot.">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>McNabb · Maison</title>
+<style>
+/* ============================================================
+   McNabb · Maison  (NDIP)
+   Palette tirée de l'icône : ciel, lagune, pré, argent.
+   ============================================================ */
+:root{
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --sky-950:#0A3347; --sky-900:#0F4863; --sky-800:#125A7C; --sky-700:#166486; --sky-600:#1F7AA3; --sky-500:#3195BA; --sky-300:#74B5DE; --sky-100:#E3F1F8;
+  --lagoon:#34ADA8; --meadow:#6DB54E; --grass:#A8D48D; --lime:#B4D442; --silver:#C2BEB7;
+  --bg:#F1F4F7; --card:#FFFFFF; --card-2:#F6F8FA;
+  --text:#0D2230; --text-2:#4E6272; --text-3:#8295A3;
+  --sep:rgba(13,34,48,.08); --sep-strong:rgba(13,34,48,.14);
+  --shadow:0 1px 2px rgba(13,34,48,.05),0 4px 16px rgba(13,34,48,.06);
+  --accent:#1F7AA3; --accent-strong:#166486;
+  --ok:#23864B; --ok-bg:#E3F4EA; --warn:#A96400; --warn-bg:#FDF0D8; --alert:#C0392B; --alert-bg:#FBE6E4;
+  --info:#1B6E94; --info-bg:#E2F0F7; --neutral:#5B6B78; --neutral-bg:#EDF1F4;
+  --bar-bg:rgba(250,251,252,.88); --bar-solid:#FAFBFC;
+  --hero:linear-gradient(180deg,#0F4863 0%,#166486 32%,#2A89B4 66%,#4FB3C3 100%);
+  --hero-night:linear-gradient(180deg,#061925 0%,#0B2C40 45%,#10405A 78%,#185A6A 100%);
+  --scrim:#0F4863; --compact-bg:rgba(15,72,99,.86);
+  --wave-grass:#A8D48D; --wave-line:#C2BEB7;
+  --lcd-bg:linear-gradient(180deg,#DCE7D8,#C6D5C1); --lcd-fg:#16261A; --lcd-bezel:#E3E8EC;
+  --step-bg:#E3F1F8; --step-fg:#166486;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#071119; --card:#0F1F2B; --card-2:#0B1822;
+    --text:#E7F0F6; --text-2:#A3B6C4; --text-3:#6F8595;
+    --sep:rgba(231,240,246,.08); --sep-strong:rgba(231,240,246,.15);
+    --shadow:0 0 0 .5px rgba(231,240,246,.07);
+    --accent:#74B5DE; --accent-strong:#9BCBEA;
+    --ok:#5BD08A; --ok-bg:rgba(46,158,91,.17); --warn:#F2B55B; --warn-bg:rgba(217,138,18,.17); --alert:#FF8A7E; --alert-bg:rgba(214,69,69,.19);
+    --info:#7CC4EA; --info-bg:rgba(31,122,163,.22); --neutral:#A3B6C4; --neutral-bg:rgba(163,182,196,.12);
+    --bar-bg:rgba(9,20,28,.86); --bar-solid:#09141C;
+    --hero:linear-gradient(180deg,#06202F 0%,#0B3550 42%,#125070 78%,#1A6878 100%);
+    --scrim:#06202F; --compact-bg:rgba(6,32,47,.88);
+    --wave-grass:#4F7E47; --wave-line:#6E7B80;
+    --lcd-bg:linear-gradient(180deg,#1B2B23,#13201A); --lcd-fg:#A9E8BC; --lcd-bezel:#1B2B37;
+    --step-bg:rgba(116,181,222,.16); --step-fg:#9BCBEA;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior-y:none}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{font:16px/1.42 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+a{color:var(--accent)}
+.num{font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
-    :root {
-        --primary:    #5c6bc0;
-        --primary-dk: #4a55a2;
-        --success:    #2e7d32;
-        --success-lt: #43a047;
-        --danger:     #c62828;
-        --danger-lt:  #ef5350;
-        --warn:       #e65100;
-        --info:       #01579b;
-        --bg:         linear-gradient(160deg, #5c6bc0 0%, #7b3fa0 100%);
-        --shadow-sm:  0 2px 12px rgba(0,0,0,.07);
-        --shadow-md:  0 6px 24px rgba(0,0,0,.12);
-        --r:          14px;
-        --r-lg:       20px;
-        --nav-h:      78px; /* bottom nav content height (before safe area) */
-    }
+/* ---------- pages & hero ---------- */
+.page{display:none;padding-bottom:calc(104px + var(--safe-b))}
+.page.on{display:block;animation:pageIn .26s ease both}
+@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{position:relative;color:#fff;background:var(--hero);padding:calc(var(--safe-t) + 8px) 20px 46px;overflow:hidden}
+.hero.night{background:var(--hero-night)}
+.hero-top,.hero-in{max-width:680px;margin:0 auto}
+.hero-top{display:flex;align-items:center;justify-content:space-between;height:42px}
+.brand{display:flex;align-items:center;gap:9px;font-weight:650;font-size:15px;letter-spacing:.01em}
+.brand img{width:30px;height:30px;border-radius:8px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);object-fit:cover}
+.lang{height:30px;min-width:46px;padding:0 12px;border-radius:15px;background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:13px;letter-spacing:.05em}
+.lang:active{background:rgba(255,255,255,.34)}
+.lt{font-size:34px;line-height:1.08;font-weight:800;letter-spacing:-.022em;margin-top:10px}
+.hs{font-size:15.5px;opacity:.88;margin-top:3px}
+.wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:30px;display:block}
+.w-grass{fill:var(--wave-grass)} .w-bg{fill:var(--bg)} .w-line{fill:none;stroke:var(--wave-line);stroke-width:1.6}
 
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-        background: var(--bg);
-        min-height: 100vh;
-        color: #1a1a2e;
-        -webkit-font-smoothing: antialiased;
-    }
+/* weather in hero */
+.wx{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-top:16px}
+.wx-t{font-size:66px;font-weight:250;line-height:.92;letter-spacing:-.04em}
+.wx-r{text-align:right;min-width:0}
+.wx-cond{font-size:17px;font-weight:650}
+.wx-meta{font-size:14px;opacity:.9;margin-top:3px;line-height:1.4}
+.wx-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.wchip{background:rgba(255,255,255,.17);border-radius:10px;padding:5px 10px;font-size:13px;font-weight:650;white-space:nowrap}
+.wx-upd{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;opacity:.8;color:#fff;padding:4px 0}
+.wx-upd svg{width:14px;height:14px}
+.wx-msg{margin-top:14px;font-size:14.5px;opacity:.92;line-height:1.4}
 
-    /* ── LANGUAGE ──────────────────────────────────────────────────── */
-    .lang-fr { display: none; }
-    body.french .lang-en { display: none; }
-    body.french .lang-fr { display: initial; }
+/* ---------- layout ---------- */
+.wrap{max-width:680px;margin:0 auto;padding:0 16px}
+.sec{display:flex;align-items:baseline;justify-content:space-between;margin:22px 4px 10px;gap:10px}
+.sec h2{font-size:21px;font-weight:760;letter-spacing:-.012em}
+.aside-btn{font-size:14px;font-weight:650;color:var(--accent);padding:4px 0}
+.stack>*+*{margin-top:10px}
+.card{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:14px}
+.foot{text-align:center;font-size:12px;color:var(--text-3);margin:28px 10px 6px;line-height:1.5}
 
-    /* ── HEADER ────────────────────────────────────────────────────── */
-    .app-header {
-        position: sticky; top: 0; z-index: 200;
-        background: rgba(255,255,255,.97);
-        backdrop-filter: saturate(180%) blur(20px);
-        -webkit-backdrop-filter: saturate(180%) blur(20px);
-        padding: max(env(safe-area-inset-top),14px) 18px 13px;
-        display: flex; align-items: center; justify-content: space-between; gap: 10px;
-        box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 4px 14px rgba(0,0,0,.06);
-    }
+/* tones */
+.t-ok{--tbg:var(--ok-bg);--tfg:var(--ok);--cbg:var(--ok-bg);--cfg:var(--ok)}
+.t-warn{--tbg:var(--warn-bg);--tfg:var(--warn);--cbg:var(--warn-bg);--cfg:var(--warn)}
+.t-alert{--tbg:var(--alert-bg);--tfg:var(--alert);--cbg:var(--alert-bg);--cfg:var(--alert)}
+.t-info{--tbg:var(--info-bg);--tfg:var(--info);--cbg:var(--info-bg);--cfg:var(--info)}
+.t-neutral{--tbg:var(--neutral-bg);--tfg:var(--neutral);--cbg:var(--neutral-bg);--cfg:var(--neutral)}
 
-    .brand { display: flex; align-items: center; gap: 11px; }
+/* action cards */
+.act{display:grid;grid-template-columns:44px minmax(0,1fr) auto;column-gap:12px;align-items:start}
+.tile{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-size:23px;line-height:1;background:var(--tbg,var(--neutral-bg));color:var(--tfg,var(--neutral))}
+.tile svg{width:24px;height:24px}
+.act h3{font-size:16px;font-weight:660;line-height:1.26;padding-top:1px}
+.act p{font-size:14px;color:var(--text-2);margin-top:3px;line-height:1.4}
+.chip-line{margin-top:6px}
+.act .actions{grid-column:2/-1;display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
+.act.is-done{opacity:.62}
+.act.is-done .tile{background:var(--ok-bg);color:var(--ok)}
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:720;padding:4px 9px;border-radius:999px;white-space:nowrap;background:var(--cbg,var(--neutral-bg));color:var(--cfg,var(--neutral))}
+.btn{height:36px;padding:0 14px;border-radius:11px;font-weight:650;font-size:14px;background:var(--neutral-bg);color:var(--text);display:inline-flex;align-items:center;gap:6px;transition:transform .12s}
+.btn svg{width:16px;height:16px}
+.btn.pri{background:var(--sky-600);color:#fff}
+.btn.ghost{background:none;color:var(--text-3);padding:0 6px}
+.btn:active{transform:scale(.96)}
+.btn.block{width:100%;justify-content:center;height:46px;border-radius:13px;font-size:15.5px}
+.empty{text-align:center;padding:22px 14px}
+.empty .e{font-size:34px}
+.empty b{display:block;font-size:17px;margin-top:6px}
+.empty span{display:block;color:var(--text-2);font-size:14px;margin-top:2px}
 
-    .brand-icon {
-        width: 38px; height: 38px;
-        background: var(--bg);
-        border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.3em;
-        box-shadow: 0 2px 8px rgba(92,107,192,.35);
-        flex-shrink: 0;
-    }
+/* settings summary rows */
+.rows{padding:2px 0;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;width:100%;text-align:left}
+.row+.row{border-top:.5px solid var(--sep)}
+.row:active{background:var(--neutral-bg)}
+.ri{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--info-bg);color:var(--info);flex:0 0 auto}
+.ri svg{width:20px;height:20px}
+.rl{flex:1;min-width:0}
+.rl b{display:block;font-size:15px;font-weight:650}
+.rl span{display:block;font-size:13.5px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chev{width:15px;height:15px;color:var(--text-3);flex:0 0 auto}
 
-    .brand-name { font-size: 1.1em; font-weight: 700; color: #1d1d1f; letter-spacing: -.3px; }
-    .brand-sub  { font-size: .72em; color: #86868b; font-weight: 500; margin-top: 1px; }
+/* week strip */
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.day{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:8px 0 9px;min-height:98px;display:flex;flex-direction:column;align-items:center}
+.day .dn{font-size:11px;font-weight:720;color:var(--text-3);text-transform:uppercase;letter-spacing:.03em}
+.day .dd{font-size:18px;font-weight:720;margin:1px 0 6px}
+.day .ev{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:15px;line-height:1.1}
+.day .ev small{font-size:10px;font-weight:700;color:var(--text-3)}
+.day.today{background:linear-gradient(180deg,var(--sky-700),var(--sky-600));color:#fff}
+.day.today .dn,.day.today .ev small{color:rgba(255,255,255,.82)}
 
-    .lang-btn {
-        background: linear-gradient(135deg, var(--primary), var(--primary-dk));
-        color: white; border: none;
-        padding: 8px 15px; border-radius: 20px;
-        font-size: .8em; font-weight: 700;
-        cursor: pointer; white-space: nowrap; flex-shrink: 0;
-        box-shadow: 0 2px 8px rgba(92,107,192,.35);
-        transition: transform .15s, opacity .15s;
-    }
-    .lang-btn:active { transform: scale(.93); opacity: .9; }
+/* calendar */
+.next{display:flex;gap:10px;overflow-x:auto;padding:2px 16px 8px;margin:0 -16px;scroll-padding:0 16px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.next::-webkit-scrollbar{display:none}
+.nx{flex:0 0 auto;min-width:138px;scroll-snap-align:start;background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:12px 13px;text-align:left}
+.nx .ic{font-size:23px;line-height:1}
+.nx b{display:block;font-size:14.5px;font-weight:660;margin-top:8px}
+.nx span{display:block;font-size:13px;color:var(--text-2);margin-top:1px}
+.nx .chip{margin-top:8px}
+.wk{margin-top:18px}
+.wk h3{font-size:12.5px;font-weight:720;text-transform:uppercase;letter-spacing:.07em;color:var(--text-3);margin:0 6px 8px}
+.list{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.aday{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;padding:12px 14px;align-items:start;scroll-margin-top:calc(var(--safe-t) + 60px)}
+.aday+.aday{border-top:.5px solid var(--sep)}
+.aday .dt{text-align:center;padding-top:2px}
+.aday .dt .w{font-size:11px;font-weight:720;color:var(--text-3);text-transform:uppercase}
+.aday .dt .n{font-size:22px;font-weight:720;line-height:1.1}
+.aday.is-today .dt .n,.aday.is-today .dt .w{color:var(--accent)}
+.aday .lbl{font-size:12px;color:var(--accent);margin-bottom:6px;font-weight:720;text-transform:uppercase;letter-spacing:.05em}
+.aday.flash{animation:flash 1.4s ease}
+@keyframes flash{0%,40%{background:var(--info-bg)}100%{background:transparent}}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;background:var(--card-2);font-size:14px;font-weight:620;box-shadow:inset 0 0 0 .5px var(--sep-strong)}
+.pill small{font-weight:500;color:var(--text-2);font-size:12.5px}
+.pill.water{background:var(--info-bg);color:var(--info);box-shadow:none}
+.pill.water small{color:var(--info);opacity:.85}
+.banner{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:14px;background:var(--warn-bg);color:var(--warn);font-size:14px;line-height:1.42;font-weight:560;margin-top:14px}
 
-    /* ── BOTTOM NAV ────────────────────────────────────────────────── */
-    .bottom-nav {
-        position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-        background: rgba(255,255,255,.97);
-        backdrop-filter: saturate(180%) blur(20px);
-        -webkit-backdrop-filter: saturate(180%) blur(20px);
-        border-top: 1px solid rgba(0,0,0,.09);
-        display: flex;
-        padding-bottom: env(safe-area-inset-bottom);
-        box-shadow: 0 -4px 20px rgba(0,0,0,.09);
-    }
+/* accordions */
+details.acc{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+details.acc>summary{list-style:none;padding:15px 16px;font-weight:660;font-size:15.5px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+details.acc>summary::-webkit-details-marker{display:none}
+details.acc>summary::after{content:"";flex:0 0 auto;width:8px;height:8px;border-right:2px solid var(--text-3);border-bottom:2px solid var(--text-3);transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+details.acc[open]>summary::after{transform:rotate(-135deg) translateY(-2px)}
+.acc-body{padding:0 16px 16px;color:var(--text-2);font-size:14.5px;line-height:1.5}
+.acc-body p+p,.acc-body ul+p,.acc-body p+ul{margin-top:10px}
+.acc-body ul{padding-left:18px}
+.acc-body li+li{margin-top:6px}
+.acc-body b{color:var(--text)}
+details.inner{box-shadow:none;background:var(--card-2);border-radius:14px;margin-top:12px}
+details.inner>summary{padding:12px 14px;font-size:14.5px}
+details.inner .acc-body{padding:0 14px 14px}
 
-    /* 2 tabs → each button is half the screen width — big, easy to tap */
-    .nav-btn {
-        flex: 1; background: none; border: none;
-        padding: 14px 8px 10px;
-        display: flex; flex-direction: column; align-items: center; gap: 4px;
-        cursor: pointer; color: #8e8e93;
-        font-size: .76em; font-weight: 600;
-        letter-spacing: .1px;
-        transition: color .2s;
-        position: relative;
-    }
-    .nav-icon { font-size: 1.85em; transition: transform .2s; line-height: 1; }
-    .nav-btn.active { color: var(--primary); }
-    .nav-btn.active .nav-icon { transform: translateY(-2px); }
-    .nav-btn:active .nav-icon { transform: scale(.88); }
+/* climate */
+.dev-h{display:flex;align-items:center;gap:12px}
+.dev-h .tile{width:40px;height:40px;border-radius:12px}
+.dev-h .tile svg{width:22px;height:22px}
+.dev-h .nm{flex:1;min-width:0}
+.dev-h b{display:block;font-size:17px;font-weight:720}
+.dev-h span{display:block;font-size:13px;color:var(--text-3)}
+.lcd{margin:16px 4px 14px;display:flex;align-items:center;gap:16px;padding:12px 16px;border-radius:14px;background:var(--lcd-bg);color:var(--lcd-fg);box-shadow:0 0 0 5px var(--lcd-bezel),inset 0 1px 4px rgba(0,0,0,.2);font-variant-numeric:tabular-nums}
+.lcd .m{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:760;letter-spacing:.06em;text-transform:uppercase}
+.lcd .m svg{width:34px;height:34px}
+.lcd .sp{font-size:10px;font-weight:760;letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.lcd .sp b{display:block;font-size:28px;line-height:1.05}
+.lcd .rh{margin-left:auto;text-align:right;font-size:10px;font-weight:760;letter-spacing:.06em;text-transform:uppercase}
+.lcd .rh b{display:block;font-size:36px;line-height:1;font-weight:720;letter-spacing:-.02em}
+.lcd .rh b small{font-size:18px;margin-left:1px}
+.lcd.big-only{justify-content:space-between}
+.lcd .note{font-size:12.5px;font-weight:650;text-transform:none;letter-spacing:0;opacity:.85;max-width:52%;text-align:left;line-height:1.3}
+.why{font-size:14.5px;color:var(--text-2);line-height:1.46}
+.from{font-size:13px;color:var(--text-3);margin-top:8px}
+.dev-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.dev-actions:empty{display:none}
+ol.steps{list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:5px 0 5px 34px;font-size:14.5px;line-height:1.42;color:var(--text)}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:5px;width:24px;height:24px;border-radius:12px;background:var(--step-bg);color:var(--step-fg);font-size:13px;font-weight:760;display:grid;place-items:center}
+kbd{display:inline-block;min-width:24px;padding:0 6px;border-radius:6px;background:var(--neutral-bg);box-shadow:inset 0 -1px 0 var(--sep-strong);font:760 12.5px/1.6 inherit;text-align:center;color:var(--text)}
+.tipline{font-size:13.5px;color:var(--text-2);margin-top:8px}
+.out-top{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.out-top .big{font-size:40px;font-weight:300;line-height:1;letter-spacing:-.03em}
+.out-top .facts{text-align:right;font-size:13.5px;color:var(--text-2);line-height:1.5}
+.out-top .facts b{color:var(--text);font-weight:680}
+.meter-wrap{margin:18px 2px 0}
+.meter{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,#7CC0E6 0%,#86CF95 38%,#86CF95 44%,#F0CD58 56%,#F3A04D 70%,#E8705A 84%,#D8465A 100%)}
+.mk{position:absolute;top:50%;width:20px;height:20px;border-radius:50%;transform:translate(-50%,-50%);background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.35);border:4px solid var(--text)}
+.mk.house{width:14px;height:14px;border:3px solid var(--accent)}
+.mlabels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-top:8px;font-weight:650}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--text-2);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.verdict{margin-top:12px;font-size:14.5px;font-weight:600;line-height:1.4}
+.chart{margin-top:14px}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart .ct{font-size:12.5px;font-weight:650;color:var(--text-3);margin-bottom:6px}
+.b-hum{fill:var(--warn-bg)} .b-mid{fill:var(--neutral-bg)} .gl{stroke:var(--sep-strong);stroke-width:1}
+.cl{fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.cdot{fill:var(--accent);stroke:var(--card);stroke-width:2.5}
+.tx{fill:var(--text-3);font-size:10.5px;font-weight:650;font-family:inherit}
+.tipbox{margin-top:12px;padding:11px 13px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-size:14px;font-weight:600;line-height:1.4}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.seg button{border-radius:11px;padding:10px 8px;background:var(--neutral-bg);font-size:13.5px;font-weight:620;line-height:1.28}
+.seg button.on{background:var(--sky-600);color:#fff}
+.energy{margin-top:12px;font-size:14.5px;color:var(--text-2);line-height:1.46}
+.energy p+p{margin-top:8px}
+table.ref{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+table.ref th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);font-weight:720;padding:6px 6px 6px 0}
+table.ref td{padding:8px 6px 8px 0;border-top:.5px solid var(--sep);vertical-align:top;color:var(--text)}
+table.ref+p{margin-top:10px}
+.mi{padding:13px 14px;scroll-margin-top:calc(var(--safe-t) + 60px)}
+.card{scroll-margin-top:calc(var(--safe-t) + 56px)}
+.mi+.mi{border-top:.5px solid var(--sep)}
+.mi-h{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.mi-h b{font-size:15px;font-weight:660}
+.mi .sub{font-size:13px;color:var(--text-2);margin-top:2px}
+.mi .ctl{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.mi input[type=date]{height:36px;border-radius:11px;border:0;background:var(--neutral-bg);color:var(--text);padding:0 10px;font:inherit;font-size:14px;color-scheme:light dark}
+.mi .ctl a{font-size:14px;font-weight:650;text-decoration:none;padding:0 4px}
+.mi .other{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--text-3);font-weight:600}
+.mi .other input{flex:0 1 auto;height:32px;font-size:13.5px}
 
-    /* Active underline pill */
-    .nav-btn::after {
-        content: '';
-        position: absolute; top: 0; left: 30%; right: 30%;
-        height: 3px; border-radius: 0 0 3px 3px;
-        background: var(--primary);
-        opacity: 0; transition: opacity .2s;
-    }
-    .nav-btn.active::after { opacity: 1; }
+/* bottom sheet */
+.sheet-wrap{position:fixed;inset:0;z-index:80}
+.sheet-wrap[hidden]{display:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(3,12,18,.45);animation:fade .2s ease both}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-width:680px;margin:0 auto;background:var(--card);border-radius:22px 22px 0 0;padding:10px 18px calc(18px + var(--safe-b));max-height:86vh;overflow-y:auto;animation:up .26s cubic-bezier(.2,.8,.2,1) both;box-shadow:0 -10px 40px rgba(0,0,0,.2)}
+.sheet .grab{width:38px;height:5px;border-radius:3px;background:var(--sep-strong);margin:0 auto 12px}
+.sheet h2{font-size:20px;font-weight:760}
+.sheet .lead{font-size:14px;color:var(--text-2);margin-top:4px;line-height:1.42}
+.rem{display:flex;gap:12px;align-items:flex-start;padding:12px 0}
+.rem+.rem{border-top:.5px solid var(--sep)}
+.rem .tile{width:36px;height:36px;font-size:18px;border-radius:10px}
+.rem .rt{flex:1;min-width:0}
+.rem b{display:block;font-size:15px;font-weight:650}
+.rem span{display:block;font-size:13px;color:var(--text-2);margin-top:1px}
+.rem a{font-size:13px;font-weight:650;white-space:nowrap;text-decoration:none;padding-top:2px}
+.sheet .btns{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.sheet .fine{font-size:12.5px;color:var(--text-3);margin-top:10px;line-height:1.4;text-align:center}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 
-    /* Alert dot */
-    .nav-dot {
-        width: 8px; height: 8px; border-radius: 50%;
-        position: absolute; top: 11px; right: calc(50% - 22px);
-        display: none; box-shadow: 0 0 0 2px white;
-    }
-    .nav-btn.has-green .nav-dot { display: block; background: #43a047; }
-    .nav-btn.has-blue  .nav-dot { display: block; background: #1976d2; }
-
-    /* ── LAYOUT ────────────────────────────────────────────────────── */
-    .page { display: none; animation: fadeUp .28s ease both; }
-    .page.active { display: block; }
-
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(8px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .pad {
-        padding: 16px 15px;
-        padding-bottom: calc(var(--nav-h) + max(env(safe-area-inset-bottom), 16px) + 14px);
-        max-width: 640px; margin: 0 auto;
-    }
-
-    /* ── SHARED ────────────────────────────────────────────────────── */
-    .date-line {
-        text-align: center; font-size: .82em;
-        color: rgba(255,255,255,.78); font-weight: 500;
-        margin-bottom: 13px;
-    }
-
-    .sec-label {
-        font-size: .7em; font-weight: 700;
-        text-transform: uppercase; letter-spacing: .9px;
-        color: rgba(255,255,255,.65);
-        margin: 16px 0 8px 2px;
-    }
-
-    /* Smart tip banner */
-    .smart-tip {
-        border-radius: var(--r); padding: 12px 13px;
-        display: flex; align-items: flex-start; gap: 10px;
-        margin-bottom: 13px; font-size: .85em; line-height: 1.55;
-        border-left: 4px solid; box-shadow: var(--shadow-sm);
-    }
-    .smart-tip.green  { background: linear-gradient(135deg,#e8f5e9,#f1f8e9); border-color: var(--success-lt); color: #1b5e20; }
-    .smart-tip.blue   { background: linear-gradient(135deg,#e3f2fd,#e1f5fe); border-color: #039be5; color: #01579b; }
-    .smart-tip.orange { background: linear-gradient(135deg,#fff3e0,#fff8e1); border-color: var(--warn); color: #bf360c; }
-    .smart-tip.red    { background: linear-gradient(135deg,#ffebee,#fce4ec); border-color: var(--danger-lt); color: #b71c1c; }
-    .st-icon  { font-size: 1.35em; flex-shrink: 0; line-height: 1; }
-    .st-title { font-weight: 700; margin-bottom: 2px; font-size: 1em; }
-    .st-detail{ font-size: .92em; opacity: .88; }
-
-    /* Alerts */
-    .alert {
-        padding: 12px 13px; border-radius: 11px; border-left: 4px solid;
-        margin: 10px 0 3px; font-size: .84em; line-height: 1.6;
-    }
-    .alert.warn { background: linear-gradient(135deg,#ffebee,#ffcdd2); border-color: var(--danger-lt); color: var(--danger); }
-    .alert.info { background: linear-gradient(135deg,#e3f2fd,#bbdefb); border-color: #039be5; color: var(--info); }
-
-    /* Buttons */
-    .btn {
-        display: flex; align-items: center; justify-content: center; gap: 7px;
-        border: none; padding: 14px; border-radius: 13px;
-        font-size: .95em; font-weight: 600; width: 100%;
-        cursor: pointer; transition: transform .15s, opacity .15s; margin-bottom: 11px;
-    }
-    .btn:active { transform: scale(.98); opacity: .9; }
-    .btn-green  { background: linear-gradient(135deg,var(--success),var(--success-lt)); color: white; box-shadow: 0 4px 14px rgba(46,125,50,.3); }
-    .btn-purple { background: linear-gradient(135deg,var(--primary),var(--primary-dk)); color: white; box-shadow: 0 4px 14px rgba(92,107,192,.3); }
-
-    /* Add-to-home strip */
-    .add-home {
-        background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.2);
-        border-radius: var(--r); padding: 11px 14px;
-        text-align: center; margin-bottom: 12px; color: white;
-    }
-    .add-home strong { font-size: .84em; display: block; margin-bottom: 2px; }
-    .add-home span   { font-size: .74em; opacity: .82; line-height: 1.5; }
-
-    /* Accordion */
-    .edu-card { background: white; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 12px; }
-    .edu-toggle {
-        width: 100%; background: none; border: none;
-        padding: 15px 16px;
-        display: flex; align-items: center; justify-content: space-between;
-        cursor: pointer; font-size: .94em; font-weight: 700; color: #1d1d1f;
-    }
-    .edu-toggle:active { background: #f9f9fb; }
-    .edu-tl { display: flex; align-items: center; gap: 7px; }
-    .edu-ch  { font-size: .68em; color: #86868b; transition: transform .3s; }
-    .edu-toggle.open .edu-ch { transform: rotate(180deg); }
-    .edu-body { display: none; padding: 0 16px 16px; }
-    .edu-body.open { display: block; animation: fadeUp .22s ease; }
-
-    /* ── SCHEDULE TAB ──────────────────────────────────────────────── */
-
-    /* Today hero card */
-    .today-card {
-        border-radius: var(--r-lg); padding: 20px;
-        margin-bottom: 13px; color: white; box-shadow: var(--shadow-md);
-    }
-    /* States */
-    .today-card.s-busy        { background: linear-gradient(135deg,#b71c1c,#c62828); }
-    .today-card.s-dual        { background: linear-gradient(135deg,#bf360c,#e64a19); }
-    .today-card.s-water-open  { background: linear-gradient(135deg,#1b5e20,#2e7d32); }
-    .today-card.s-water-soon  { background: linear-gradient(135deg,#0d47a1,#1565c0); }
-    .today-card.s-free        { background: linear-gradient(135deg,#2e7d32,#388e3c); }
-
-    .today-lbl {
-        font-size: .7em; font-weight: 800; text-transform: uppercase;
-        letter-spacing: 1px; opacity: .78; margin-bottom: 10px;
-    }
-
-    /* Section within today card */
-    .tc-section { }
-    .tc-section + .tc-section {
-        margin-top: 12px;
-        padding-top: 12px;
-        border-top: 1px solid rgba(255,255,255,.25);
-    }
-
-    .tc-sub-lbl {
-        font-size: .68em; font-weight: 700; text-transform: uppercase;
-        letter-spacing: .8px; opacity: .72; margin-bottom: 7px;
-        display: flex; align-items: center; gap: 5px;
-    }
-
-    .tc-message { font-size: .97em; font-weight: 600; opacity: .95; }
-
-    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
-    .pickup-chip {
-        display: inline-flex; align-items: center; gap: 6px;
-        background: rgba(255,255,255,.22); padding: 7px 12px;
-        border-radius: 9px; font-size: .9em; font-weight: 600;
-    }
-
-    .water-inline {
-        display: flex; align-items: center; gap: 8px;
-        font-size: .93em; font-weight: 600; opacity: .95;
-    }
-    .water-inline .wi-badge {
-        background: rgba(255,255,255,.22);
-        padding: 4px 10px; border-radius: 8px;
-        font-size: .85em; font-weight: 700;
-    }
-
-    /* Upcoming pickups */
-    .pickup-list { background: white; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
-    .pickup-row {
-        display: flex; align-items: center; padding: 13px 14px;
-        border-bottom: 1px solid #f0f0f5; transition: background .12s;
-    }
-    .pickup-row:last-child { border-bottom: none; }
-    .pickup-row:active { background: #f9f9fb; }
-
-    .pi-icon {
-        width: 41px; height: 41px; border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.25em; flex-shrink: 0; margin-right: 11px;
-    }
-    .pi-icon.recyclables { background: linear-gradient(135deg,#e3f2fd,#90caf9); }
-    .pi-icon.organics    { background: linear-gradient(135deg,#e8f5e9,#a5d6a7); }
-    .pi-icon.garbage     { background: linear-gradient(135deg,#fce4ec,#f48fb1); }
-    .pi-icon.bulkyItems  { background: linear-gradient(135deg,#fff3e0,#ffcc80); }
-    .pi-icon.leaves      { background: linear-gradient(135deg,#f9fbe7,#dce775); }
-    .pi-icon.cityMeeting { background: linear-gradient(135deg,#ede7f6,#b39ddb); }
-
-    .pi-info { flex: 1; min-width: 0; }
-    .pi-name { font-size: .91em; font-weight: 600; color: #1d1d1f; margin-bottom: 2px; }
-    .pi-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .pi-date { font-size: .77em; color: #6e6e73; }
-    .pi-water { font-size: .72em; color: #1976d2; font-weight: 600; }
-
-    .badge { font-size: .64em; font-weight: 700; padding: 2px 7px; border-radius: 20px; text-transform: uppercase; }
-    .badge.t  { background: #ffebee; color: #c62828; }
-    .badge.tm { background: #fff3e0; color: #e65100; }
-    .badge.sn { background: #fffde7; color: #f57f17; }
-
-    .pi-cd { font-size: .79em; font-weight: 600; color: #86868b; text-align: right; min-width: 50px; padding-left: 8px; }
-
-    /* Watering section (inside schedule tab) */
-    .water-section {
-        background: white; border-radius: var(--r-lg);
-        overflow: hidden; box-shadow: var(--shadow-sm);
-        margin-bottom: 12px;
-    }
-    .water-section-hdr {
-        padding: 14px 15px 12px;
-        border-bottom: 1px solid #f0f0f5;
-    }
-    .water-section-title {
-        font-size: .97em; font-weight: 700; color: #1d1d1f;
-        display: flex; align-items: center; gap: 6px;
-        margin-bottom: 2px;
-    }
-    .water-section-sub { font-size: .78em; color: #6e6e73; }
-
-    /* Week grid */
-    .week-grid {
-        display: grid; grid-template-columns: repeat(7,1fr); gap: 4px;
-        padding: 12px 11px; background: #fafafa;
-    }
-    .day-cell  { border-radius: 9px; padding: 9px 2px; text-align: center; }
-    .day-cell.wd  { background: linear-gradient(135deg,#c8e6c9,#a5d6a7); }
-    .day-cell.nwd { background: white; border: 1px solid #f0f0f0; }
-    .day-cell.now { box-shadow: 0 0 0 2.5px var(--primary); }
-
-    .dc-name  { font-size: .58em; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
-    .dc-emoji { font-size: 1em; margin-bottom: 2px; }
-    .dc-time  { font-size: .5em; font-weight: 700; opacity: .85; line-height: 1.3; }
-
-    .day-cell.wd  .dc-name { color: #1b5e20; }
-    .day-cell.nwd .dc-name { color: #bdbdbd; }
-
-    /* Manual + permit footer */
-    .water-footer {
-        padding: 10px 15px 0;
-    }
-    .manual-note {
-        display: flex; align-items: center; gap: 8px;
-        padding: 10px 0; border-top: 1px solid #f0f0f5;
-        font-size: .83em; color: #388e3c; font-weight: 600;
-    }
-
-    /* ── HVAC / WEATHER ────────────────────────────────────────────── */
-    .weather-widget {
-        border-radius: var(--r-lg); padding: 18px 20px;
-        margin-bottom: 13px; color: white; box-shadow: var(--shadow-md);
-        display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
-    .ww-left  { display: flex; flex-direction: column; align-items: flex-start; }
-    .ww-emoji { font-size: 1.9em; margin-bottom: 3px; }
-    .ww-temp  { font-size: 2.5em; font-weight: 800; letter-spacing: -1px; line-height: 1; }
-    .ww-feels { font-size: .75em; opacity: .72; margin-top: 3px; }
-    .ww-right { text-align: right; flex-shrink: 0; }
-    .ww-place { font-size: .68em; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; opacity: .7; margin-bottom: 5px; }
-    .ww-cond  { font-size: .85em; font-weight: 600; margin-bottom: 8px; }
-    .ww-suggest {
-        background: rgba(255,255,255,.2); border-radius: 9px;
-        padding: 6px 10px; font-size: .8em; font-weight: 700;
-        text-align: center; white-space: nowrap;
-    }
-    .ww-bg-deep  { background: linear-gradient(135deg,#0d1b2a,#1a237e); }
-    .ww-bg-cold  { background: linear-gradient(135deg,#1a237e,#283593); }
-    .ww-bg-mild  { background: linear-gradient(135deg,#1b5e20,#2e7d32); }
-    .ww-bg-warm  { background: linear-gradient(135deg,#e65100,#bf360c); }
-    .ww-loading  {
-        background: rgba(255,255,255,.14); border-radius: var(--r-lg);
-        padding: 20px; text-align: center; color: rgba(255,255,255,.7);
-        font-size: .9em; margin-bottom: 13px;
-    }
-
-    /* Season override hint */
-    .season-override-hdr {
-        font-size: .72em; font-weight: 600;
-        color: rgba(255,255,255,.55);
-        text-align: center;
-        margin: 6px 0 10px;
-        letter-spacing: .15px;
-    }
-
-    /* Season grid */
-    .season-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-    .season-card {
-        border-radius: var(--r-lg); padding: 16px 10px;
-        text-align: center; box-shadow: var(--shadow-sm); cursor: pointer;
-        transition: all .25s cubic-bezier(.4,0,.2,1); border: 2.5px solid transparent;
-        min-height: 118px; display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-    }
-    .season-card:active { transform: scale(.97); }
-    .season-card.selected {
-        border-color: var(--primary);
-        box-shadow: 0 8px 26px rgba(92,107,192,.25);
-        transform: translateY(-2px);
-    }
-    .sc-emoji { font-size: 2.1em; margin-bottom: 6px; }
-    .sc-title { font-weight: 700; font-size: .9em; color: #1d1d1f; margin-bottom: 3px; }
-    .sc-range { font-size: .74em; color: #555; }
-    .s-dw { background: linear-gradient(135deg,#e3f2fd,#bbdefb); }
-    .s-mw { background: linear-gradient(135deg,#e8eaf6,#c5cae9); }
-    .s-sf { background: linear-gradient(135deg,#e8f5e9,#c8e6c9); }
-    .s-su { background: linear-gradient(135deg,#fff8e1,#ffe082); }
-
-    /* Settings panels */
-    .settings-panel {
-        background: white; border-radius: var(--r-lg);
-        padding: 18px; margin-bottom: 12px;
-        box-shadow: var(--shadow-md); display: none;
-    }
-    .settings-panel.active { display: block; animation: slideDown .28s cubic-bezier(.4,0,.2,1); }
-    @keyframes slideDown {
-        from { opacity:0; transform:translateY(-12px); }
-        to   { opacity:1; transform:translateY(0); }
-    }
-    .panel-title { font-size: 1.12em; font-weight: 700; color: #1d1d1f; text-align: center; margin-bottom: 13px; }
-    .setting-row {
-        background: #f8f8fa; padding: 12px 13px;
-        border-radius: 12px; margin-bottom: 8px; border-left: 4px solid var(--primary);
-    }
-    .s-label {
-        font-size: .71em; font-weight: 700; text-transform: uppercase;
-        letter-spacing: .5px; color: #6e6e73; margin-bottom: 3px;
-    }
-    .s-value { font-size: 1.6em; font-weight: 700; color: var(--primary); line-height: 1.1; }
-    .s-note  { font-size: .78em; color: #86868b; margin-top: 3px; }
-    .hbar-wrap { margin-top: 7px; }
-    .hbar { height: 4px; background: #e0e0e0; border-radius: 2px; overflow: hidden; }
-    .hbar-fill {
-        height: 100%; border-radius: 2px;
-        background: linear-gradient(90deg, var(--primary), #7b3fa0);
-        transition: width .4s ease;
-    }
-
-    /* HVAC educational */
-    .golden-rule {
-        background: linear-gradient(135deg,#fffde7,#fff9c4);
-        border-left: 4px solid #f9a825;
-        padding: 12px 13px; border-radius: 11px; margin-bottom: 11px;
-    }
-    .gr-title  { font-size: .88em; font-weight: 700; color: #e65100; margin-bottom: 3px; }
-    .gr-detail { font-size: .82em; color: #bf360c; line-height: 1.5; }
-    .sys-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 11px; }
-    .sys-card  { background: #f8f8fa; border-radius: 10px; padding: 11px; }
-    .sys-card.hum { border-top: 3px solid #1976d2; }
-    .sys-card.hrv { border-top: 3px solid #f57c00; }
-    .sys-card h4  { font-size: .83em; font-weight: 700; color: #1d1d1f; margin-bottom: 7px; }
-    .sys-row { font-size: .78em; color: #6e6e73; line-height: 1.6; }
-    .sys-row strong { color: #1d1d1f; }
-    .dont-box {
-        background: linear-gradient(135deg,#ffebee,#ffcdd2);
-        border-left: 4px solid var(--danger-lt);
-        padding: 12px 13px; border-radius: 11px;
-    }
-    .dont-box h4 { font-size: .85em; font-weight: 700; color: var(--danger); margin-bottom: 7px; }
-    .dont-box ul { margin-left: 16px; }
-    .dont-box li { font-size: .79em; color: var(--danger); line-height: 1.65; }
-
-    /* ── MODAL ─────────────────────────────────────────────────────── */
-    .modal {
-        display: none; position: fixed; inset: 0;
-        background: rgba(0,0,0,.55);
-        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        z-index: 300; align-items: flex-end; justify-content: center;
-    }
-    .modal.active { display: flex; }
-    .modal-sheet {
-        background: white; border-radius: 22px 22px 0 0;
-        padding: 20px 20px max(env(safe-area-inset-bottom),22px);
-        width: 100%; max-width: 640px; max-height: 88vh; overflow-y: auto;
-        box-shadow: 0 -4px 40px rgba(0,0,0,.18);
-        animation: sheetUp .25s cubic-bezier(.4,0,.2,1);
-    }
-    @keyframes sheetUp { from { transform:translateY(40px);opacity:0; } to { transform:translateY(0);opacity:1; } }
-    .modal-handle { width: 34px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 15px; }
-    .modal-hdr {
-        display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f5;
-    }
-    .modal-hdr h2 { font-size: 1.18em; font-weight: 700; color: #1d1d1f; }
-    .close-btn {
-        background: #f2f2f7; color: #6e6e73; border: none;
-        width: 30px; height: 30px; border-radius: 50%; font-size: .9em;
-        cursor: pointer; display: flex; align-items: center; justify-content: center;
-        font-weight: 700; transition: background .13s;
-    }
-    .close-btn:active { background: #e5e5ea; }
-    .maint-card {
-        background: #f8f8fa; border-radius: var(--r); padding: 14px; margin-bottom: 10px;
-        border-left: 4px solid var(--success-lt);
-    }
-    .maint-card:last-child { margin-bottom: 0; }
-    .maint-card h4 { font-size: .93em; font-weight: 700; color: #1d1d1f; margin-bottom: 5px; }
-    .maint-badge {
-        background: var(--success); color: white;
-        padding: 3px 9px; border-radius: 20px;
-        font-size: .71em; font-weight: 600; display: inline-block; margin-bottom: 7px;
-    }
-    .maint-card p { font-size: .83em; color: #6e6e73; line-height: 1.5; margin-bottom: 9px; }
-    .buy-link {
-        display: inline-flex; align-items: center; gap: 5px;
-        background: var(--primary); color: white; padding: 7px 13px;
-        border-radius: 9px; text-decoration: none; font-size: .8em; font-weight: 600;
-    }
-    .buy-link:active { opacity: .8; }
-
-    /* ── RESPONSIVE ────────────────────────────────────────────────── */
-    @media (min-width: 480px) {
-        .modal { align-items: center; padding: 20px; }
-        .modal-sheet { border-radius: 22px; }
-    }
-    @media (max-width: 360px) {
-        .pad { padding-left: 11px; padding-right: 11px; }
-        .sys-grid { grid-template-columns: 1fr; }
-        .dc-time { font-size: .46em; }
-    }
-    </style>
+/* chrome */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;justify-content:center;gap:4px;padding:7px 12px calc(7px + var(--safe-b));background:var(--bar-bg);-webkit-backdrop-filter:saturate(180%) blur(22px);backdrop-filter:saturate(180%) blur(22px);border-top:.5px solid var(--sep-strong)}
+.tab{flex:1;max-width:170px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0 3px;color:var(--text-3);font-size:11.5px;font-weight:660;position:relative;border-radius:14px}
+.tab svg{width:28px;height:28px}
+.tab.on{color:var(--accent)}
+.tab:active{background:var(--neutral-bg)}
+.badge{position:absolute;top:1px;left:calc(50% + 9px);min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:#E5484D;color:#fff;font-size:11.5px;font-weight:720;line-height:19px;text-align:center;box-shadow:0 0 0 2px var(--bar-solid)}
+.scrim{position:fixed;top:0;left:0;right:0;height:var(--safe-t);background:var(--scrim);z-index:55}
+.compact{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:var(--safe-t);background:var(--compact-bg);-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);color:#fff;text-align:center;transform:translateY(-110%);transition:transform .22s ease}
+.compact .ttl{display:block;height:44px;line-height:44px;font-size:17px;font-weight:660}
+body.scrolled .compact{transform:none}
+.toast{position:fixed;left:50%;bottom:calc(100px + var(--safe-b));transform:translate(-50%,16px);opacity:0;background:rgba(13,34,48,.94);color:#fff;padding:10px 16px;border-radius:14px;font-size:14px;font-weight:650;z-index:90;transition:opacity .22s,transform .22s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
 </head>
-<body class="french">
-
-    <!-- ── HEADER ──────────────────────────────────────────────────── -->
-    <header class="app-header">
-        <div class="brand">
-            <div class="brand-icon">🏠</div>
-            <div>
-                <div class="brand-name">McNabb</div>
-                <div class="brand-sub">NDIP · 2026</div>
-            </div>
-        </div>
-        <button class="lang-btn" onclick="toggleLang()">
-            <span class="lang-en">🇫🇷 FR</span>
-            <span class="lang-fr">🇨🇦 EN</span>
-        </button>
-    </header>
-
-    <!-- ── PAGES ───────────────────────────────────────────────────── -->
-
-    <!-- SCHEDULE (Collections + Watering merged) -->
-    <div class="page active" id="page-schedule">
-        <div class="pad">
-            <div class="date-line" id="sched-date"></div>
-            <div id="sched-render">
-                <p style="text-align:center;color:rgba(255,255,255,.7);padding:40px 0">
-                    ⏳ <span class="lang-en">Loading…</span><span class="lang-fr">Chargement…</span>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- HVAC -->
-    <div class="page" id="page-hvac">
-        <div class="pad">
-            <div id="weather-card" class="ww-loading">
-                🌡️ <span class="lang-en">Fetching weather…</span><span class="lang-fr">Chargement météo…</span>
-            </div>
-            <div id="hvac-smart-tip"></div>
-
-            <!-- Settings panels show first — auto-selected by weather above -->
-            <!-- Deep Winter -->
-            <div id="panel-dw" class="settings-panel">
-                <div class="panel-title"><span class="lang-en">🥶 Deep Winter Settings</span><span class="lang-fr">🥶 Réglages Grand Froid</span></div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                    <div class="s-value">30–35%</div>
-                    <div class="s-note"><span class="lang-en">Mode: Manual</span><span class="lang-fr">Mode: Manuel</span></div>
-                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                    <div class="s-value">40–45%</div>
-                    <div class="s-note"><span class="lang-en">Always 10–15% above humidifier (prevents fighting)</span><span class="lang-fr">Toujours 10–15% au-dessus de l'humidificateur</span></div>
-                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                    <div class="s-value"><span class="lang-en">🕒 Timer · Speed 1</span><span class="lang-fr">🕒 Minuterie · Vitesse 1</span></div>
-                    <div class="s-note"><span class="lang-en">Timer limits cold air infiltration in extreme cold</span><span class="lang-fr">La minuterie limite l'infiltration d'air froid extrême</span></div>
-                </div>
-                <div class="alert warn">
-                    <strong><span class="lang-en">⚠️ Never below 30% — protects hardwood floors. If condensation appears on windows, reduce by 5%.</span><span class="lang-fr">⚠️ Jamais sous 30% — protège les planchers. Si condensation sur les fenêtres, réduisez de 5%.</span></strong>
-                </div>
-            </div>
-
-            <!-- Mild Winter -->
-            <div id="panel-mw" class="settings-panel">
-                <div class="panel-title"><span class="lang-en">❄️ Mild Winter Settings</span><span class="lang-fr">❄️ Réglages Hiver Doux</span></div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                    <div class="s-value">30–35%</div>
-                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:35%"></div></div></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                    <div class="s-value">40–45%</div>
-                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:45%"></div></div></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                    <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
-                    <div class="s-note"><span class="lang-en">Continuous heat-recovery exchange is appropriate at this range</span><span class="lang-fr">L'échange continu est approprié à cette plage de température</span></div>
-                </div>
-            </div>
-
-            <!-- Spring / Fall -->
-            <div id="panel-sf" class="settings-panel">
-                <div class="panel-title"><span class="lang-en">🌿 Spring / Fall Settings</span><span class="lang-fr">🌿 Réglages Printemps/Automne</span></div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                    <div class="s-value">30–40%</div>
-                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:40%"></div></div></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                    <div class="s-value">45–50%</div>
-                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:50%"></div></div></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                    <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
-                </div>
-                <div class="alert info">
-                    <span class="lang-en">💡 On mild sunny days (10–18°C), consider opening windows instead of running the HRV at full speed.</span>
-                    <span class="lang-fr">💡 Par beau temps doux (10–18°C), entrouvrir les fenêtres plutôt que faire tourner le VRC à pleine vitesse.</span>
-                </div>
-            </div>
-
-            <!-- Summer -->
-            <div id="panel-su" class="settings-panel">
-                <div class="panel-title"><span class="lang-en">☀️ Summer Settings</span><span class="lang-fr">☀️ Réglages Été</span></div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">GeneralAire Humidifier</span><span class="lang-fr">Humidificateur GeneralAire</span></div>
-                    <div class="s-value"><span class="lang-en">OFF</span><span class="lang-fr">FERMÉ</span></div>
-                    <div class="s-note"><span class="lang-en">AC already dehumidifies — running both wastes energy</span><span class="lang-fr">Le clim déshumidifie déjà — les deux simultanément gaspille de l'énergie</span></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes Controller — Humidity Step</span><span class="lang-fr">Contrôleur Aldes — Palier d'Humidité</span></div>
-                    <div class="s-value">55–60%</div>
-                    <div class="s-note"><span class="lang-en">HRV activates only if indoor humidity exceeds this</span><span class="lang-fr">Le VRC s'active seulement si l'humidité intérieure dépasse ce seuil</span></div>
-                    <div class="hbar-wrap"><div class="hbar"><div class="hbar-fill" style="width:60%"></div></div></div>
-                </div>
-                <div class="setting-row">
-                    <div class="s-label"><span class="lang-en">Aldes — Mode & Speed</span><span class="lang-fr">Aldes — Mode et Vitesse</span></div>
-                    <div class="s-value"><span class="lang-en">🔁 Exchange · Speed 1</span><span class="lang-fr">🔁 Échange · Vitesse 1</span></div>
-                </div>
-                <div class="alert warn">
-                    <strong><span class="lang-en">⚠️ Do NOT run the humidifier while AC is on.</span><span class="lang-fr">⚠️ N'utilisez PAS l'humidificateur lorsque le climatiseur fonctionne.</span></strong>
-                </div>
-            </div>
-
-            <!-- Season override grid — below the auto-selected settings -->
-            <div class="season-override-hdr">
-                <span class="lang-en">Conditions don't match? Tap to adjust:</span>
-                <span class="lang-fr">Conditions différentes? Appuyez pour ajuster:</span>
-            </div>
-
-            <div class="season-grid">
-                <div class="season-card s-dw" data-season="deep-winter" onclick="showSettings('panel-dw',this)">
-                    <div class="sc-emoji">🥶</div>
-                    <div class="sc-title"><span class="lang-en">Deep Winter</span><span class="lang-fr">Grand Froid</span></div>
-                    <div class="sc-range"><span class="lang-en">Below -15°C</span><span class="lang-fr">Sous -15°C</span></div>
-                </div>
-                <div class="season-card s-mw" data-season="mild-winter" onclick="showSettings('panel-mw',this)">
-                    <div class="sc-emoji">❄️</div>
-                    <div class="sc-title"><span class="lang-en">Mild Winter</span><span class="lang-fr">Hiver Doux</span></div>
-                    <div class="sc-range"><span class="lang-en">-15°C to 0°C</span><span class="lang-fr">-15°C à 0°C</span></div>
-                </div>
-                <div class="season-card s-sf" data-season="spring-fall" onclick="showSettings('panel-sf',this)">
-                    <div class="sc-emoji">🌿</div>
-                    <div class="sc-title"><span class="lang-en">Spring / Fall</span><span class="lang-fr">Printemps/Automne</span></div>
-                    <div class="sc-range"><span class="lang-en">0°C to 15°C</span><span class="lang-fr">0°C à 15°C</span></div>
-                </div>
-                <div class="season-card s-su" data-season="summer" onclick="showSettings('panel-su',this)">
-                    <div class="sc-emoji">☀️</div>
-                    <div class="sc-title"><span class="lang-en">Summer</span><span class="lang-fr">Été</span></div>
-                    <div class="sc-range"><span class="lang-en">Above 15°C</span><span class="lang-fr">Au-dessus de 15°C</span></div>
-                </div>
-            </div>
-
-            <button class="btn btn-green" onclick="showModal('modal-maint')">
-                🔧 <span class="lang-en">Maintenance Schedule &amp; Links</span><span class="lang-fr">Calendrier d'Entretien et Liens</span>
-            </button>
-
-            <div class="add-home">
-                <strong>📱 <span class="lang-en">Add to Home Screen</span><span class="lang-fr">Ajouter à l'Écran d'Accueil</span></strong>
-                <span class="lang-en">Tap Share ⎙ → "Add to Home Screen"</span>
-                <span class="lang-fr">Appuyez sur Partager ⎙ → « Sur l'écran d'accueil »</span>
-            </div>
-
-            <!-- Educational accordion -->
-            <div class="edu-card">
-                <button class="edu-toggle" onclick="toggleEdu(this)">
-                    <span class="edu-tl">🎓 <span class="lang-en">Understanding Your System</span><span class="lang-fr">Comprendre Votre Système</span></span>
-                    <span class="edu-ch">▼</span>
-                </button>
-                <div class="edu-body">
-                    <div class="golden-rule">
-                        <div class="gr-title"><span class="lang-en">⭐ The Golden Rule</span><span class="lang-fr">⭐ La Règle d'Or</span></div>
-                        <div class="gr-detail">
-                            <span class="lang-en">Aldes humidity step = GeneralAire setting + 10–15%<br>This gap prevents the two systems from fighting each other.</span>
-                            <span class="lang-fr">Palier Aldes = Réglage GeneralAire + 10–15%<br>Cet écart évite que les deux systèmes se combattent.</span>
-                        </div>
-                    </div>
-                    <div class="sys-grid">
-                        <div class="sys-card hum">
-                            <h4><span class="lang-en">💧 GeneralAire</span><span class="lang-fr">💧 GeneralAire</span></h4>
-                            <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">ADDS moisture</span><span class="lang-fr">AJOUTE l'humidité</span></div>
-                            <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Comfort + wood protection</span><span class="lang-fr">Confort + protection du bois</span></div>
-                        </div>
-                        <div class="sys-card hrv">
-                            <h4><span class="lang-en">🌬️ Aldes Air Exchanger</span><span class="lang-fr">🌬️ Échangeur d'air Aldes</span></h4>
-                            <div class="sys-row"><strong><span class="lang-en">Job: </span><span class="lang-fr">Rôle: </span></strong><span class="lang-en">Brings fresh air in + REMOVES excess moisture</span><span class="lang-fr">Apporte l'air frais + ENLÈVE l'excès d'humidité</span></div>
-                            <div class="sys-row"><strong><span class="lang-en">Purpose: </span><span class="lang-fr">But: </span></strong><span class="lang-en">Air quality + humidity safety valve</span><span class="lang-fr">Qualité de l'air + soupape de sécurité</span></div>
-                        </div>
-                    </div>
-                    <div class="dont-box">
-                        <h4>❌ <span class="lang-en">If You Match Both Settings (DON'T)</span><span class="lang-fr">Si Vous Les Réglez Pareil (À ÉVITER)</span></h4>
-                        <ul>
-                            <li><span class="lang-en">Humidifier adds moisture to reach 30%</span><span class="lang-fr">L'humidificateur monte à 30%</span></li>
-                            <li><span class="lang-en">HRV kicks in at 30% and removes it</span><span class="lang-fr">Le VRC s'active à 30% et l'enlève</span></li>
-                            <li><span class="lang-en">They fight → dry air + wasted energy + constant cycling</span><span class="lang-fr">Résultat: air sec + énergie gaspillée + cycles constants</span></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ── BOTTOM NAV (2 tabs) ──────────────────────────────────────── -->
-    <nav class="bottom-nav">
-        <button class="nav-btn active" id="nav-schedule" onclick="showPage('schedule')">
-            <div class="nav-dot"></div>
-            <span class="nav-icon">📅</span>
-            <span class="lang-en">Schedule</span><span class="lang-fr">Horaire</span>
-        </button>
-        <button class="nav-btn" id="nav-hvac" onclick="showPage('hvac')">
-            <div class="nav-dot"></div>
-            <span class="nav-icon">🌡️</span>
-            <span>HVAC</span>
-        </button>
-    </nav>
-
-    <!-- ── MAINTENANCE MODAL ────────────────────────────────────────── -->
-    <div id="modal-maint" class="modal" onclick="if(event.target===this)closeModal('modal-maint')">
-        <div class="modal-sheet">
-            <div class="modal-handle"></div>
-            <div class="modal-hdr">
-                <h2>🔧 <span class="lang-en">Maintenance Schedule</span><span class="lang-fr">Calendrier d'Entretien</span></h2>
-                <button class="close-btn" onclick="closeModal('modal-maint')">✕</button>
-            </div>
-            <div class="maint-card">
-                <h4>🌡️ <span class="lang-en">Furnace Filter</span><span class="lang-fr">Filtre de Fournaise</span></h4>
-                <span class="maint-badge"><span class="lang-en">Every 3 months</span><span class="lang-fr">Aux 3 mois</span></span>
-                <p><span class="lang-en">Replace regularly to maintain air quality and system efficiency.</span><span class="lang-fr">Remplacez régulièrement pour la qualité de l'air et l'efficacité du système.</span></p>
-                <a href="https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4" class="buy-link" target="_blank">🛒 <span class="lang-en">Buy Filters</span><span class="lang-fr">Acheter Filtres</span></a>
-            </div>
-            <div class="maint-card">
-                <h4>💧 <span class="lang-en">Humidifier Pad</span><span class="lang-fr">Tampon Humidificateur</span></h4>
-                <span class="maint-badge"><span class="lang-en">Annually (Sep/Oct)</span><span class="lang-fr">Annuellement (sept/oct)</span></span>
-                <p><span class="lang-en">Replace at the start of each heating season.</span><span class="lang-fr">Remplacez au début de chaque saison de chauffage.</span></p>
-                <a href="https://a.co/d/5AEBEDE" class="buy-link" target="_blank">🛒 <span class="lang-en">Buy Pad</span><span class="lang-fr">Acheter Tampon</span></a>
-            </div>
-            <div class="maint-card">
-                <h4>🌬️ <span class="lang-en">HRV Filter Cleaning</span><span class="lang-fr">Nettoyage des Filtres du VRC</span></h4>
-                <span class="maint-badge"><span class="lang-en">Every 6 months</span><span class="lang-fr">Aux 6 mois</span></span>
-                <p><span class="lang-en">Clean or replace HRV filters (typically Apr &amp; Oct). Inspect the heat-exchange core annually.</span><span class="lang-fr">Nettoyez ou remplacez les filtres du VRC (avr. &amp; oct.). Inspectez le noyau d'échange annuellement.</span></p>
-            </div>
-        </div>
-    </div>
+<body>
+<div class="scrim" aria-hidden="true"></div>
+<div class="compact" aria-hidden="true"><span class="ttl" id="compactTitle"></span></div>
+<main>
+  <section class="page" id="page-today"></section>
+  <section class="page" id="page-calendar"></section>
+  <section class="page" id="page-climate"></section>
+</main>
+<nav class="tabbar" id="tabbar" aria-label="Sections"></nav>
+<div class="sheet-wrap" id="sheet" hidden>
+  <div class="sheet-bg" data-a="sheetClose"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="grab"></div><div id="sheetBody"></div></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<noscript><p style="padding:24px">Activez JavaScript pour utiliser l’app.</p></noscript>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────
+(function () {
+'use strict';
+
+/* ================================================================
+   1. DONNÉES À METTRE À JOUR CHAQUE ANNÉE  /  YEARLY DATA UPDATE
+   ----------------------------------------------------------------
+   Source : https://www.ndip.org/calendrier-des-collectes
+   En décembre, ajoutez les dates 2027 (AAAA-MM-JJ) à chaque liste.
+   Vérifié contre le calendrier officiel 2026 de NDIP.
+   ================================================================ */
 const SCHEDULE = {
-    recyclables: ['2026-01-12','2026-01-26','2026-02-09','2026-02-23','2026-03-09','2026-03-23','2026-04-06','2026-04-20','2026-05-04','2026-05-18','2026-06-01','2026-06-15','2026-06-29','2026-07-13','2026-07-27','2026-08-10','2026-08-24','2026-09-07','2026-09-21','2026-10-05','2026-10-19','2026-11-02','2026-11-16','2026-11-30','2026-12-14','2026-12-28'],
-    organics:    ['2026-01-07','2026-01-14','2026-01-21','2026-01-28','2026-02-04','2026-02-11','2026-02-18','2026-02-25','2026-03-04','2026-03-11','2026-03-18','2026-03-25','2026-04-01','2026-04-08','2026-04-15','2026-04-22','2026-04-29','2026-05-06','2026-05-13','2026-05-20','2026-05-27','2026-06-03','2026-06-10','2026-06-17','2026-06-24','2026-07-01','2026-07-08','2026-07-15','2026-07-22','2026-07-29','2026-08-05','2026-08-12','2026-08-19','2026-08-26','2026-09-02','2026-09-09','2026-09-16','2026-09-23','2026-09-30','2026-10-07','2026-10-14','2026-10-21','2026-10-28','2026-11-04','2026-11-11','2026-11-18','2026-11-25','2026-12-02','2026-12-09','2026-12-16','2026-12-23','2026-12-30'],
-    garbage:     ['2026-01-02','2026-01-15','2026-01-29','2026-02-12','2026-02-26','2026-03-12','2026-03-26','2026-04-09','2026-04-23','2026-05-07','2026-05-21','2026-06-04','2026-06-18','2026-07-02','2026-07-16','2026-07-30','2026-08-13','2026-08-27','2026-09-10','2026-09-24','2026-10-08','2026-10-22','2026-11-05','2026-11-19','2026-12-03','2026-12-17','2026-12-31'],
-    bulkyItems:  ['2026-02-19','2026-03-19','2026-04-16','2026-05-21','2026-06-18','2026-07-16','2026-08-20','2026-09-17','2026-10-15','2026-11-19','2026-12-17'],
-    leaves:      ['2026-05-06','2026-05-20','2026-06-03','2026-06-17','2026-07-01','2026-07-15','2026-07-29','2026-08-12','2026-08-26','2026-09-09','2026-09-23','2026-10-07','2026-10-21','2026-11-04','2026-11-11','2026-11-18'],
-    cityMeeting: ['2026-01-20','2026-02-10','2026-03-10','2026-04-14','2026-05-12','2026-06-09','2026-07-14','2026-08-11','2026-09-08','2026-10-13','2026-11-10','2026-12-08']
+  organics: [
+    '2026-01-07','2026-01-14','2026-01-21','2026-01-28','2026-02-04','2026-02-11','2026-02-18',
+    '2026-02-25','2026-03-04','2026-03-11','2026-03-18','2026-03-25','2026-04-01','2026-04-08',
+    '2026-04-15','2026-04-22','2026-04-29','2026-05-06','2026-05-13','2026-05-20','2026-05-27',
+    '2026-06-03','2026-06-10','2026-06-17','2026-06-24','2026-07-01','2026-07-08','2026-07-15',
+    '2026-07-22','2026-07-29','2026-08-05','2026-08-12','2026-08-19','2026-08-26','2026-09-02',
+    '2026-09-09','2026-09-16','2026-09-23','2026-09-30','2026-10-07','2026-10-14','2026-10-21',
+    '2026-10-28','2026-11-04','2026-11-11','2026-11-18','2026-11-25','2026-12-02','2026-12-09',
+    '2026-12-16','2026-12-23','2026-12-30'
+  ],
+  recyclables: [
+    '2026-01-12','2026-01-26','2026-02-09','2026-02-23','2026-03-09','2026-03-23','2026-04-06',
+    '2026-04-20','2026-05-04','2026-05-18','2026-06-01','2026-06-15','2026-06-29','2026-07-13',
+    '2026-07-27','2026-08-10','2026-08-24','2026-09-07','2026-09-21','2026-10-05','2026-10-19',
+    '2026-11-02','2026-11-16','2026-11-30','2026-12-14','2026-12-28'
+  ],
+  garbage: [
+    '2026-01-02','2026-01-15','2026-01-29','2026-02-12','2026-02-26','2026-03-12','2026-03-26',
+    '2026-04-09','2026-04-23','2026-05-07','2026-05-21','2026-06-04','2026-06-18','2026-07-02',
+    '2026-07-16','2026-07-30','2026-08-13','2026-08-27','2026-09-10','2026-09-24','2026-10-08',
+    '2026-10-22','2026-11-05','2026-11-19','2026-12-03','2026-12-17','2026-12-31'
+  ],
+  leaves: [
+    '2026-05-06','2026-05-20','2026-06-03','2026-06-17','2026-07-01','2026-07-15','2026-07-29',
+    '2026-08-12','2026-08-26','2026-09-09','2026-09-23','2026-10-07','2026-10-21','2026-11-04',
+    '2026-11-18'
+  ],
+  bulkyItems: [
+    '2026-02-19','2026-03-19','2026-04-16','2026-05-21','2026-06-18','2026-07-16','2026-08-20',
+    '2026-09-17','2026-10-15','2026-11-19','2026-12-17'
+  ],
+  branches: [
+    '2026-05-25','2026-09-08','2026-10-26'
+  ],
+  cityMeeting: [
+    '2026-01-20','2026-02-10','2026-03-10','2026-04-14','2026-05-12','2026-06-09','2026-07-14',
+    '2026-08-11','2026-09-08','2026-10-13','2026-11-10','2026-12-08'
+  ],
+  taxes: [
+    '2026-02-20','2026-05-21','2026-08-19','2026-11-17'
+  ]
 };
 
-const ICONS = { recyclables:'♻️', organics:'🌱', garbage:'🗑️', bulkyItems:'🛋️', leaves:'🍂', cityMeeting:'🏛️' };
+/* Règlement 505 : systèmes automatiques et arroseurs, mardi et vendredi, 20 h à 22 h.
+   L'app n'affiche les soirs d'arrosage qu'en saison (le règlement, lui, s'applique toute l'année). */
+const AUTO_WATER_DAYS = [2, 5];            // 0 = dimanche
+const WATER_SEASON = ['04-15', '10-31'];
 
-const LBL = {
-    fr: {
-        recyclables:'Recyclage', organics:'Compost', garbage:'Ordures',
-        bulkyItems:'Rebuts volumineux', leaves:'Résidus verts', cityMeeting:'Séance du conseil',
-        today:"Aujourd'hui", noPickup:"Aucune collecte ce soir ni ce soir 🌿",
-        allClear:"Journée tranquille — aucun rappel 🌿",
-        next:'Prochaines collectes', t0:"auj.", t1:"demain", tn:"dans {n} j",
-        waterOpen:'Fenêtre d\'arrosage ouverte maintenant',
-        waterTonight:'Arrosage automatique ce soir',
-        waterTonightBadge:'20h–22h',
-        collectionsToday:'Collectes aujourd\'hui',
-        waterSection:'Arrosage automatique',
-        waterRule:'Mar. & Ven. · 20h–22h',
-        manualOK:'Boyau avec pistolet — permis en tout temps, sans restriction',
-        waterNext:'Prochain: {d} à 20h',
-        permitTitle:'Permis d\'arrosage',
-        permitWith:'Avec un permis:',
-        permitDetail:'Arrosage tous les jours de 6h à 8h et de 20h à 22h',
-        permitDur:'Durée: 15 jours',
-        permitFor:'Pour: Nouvelle pelouse, plantation, aménagement paysager',
-        noPermitMsg:'⚠️ Aucun permis émis du 1er juillet au 31 août inclusivement.',
-    },
-    en: {
-        recyclables:'Recycling', organics:'Compost', garbage:'Garbage',
-        bulkyItems:'Bulky Items', leaves:'Leaves', cityMeeting:'City Meeting',
-        today:'Today', noPickup:'No pickup or watering tonight 🌿',
-        allClear:'Quiet day — no reminders 🌿',
-        next:'Upcoming Pickups', t0:'today', t1:'tomorrow', tn:'in {n} days',
-        waterOpen:'Watering window open right now',
-        waterTonight:'Auto watering tonight',
-        waterTonightBadge:'8–10 pm',
-        collectionsToday:'Pickups today',
-        waterSection:'Auto Watering',
-        waterRule:'Tue. & Fri. · 8–10 pm',
-        manualOK:'Garden hose with trigger nozzle — no restrictions, anytime',
-        waterNext:'Next: {d} at 8 pm',
-        permitTitle:'Watering Permit',
-        permitWith:'With a permit:',
-        permitDetail:'Watering every day 6am–8am and 8pm–10pm',
-        permitDur:'Duration: 15 days',
-        permitFor:'For: New lawn, new planting, new landscaping',
-        noPermitMsg:'⚠️ No permits issued July 1 – August 31 (inclusive).',
-    }
+/* Météo : Open-Meteo, Notre-Dame-de-l'Île-Perrot */
+const WX_URL = 'https://api.open-meteo.com/v1/forecast?latitude=45.3668&longitude=-73.9325'
+  + '&current=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation,weather_code,is_day'
+  + '&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,precipitation_probability,weather_code'
+  + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,et0_fao_evapotranspiration'
+  + '&past_days=7&forecast_days=3&timezone=America%2FToronto';
+
+const TYPES = {
+  organics:    { icon: '🌱', bin: true },
+  recyclables: { icon: '♻️', bin: true },
+  garbage:     { icon: '🗑️', bin: true },
+  leaves:      { icon: '🍂', bin: true },
+  bulkyItems:  { icon: '🛋️', bin: true },
+  branches:    { icon: '🌿' },
+  cityMeeting: { icon: '🏛️' },
+  taxes:       { icon: '🧾' },
+  water:       { icon: '💧' }
+};
+const TYPE_ORDER = ['organics', 'recyclables', 'garbage', 'leaves', 'bulkyItems', 'branches', 'cityMeeting', 'taxes'];
+
+const MAINT = [
+  { id: 'furnaceFilter', days: 90,  icon: '🌬️', link: 'https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4' },
+  { id: 'hrvFilters',    days: 90,  icon: '🧽' },
+  { id: 'humPad',        days: 365, icon: '💧', link: 'https://a.co/d/5AEBEDE' },
+  { id: 'hrvCore',       days: 365, icon: '🔲' },
+  { id: 'hrvDrain',      days: 365, icon: '🚿' }
+];
+
+/* Réglages d'hiver selon la nuit la plus froide des 24 prochaines heures.
+   Humidificateur : tableau anti-condensation (Aprilaire / GeneralAire) avec 30 % comme plancher pour le bois.
+   Échangeur : humidificateur + 10 (règle d'or), resserré à +5 / +10 en grand froid (tableau Aldes). */
+const HUM_BAND = [40, 35, 30, 30, 25];
+const XRH_BAND = [50, 45, 40, 35, 35];
+function heatBand(tmin) { return tmin >= 0 ? 0 : tmin >= -6 ? 1 : tmin >= -12 ? 2 : tmin >= -18 ? 3 : 4; }
+
+/* Normales de Montréal (min, max, point de rosée), utilisées si la météo est indisponible */
+const NORMALS = { 1:[-14.7,-5.3,-14], 2:[-12.9,-3.3,-13], 3:[-6.7,2.4,-8], 4:[1.2,11.3,-2], 5:[7.9,18.6,5], 6:[13.3,23.6,12],
+  7:[16.1,26.3,15], 8:[14.8,25.3,15], 9:[10.3,20.6,10], 10:[3.8,13.0,3], 11:[-1.5,5.9,-3], 12:[-9.8,-1.4,-11] };
+
+/* ================================================================
+   2. TEXTES  (pas de tirets cadratins)
+   ================================================================ */
+const NB = '\u00A0';
+const STR = {
+fr: {
+  tabToday: 'Aujourd’hui', tabCal: 'Calendrier', tabClim: 'Climat',
+  langBtn: 'EN', langAria: 'Switch to English',
+  gMorning: 'Bonjour', gAfternoon: 'Bon après-midi', gEvening: 'Bonsoir',
+  calSub: 'Collectes, arrosage et séances', climSub: 'Réglages selon la météo de NDIP',
+  feels: 'Ressenti', hum: 'Humidité', dew: 'Rosée', rain24: 'Pluie 24 h', precip24: 'Précip. 24 h', hiLo: 'Max {hi} · Min {lo}',
+  upd: 'Mis à jour à {t}', updOff: 'Hors ligne · météo de {t}', wxLoading: 'Chargement de la météo…',
+  wxNone: 'Météo indisponible. Les réglages suivent les normales de saison.', wxUpdated: 'Météo à jour', wxFailed: 'Météo injoignable',
+  secTodo: 'À faire', secWeek: 'Cette semaine', secSettings: 'Réglages de la maison', seeCal: 'Calendrier', seeClim: 'Détails',
+  emptyT: 'Rien d’urgent aujourd’hui', emptyD: 'Profitez de la journée 🌿',
+  done: 'C’est fait', undo: 'Annuler', set: 'C’est réglé', out: 'Sortis', watered: 'Arrosé', ok: 'Compris', how: 'Comment faire',
+  remind: 'Me le rappeler', noted: 'Noté ✓', appliedToast: 'Réglage noté ✓', later: 'Plus tard',
+  now: 'Maintenant', from7: 'dès 19 h', before7: 'avant 7 h',
+  upToDate: 'À jour', change: 'À changer', toSet: 'À régler',
+  binsTonightT: 'Ce soir, sortez les bacs', binsTonightD: 'Collecte demain : {list}.',
+  binsTodayT: 'Collecte ce matin', binsTodayD: '{list}. Au chemin avant 7 h.',
+  binsBackT: 'Rentrez les bacs', binsBackD: 'Collecte de ce matin : {list}. Au plus tard demain 7 h.',
+  hintLeaves: 'Sacs de papier de 40 L au maximum.', hintBulky: 'Pas de matériaux de construction, d’électroménagers ni d’électroniques.',
+  type_organics: 'Compost', type_recyclables: 'Recyclage', type_garbage: 'Ordures', type_leaves: 'Résidus verts',
+  type_bulkyItems: 'Rebuts volumineux', type_branches: 'Collecte de branches', type_cityMeeting: 'Séance du conseil', type_taxes: 'Taxes municipales',
+  waterT: 'Arrosage ce soir', waterAuto: 'Système automatique, 20 h à 22 h.',
+  v_water: 'Arrosez', v_skip: 'Inutile', v_wait: 'Attendez', v_optional: 'Facultatif', v_frost: 'Évitez', v_unknown: 'À vérifier',
+  w_rain24: '{mm} de pluie depuis 24 h : le sol est servi.',
+  w_rainSoon: 'Pluie prévue d’ici demain matin : {mm} ({pp}). Laissez faire la nature.',
+  w_deficit: 'Cette semaine, la pelouse a perdu environ {mm} de plus qu’elle n’a reçu. Visez environ 12 mm.',
+  w_ok: 'La pluie de la semaine couvre les besoins (bilan {bal}).',
+  w_frost: 'Gel possible cette nuit ({t}) : évitez d’arroser.',
+  w_unknown: 'Sans météo, vérifiez si la terre est sèche à 2 cm.',
+  frostT: 'Gel possible cette nuit', frostD: 'Minimum prévu {t}. Rentrez les plantes en pot et couvrez les plates-bandes fragiles.', frostHard: 'Rangez aussi les boyaux.',
+  windowsT: 'Ouvrez les fenêtres', windowsD: 'Air doux et sec dehors ({t}, rosée {td}). Pendant ce temps, l’échangeur peut rester en attente (⇄ 0).',
+  branchesT: 'Collecte de branches dès {day}', branchesD: 'Sortez-les à partir du samedi {sat}. Diamètre maximal de 10 cm. Passage sur 5 à 10 jours ouvrables.',
+  branchesOnT: 'Collecte de branches en cours', branchesOnD: 'Le camion passe sur 5 à 10 jours ouvrables à partir du {day}.',
+  taxesT: 'Taxes municipales', taxesD: 'Versement dû {when}.',
+  councilT: 'Séance du conseil ce soir', councilD: 'Ordre du jour sur ndip.org.',
+  installT: 'Ajoutez l’app à l’écran d’accueil', installD: 'Dans Safari, touchez Partager ⎙ puis « Sur l’écran d’accueil ».',
+  filterAskT: 'Filtre de fournaise : quand l’avez-vous changé ?', filterAskD: 'Notez la date une fois et l’app vous avertira au bon moment.', filterAskB: 'Noter la date',
+  exchT: 'Échangeur d’air', exchSub: 'Aldes · contrôle 611227',
+  humT: 'Humidificateur', humSub: 'GeneralAire',
+  thermoT: 'Thermostat', thermoSub: 'Thermopompe et fournaise',
+  devNewT: '{dev} : nouveau réglage', devFirstT: '{dev} : réglage recommandé', devWas: 'Réglage noté : {v}',
+  m_exch: 'Échange', m_int: 'Minuterie', spd: 'Vitesse {n}',
+  lcdSpd: 'Vit.', lcdRh: 'Humidité',
+  x_heat: 'Il fait froid dehors, donc l’air qui entre est sec. L’échange continu garde l’air sain et la consigne suit la nuit la plus froide ({tmin}).',
+  x_dry: 'L’air dehors n’est pas plus humide que la maison (rosée moyenne {td}). L’échange continu garde l’air frais sans ajouter d’humidité.',
+  x_humid: 'L’air dehors est humide (rosée moyenne {td}). La minuterie fait entrer de l’air frais 20 minutes par heure au lieu d’en continu.',
+  x_rh90: 'Humidité à 90 % : au-dessus de sa consigne, l’appareil passe en vitesse 2 et aspirerait l’air humide du dehors.',
+  steps_int: ['Appuyez sur <kbd>MODE</kbd> jusqu’à voir l’horloge ⏲ (20 minutes d’échange, 40 minutes d’attente).', 'Ne touchez à rien pendant 5 secondes.', 'Appuyez sur <kbd>▲</kbd> ou <kbd>▼</kbd> jusqu’à {rh}.'],
+  steps_exch: ['Appuyez sur <kbd>MODE</kbd> jusqu’à voir les flèches ⇄.', 'Tout de suite après, réglez la vitesse à {n} avec <kbd>▲</kbd> <kbd>▼</kbd>.', 'Attendez 5 secondes, puis réglez l’humidité à {rh} avec <kbd>▲</kbd> <kbd>▼</kbd>.'],
+  tip3s: 'Astuce : maintenez <kbd>MODE</kbd> 3 secondes pour voir l’humidité actuelle de la maison.',
+  h_off: 'Fermé',
+  h_band: 'Pour la nuit la plus froide prévue ({tmin}), {rh} protège les planchers sans buée aux fenêtres.',
+  h_cold: 'Grand froid ({tmin}). Buée ou givre au bas des fenêtres le matin ? Baissez de 5 %.',
+  h_offD: 'Hors saison : valve d’eau fermée, contrôle éteint, registre en position ÉTÉ. La clim s’occupe de l’humidité.',
+  h_nextStart: 'Remise en marche prévue vers le {d}, quand les nuits passent sous 5 °C. L’app vous avertira.',
+  h_nextStop: 'Arrêt de printemps vers le {d}, quand les nuits restent au-dessus de 5 °C.',
+  h_damperW: 'Registre HIVER (ouvert)', h_damperS: 'Registre ÉTÉ · eau fermée',
+  steps_humStart: ['Rouvrez la valve d’eau de l’humidificateur.', 'Posez un tampon neuf.', 'Mettez le registre en position HIVER (ouvert).', 'Rallumez le contrôle et réglez-le à {rh}.', 'Vérifiez que l’eau coule seulement quand la fournaise chauffe.'],
+  steps_humStop: ['Fermez la valve d’eau et éteignez le contrôle.', 'Mettez le registre en position ÉTÉ (fermé).', 'Nettoyez le bac et la crépine au vinaigre.'],
+  humStartHow: 'Remise en marche (automne)', humStopHow: 'Arrêt pour l’été (printemps)',
+  humAlready: 'Il est déjà en marche', humStopped: 'Je l’ai fermé',
+  t_cool: 'Clim · ventilateur AUTO', t_heat: 'Chauffage · ventilateur AUTO', t_heatOn: 'Chauffage · ventilateur en marche', t_mild: 'Au besoin · ventilateur AUTO',
+  t_coolD: 'Gardez le ventilateur sur AUTO, pas ON ni Circulation : en continu, il renvoie dans la maison l’eau condensée sur le serpentin de la clim.',
+  t_heatD: 'Ventilateur sur AUTO : le chauffage et l’échangeur font le travail.',
+  t_heatOnD: 'Votre échangeur partage les conduits de la fournaise sans interverrouillage : le ventilateur doit tourner pour distribuer l’air frais. Un électricien peut relier les bornes 6, 7 et 8 pour qu’il ne tourne qu’avec l’échangeur.',
+  t_mildD: 'Chauffage ou clim seulement au besoin. Ventilateur sur AUTO.',
+  outT: 'Air extérieur', houseTd: 'Maison ≈ {td}', outTd: 'Dehors {td}',
+  v_wetter: 'Plus humide que la maison : ventiler ajoute de l’humidité.', v_drier: 'Plus sec que la maison : ventiler assèche.', v_same: 'Semblable à la maison : peu d’effet sur l’humidité.',
+  zDry: 'Sec', zOk: 'Confort', zHum: 'Humide', zMug: 'Lourd',
+  chartTd: 'Point de rosée, 24 prochaines heures', chartT: 'Température, 24 prochaines heures',
+  dryWin: 'Air sec prévu de {from} à {to}.',
+  setupT: 'Mon installation', setupQ: 'Les conduits de l’échangeur rejoignent-ils ceux de la fournaise ?',
+  tie_interlock: 'Oui, et le ventilateur démarre avec lui', tie_noInterlock: 'Oui, sans interverrouillage', tie_dedicated: 'Non, conduits séparés', tie_unknown: 'Je ne sais pas',
+  e_base: 'L’échangeur consomme peu : environ 30 à 60 W à basse vitesse.',
+  e_interlock: 'Mais chaque minute d’échange fait aussi tourner le ventilateur de la fournaise : 350 à 500 W avec un moteur standard, 75 à 125 W avec un moteur ECM. En continu tout l’été, c’est souvent la vraie cause d’une facture plus salée. La minuterie coupe ce temps des deux tiers.',
+  e_noInterlock: 'Aldes demande que le ventilateur de la fournaise tourne quand l’échangeur tourne. Laissé en marche tout l’été, il consomme 350 à 500 W avec un moteur standard et renvoie l’humidité du serpentin dans la maison. Un interverrouillage règle les deux problèmes.',
+  e_dedicated: 'Vos conduits sont séparés : le ventilateur de la fournaise n’a pas à tourner. Le vrai coût de l’été, c’est l’humidité que la clim doit retirer.',
+  e_unknown: 'Pour vérifier : thermostat sur AUTO sans chauffage ni clim, mettez l’échangeur en ⇄ 2. Si le ventilateur de la fournaise démarre, ils sont interverrouillés.',
+  e_water: 'Par temps lourd, l’échange continu fait entrer environ un demi-litre à un litre d’eau par heure, que la clim doit ensuite retirer.',
+  whyT: 'Pourquoi ces réglages', refT: 'Tableau de référence',
+  why: [
+    '<b>Le point de rosée</b> mesure la vraie quantité d’eau dans l’air. Quand celui du dehors dépasse celui de la maison (environ 12 °C l’été), chaque bouffée d’air frais ajoute de l’humidité que la clim doit retirer.',
+    '<b>Le piège de l’été.</b> Au-dessus de sa consigne, le 611227 passe en vitesse 2 pour évacuer l’humidité. L’été, l’air du dehors est souvent plus humide : il en fait donc entrer. Aldes le précise, l’appareil n’est pas conçu pour déshumidifier l’été. D’où la consigne à 90 % hors saison de chauffage.',
+    '<b>Minuterie ou continu ?</b> Aldes recommande l’échange continu à basse vitesse quand les fenêtres sont fermées, et la minuterie par temps humide avec la clim. L’app tranche selon le point de rosée prévu pour les 24 prochaines heures.',
+    '<b>L’hiver, c’est l’inverse.</b> L’air froid est très sec : l’échangeur assèche la maison et l’humidificateur compense. Plus il fait froid, plus il faut baisser l’humidité pour éviter la condensation aux fenêtres ; 30 % reste un bon plancher pour le bois.',
+    '<b>La règle d’or</b> (hiver) : consigne de l’échangeur égale à celle de l’humidificateur plus 10. Hors chauffage : 90 %.'
+  ],
+  whySrc: 'Sources : Aldes (fiche 611227, guide 609210, manuel 609605, article sur l’été), Lifebreath, Venmar, RNCan, Building Science Corporation, FSEC, Aprilaire et GeneralAire.',
+  refSummer: 'Hors chauffage (environ 10 °C et plus)', refWinter: 'Chauffage, selon la nuit la plus froide',
+  refColCond: 'Conditions', refColX: 'Échangeur', refColH: 'Humidificateur',
+  refHumid: 'Air humide (rosée 14 °C et plus)', refDry: 'Air sec (rosée 12 °C et moins)', refHumOff: 'Fermé',
+  refNote: 'Toujours trop sec en grand froid (sous 30 %) ? Passez l’échangeur en ⏲ Minuterie le temps du froid.',
+  maintT: 'Entretien', maintAll: 'Ajouter tous les rappels au calendrier',
+  mi_furnaceFilter: 'Filtre de fournaise', mi_furnaceFilterS: '20 × 25 × 4, MERV 8 · aux 3 mois',
+  mi_hrvFilters: 'Filtres de l’échangeur', mi_hrvFiltersS: 'Laver ou remplacer · aux 3 mois',
+  mi_humPad: 'Tampon de l’humidificateur', mi_humPadS: 'Chaque automne, au démarrage',
+  mi_hrvCore: 'Noyau de l’échangeur', mi_hrvCoreS: 'Nettoyer selon le manuel Aldes · 1 fois par an',
+  mi_hrvDrain: 'Drain de l’échangeur', mi_hrvDrainS: 'Vérifier qu’il s’écoule · 1 fois par an',
+  ms_never: 'Date inconnue', ms_ok: 'Dans {n} j', ms_today: 'Aujourd’hui', ms_over: 'En retard de {n} j',
+  last: 'Dernière fois : {d}', nextDue: 'Prochain : {d}', otherDate: 'Fait un autre jour ?', remindShort: 'Rappel', doneToday: 'Fait aujourd’hui', buy: 'Acheter', dateAria: 'Date de la dernière fois',
+  maintDueT: '{name} : à faire', maintOverD: 'En retard de {n} jours.', maintSoonD: 'Prévu {d}.', maintTodayD: 'Prévu aujourd’hui.',
+  task_faucetsT: 'Robinets extérieurs : préparez l’hiver', task_faucetsD: 'Fermez la valve intérieure, ouvrez le robinet dehors pour le vider et rangez les boyaux avant le gel.',
+  task_irrigOffT: 'Arrosage automatique : faites-le purger', task_irrigOffD: 'Avant le premier gel franc, faites souffler les conduites et protégez le dispositif antirefoulement.',
+  task_humStartT: 'Humidificateur : remise en marche', task_humStartD: 'Rouvrez la valve d’eau, rallumez le contrôle à {rh}, registre en position HIVER et tampon neuf.',
+  task_humStopT: 'Humidificateur : arrêt pour l’été', task_humStopD: 'Fermez la valve d’eau, éteignez le contrôle et mettez le registre en position ÉTÉ.',
+  task_irrigOnT: 'Arrosage automatique : remise en service', task_irrigOnD: 'Vérifiez la sonde de pluie (obligatoire) et programmez mardi et vendredi, 20 h à 22 h.',
+  task_hoodsT: 'Neige : dégagez les hottes extérieures', task_hoodsD: 'Les prises d’air de l’échangeur doivent rester libres de neige et de givre.',
+  nextT: 'Prochaines collectes', agendaT: 'À venir', thisWeek: 'Cette semaine', nextWeek: 'Semaine prochaine', weekOf: 'Semaine du {d}',
+  lblToday: 'Aujourd’hui', lblTomorrow: 'Demain', cdToday: 'aujourd’hui', cdTomorrow: 'demain', cdIn: 'dans {n} j',
+  more: 'Voir plus loin', waterPill: 'Arrosage auto', waterPillS: '20 h à 22 h', branchesPillS: '5 à 10 jours',
+  endSoon: 'Le calendrier 2026 se termine dans {n} jours. NDIP publie le suivant vers la mi-décembre : ajoutez les dates 2027 dans SCHEDULE.',
+  ended: 'Le calendrier 2026 est terminé. Ajoutez les dates 2027 dans SCHEDULE (ndip.org, calendrier des collectes).',
+  rulesBinsT: 'Collectes : les règles',
+  rulesBins: ['Sortez les bacs dès 19 h la veille et rentrez-les au plus tard à 7 h le lendemain de la collecte.', 'Placez-les à 50 à 150 cm de la rue, roues vers la maison.', 'Résidus verts : sacs de papier de 40 L au maximum ou contenants réutilisables (25 kg au maximum).', 'Rebuts volumineux : le 3e jeudi du mois. Refusés : matériaux de construction, électroménagers, électroniques, résidus verts.', 'Branches : diamètre maximal de 10 cm, sorties à partir du samedi qui précède la collecte.'],
+  rulesWaterT: 'Arrosage : les règles',
+  rulesWater: ['Arroseurs, boyaux suintants et systèmes automatiques : mardi et vendredi, 20 h à 22 h.', 'Boyau muni d’un pistolet à fermeture automatique : en tout temps pour les jardins, potagers, plates-bandes, jardinières, arbres et arbustes. La pelouse n’est pas dans cette liste : elle suit l’horaire du mardi et du vendredi.', 'Nouvelle pelouse ou plantation : permis gratuit, tous les jours de 6 h à 8 h et de 20 h à 22 h pendant 15 jours. Aucun permis du 1er juillet au 31 août. Tourbe neuve : arrosage permis toute la journée de la pose.', 'Système automatique : sonde de pluie ou d’humidité du sol obligatoire.', 'Piscine ou spa : remplissage interdit de 6 h à 20 h.', 'Amendes : de 150 $ à 500 $ pour une première infraction.'],
+  srcCal: 'Sources : ndip.org, règlements 505 et 572, calendrier 2026 de NDIP.',
+  foot: 'Icône : le moulin de Pointe-du-Moulin (1705), emblème de NDIP. Météo : Open-Meteo.',
+  calAddT: 'Ajouter au calendrier', calAddLead: 'Chaque rappel arrive avec une alerte à 9 h.', calIcs: 'Calendrier de l’iPhone (.ics)', calGoogle: 'Google', cancel: 'Annuler',
+  calFine: 'Sur iPhone, ouvrez le fichier téléchargé puis touchez « Tout ajouter ».', calReady: 'Fichier de calendrier prêt',
+  rep_y: 'chaque année', rep_q: 'aux 3 mois', remWhen: '{d}, 9 h · {rep}',
+  rem_humStartT: 'Humidificateur : remise en marche', rem_humStopT: 'Humidificateur : arrêt pour l’été',
+  rem_winterT: 'Préparer l’hiver : robinets et arrosage', rem_irrigOnT: 'Arrosage automatique : remise en service',
+  rem_allT: 'Rappels de la maison'
+},
+en: {
+  tabToday: 'Today', tabCal: 'Calendar', tabClim: 'Climate',
+  langBtn: 'FR', langAria: 'Passer en français',
+  gMorning: 'Good morning', gAfternoon: 'Good afternoon', gEvening: 'Good evening',
+  calSub: 'Pickups, watering and meetings', climSub: 'Settings for NDIP weather',
+  feels: 'Feels like', hum: 'Humidity', dew: 'Dew point', rain24: 'Rain 24 h', precip24: 'Precip 24 h', hiLo: 'H {hi} · L {lo}',
+  upd: 'Updated {t}', updOff: 'Offline · weather from {t}', wxLoading: 'Loading weather…',
+  wxNone: 'Weather unavailable. Settings follow seasonal normals.', wxUpdated: 'Weather updated', wxFailed: 'Weather unreachable',
+  secTodo: 'To do', secWeek: 'This week', secSettings: 'Home settings', seeCal: 'Calendar', seeClim: 'Details',
+  emptyT: 'Nothing urgent today', emptyD: 'Enjoy the day 🌿',
+  done: 'Done', undo: 'Undo', set: 'I set it', out: 'They’re out', watered: 'Watered', ok: 'Got it', how: 'How to do it',
+  remind: 'Remind me', noted: 'Noted ✓', appliedToast: 'Setting noted ✓', later: 'Later',
+  now: 'Now', from7: 'from 7 pm', before7: 'by 7 am',
+  upToDate: 'Up to date', change: 'Change', toSet: 'Set it',
+  binsTonightT: 'Put the bins out tonight', binsTonightD: 'Pickup tomorrow: {list}.',
+  binsTodayT: 'Pickup this morning', binsTodayD: '{list}. At the curb by 7 am.',
+  binsBackT: 'Bring the bins back in', binsBackD: 'This morning’s pickup: {list}. By 7 am tomorrow at the latest.',
+  hintLeaves: 'Paper bags, 40 L max.', hintBulky: 'No construction debris, appliances or electronics.',
+  type_organics: 'Compost', type_recyclables: 'Recycling', type_garbage: 'Garbage', type_leaves: 'Yard waste',
+  type_bulkyItems: 'Bulky items', type_branches: 'Branch pickup', type_cityMeeting: 'Council meeting', type_taxes: 'Property tax',
+  waterT: 'Watering tonight', waterAuto: 'Automatic system, 8 to 10 pm.',
+  v_water: 'Water', v_skip: 'Skip', v_wait: 'Hold off', v_optional: 'Optional', v_frost: 'Avoid', v_unknown: 'Check',
+  w_rain24: '{mm} of rain in the last 24 h: the soil is covered.',
+  w_rainSoon: 'Rain expected by tomorrow morning: {mm} ({pp}). Let nature do it.',
+  w_deficit: 'This week the lawn lost about {mm} more than it received. Aim for about 12 mm.',
+  w_ok: 'This week’s rain covers the need (balance {bal}).',
+  w_frost: 'Frost possible tonight ({t}): skip watering.',
+  w_unknown: 'No weather data: check whether the soil is dry 2 cm down.',
+  frostT: 'Frost possible tonight', frostD: 'Low of {t}. Bring potted plants in and cover tender beds.', frostHard: 'Put the hoses away too.',
+  windowsT: 'Open the windows', windowsD: 'Mild, dry air outside ({t}, dew point {td}). Meanwhile the exchanger can sit on standby (⇄ 0).',
+  branchesT: 'Branch pickup starts {day}', branchesD: 'Put them out from Saturday {sat}. 10 cm diameter max. Pickup runs 5 to 10 business days.',
+  branchesOnT: 'Branch pickup under way', branchesOnD: 'Trucks pass over 5 to 10 business days from {day}.',
+  taxesT: 'Property tax', taxesD: 'Instalment due {when}.',
+  councilT: 'Council meeting tonight', councilD: 'Agenda on ndip.org.',
+  installT: 'Add the app to your Home Screen', installD: 'In Safari, tap Share ⎙ then “Add to Home Screen”.',
+  filterAskT: 'Furnace filter: when did you last change it?', filterAskD: 'Log the date once and the app will warn you at the right time.', filterAskB: 'Log the date',
+  exchT: 'Air exchanger', exchSub: 'Aldes · 611227 control',
+  humT: 'Humidifier', humSub: 'GeneralAire',
+  thermoT: 'Thermostat', thermoSub: 'Heat pump and furnace',
+  devNewT: '{dev}: new setting', devFirstT: '{dev}: recommended setting', devWas: 'Last noted: {v}',
+  m_exch: 'Exchange', m_int: 'Timer', spd: 'Speed {n}',
+  lcdSpd: 'Spd', lcdRh: 'Humidity',
+  x_heat: 'It’s cold out, so incoming air is dry. Continuous exchange keeps the air fresh, and the setpoint follows the coldest night ({tmin}).',
+  x_dry: 'Outdoor air is no wetter than the house (average dew point {td}). Continuous exchange keeps the air fresh without adding moisture.',
+  x_humid: 'Outdoor air is humid (average dew point {td}). The timer brings in fresh air 20 minutes per hour instead of nonstop.',
+  x_rh90: 'Humidity at 90%: above its setpoint the unit jumps to speed 2 and would pull in humid outdoor air.',
+  steps_int: ['Press <kbd>MODE</kbd> until the clock ⏲ shows (20 minutes of exchange, 40 minutes of standby).', 'Don’t touch anything for 5 seconds.', 'Press <kbd>▲</kbd> or <kbd>▼</kbd> until it reads {rh}.'],
+  steps_exch: ['Press <kbd>MODE</kbd> until the arrows ⇄ show.', 'Right after, set the speed to {n} with <kbd>▲</kbd> <kbd>▼</kbd>.', 'Wait 5 seconds, then set humidity to {rh} with <kbd>▲</kbd> <kbd>▼</kbd>.'],
+  tip3s: 'Tip: hold <kbd>MODE</kbd> for 3 seconds to see the current indoor humidity.',
+  h_off: 'Off',
+  h_band: 'For the coldest night ahead ({tmin}), {rh} protects the floors without fogging the windows.',
+  h_cold: 'Deep cold ({tmin}). Fog or frost at the bottom of the windows in the morning? Lower it by 5%.',
+  h_offD: 'Off season: water valve closed, control off, damper on SUMMER. The AC handles humidity.',
+  h_nextStart: 'Restart expected around {d}, when nights drop below 5 °C. The app will warn you.',
+  h_nextStop: 'Spring shutdown around {d}, when nights stay above 5 °C.',
+  h_damperW: 'Damper on WINTER (open)', h_damperS: 'Damper on SUMMER · water off',
+  steps_humStart: ['Reopen the humidifier water valve.', 'Fit a new pad.', 'Set the damper to WINTER (open).', 'Turn the control back on and set it to {rh}.', 'Check that water only flows while the furnace is heating.'],
+  steps_humStop: ['Close the water valve and turn the control off.', 'Set the damper to SUMMER (closed).', 'Clean the pan and strainer with vinegar.'],
+  humStartHow: 'Turning it back on (fall)', humStopHow: 'Shutting it off (spring)',
+  humAlready: 'It’s already running', humStopped: 'I shut it off',
+  t_cool: 'Cooling · fan AUTO', t_heat: 'Heating · fan AUTO', t_heatOn: 'Heating · fan ON', t_mild: 'As needed · fan AUTO',
+  t_coolD: 'Keep the fan on AUTO, not ON or Circulate: running nonstop blows the water on the AC coil back into the house.',
+  t_heatD: 'Fan on AUTO: the heating and the exchanger do the job.',
+  t_heatOnD: 'Your exchanger shares the furnace ducts without an interlock, so the fan must run to spread the fresh air. An electrician can wire terminals 6, 7 and 8 so it only runs with the exchanger.',
+  t_mildD: 'Heat or cool only as needed. Fan on AUTO.',
+  outT: 'Outdoor air', houseTd: 'House ≈ {td}', outTd: 'Outside {td}',
+  v_wetter: 'Wetter than the house: ventilating adds moisture.', v_drier: 'Drier than the house: ventilating dries it out.', v_same: 'About the same as indoors: little effect on humidity.',
+  zDry: 'Dry', zOk: 'Comfy', zHum: 'Humid', zMug: 'Muggy',
+  chartTd: 'Dew point, next 24 hours', chartT: 'Temperature, next 24 hours',
+  dryWin: 'Dry air expected from {from} to {to}.',
+  setupT: 'My setup', setupQ: 'Do the exchanger ducts connect to the furnace ducts?',
+  tie_interlock: 'Yes, and the furnace fan starts with it', tie_noInterlock: 'Yes, no interlock', tie_dedicated: 'No, separate ducts', tie_unknown: 'Not sure',
+  e_base: 'The exchanger itself is frugal: about 30 to 60 W on low.',
+  e_interlock: 'But every minute of exchange also runs the furnace fan: 350 to 500 W on a standard motor, 75 to 125 W on an ECM motor. Running nonstop all summer, that is often the real cause of a higher bill. The timer cuts that time by two thirds.',
+  e_noInterlock: 'Aldes requires the furnace fan to run whenever the exchanger runs. Left on all summer it draws 350 to 500 W on a standard motor and blows coil moisture back into the house. An interlock fixes both.',
+  e_dedicated: 'Your ducts are separate, so the furnace fan doesn’t need to run. The real summer cost is the moisture the AC has to remove.',
+  e_unknown: 'To check: thermostat on AUTO with no heating or cooling call, set the exchanger to ⇄ 2. If the furnace fan starts, they’re interlocked.',
+  e_water: 'On muggy days, continuous exchange brings in roughly half a litre to a litre of water per hour, which the AC then has to remove.',
+  whyT: 'Why these settings', refT: 'Reference table',
+  why: [
+    '<b>Dew point</b> measures how much water is really in the air. When the outdoor dew point is higher than the house’s (about 12 °C in summer), every breath of fresh air adds moisture the AC has to remove.',
+    '<b>The summer trap.</b> Above its setpoint, the 611227 jumps to speed 2 to push humidity out. In summer the outdoor air is often wetter, so it pulls moisture in instead. Aldes says so plainly: the unit isn’t designed to dehumidify in summer. Hence the 90% setting outside heating season.',
+    '<b>Timer or continuous?</b> Aldes recommends continuous low-speed exchange when windows are closed, and the timer in humid weather with AC. The app decides from the dew point forecast for the next 24 hours.',
+    '<b>Winter is the reverse.</b> Cold air is very dry, so the exchanger dries the house and the humidifier makes up for it. The colder it gets, the lower the humidity must go to keep windows clear; 30% is still a good floor for wood.',
+    '<b>The golden rule</b> (winter): exchanger setpoint equals the humidifier setpoint plus 10. Outside heating season: 90%.'
+  ],
+  whySrc: 'Sources: Aldes (611227 sheet, 609210 guide, 609605 manual, summer article), Lifebreath, Venmar, NRCan, Building Science Corporation, FSEC, Aprilaire and GeneralAire.',
+  refSummer: 'Outside heating season (about 10 °C and up)', refWinter: 'Heating season, by the coldest night',
+  refColCond: 'Conditions', refColX: 'Exchanger', refColH: 'Humidifier',
+  refHumid: 'Humid air (dew point 14 °C and up)', refDry: 'Dry air (dew point 12 °C and below)', refHumOff: 'Off',
+  refNote: 'Still too dry in deep cold (below 30%)? Put the exchanger on ⏲ Timer for the cold spell.',
+  maintT: 'Maintenance', maintAll: 'Add all reminders to my calendar',
+  mi_furnaceFilter: 'Furnace filter', mi_furnaceFilterS: '20 × 25 × 4, MERV 8 · every 3 months',
+  mi_hrvFilters: 'Exchanger filters', mi_hrvFiltersS: 'Wash or replace · every 3 months',
+  mi_humPad: 'Humidifier pad', mi_humPadS: 'Every fall, at start-up',
+  mi_hrvCore: 'Exchanger core', mi_hrvCoreS: 'Clean per the Aldes manual · once a year',
+  mi_hrvDrain: 'Exchanger drain', mi_hrvDrainS: 'Check it drains · once a year',
+  ms_never: 'No date yet', ms_ok: 'In {n} d', ms_today: 'Today', ms_over: '{n} d overdue',
+  last: 'Last done: {d}', nextDue: 'Next: {d}', otherDate: 'Done another day?', remindShort: 'Reminder', doneToday: 'Done today', buy: 'Buy', dateAria: 'Date last done',
+  maintDueT: '{name}: due', maintOverD: '{n} days overdue.', maintSoonD: 'Due {d}.', maintTodayD: 'Due today.',
+  task_faucetsT: 'Outdoor faucets: winter prep', task_faucetsD: 'Close the indoor shut-off, open the outdoor tap to drain it and put the hoses away before the freeze.',
+  task_irrigOffT: 'Sprinkler system: get it blown out', task_irrigOffD: 'Before the first hard freeze, have the lines blown out and protect the backflow preventer.',
+  task_humStartT: 'Humidifier: turn it back on', task_humStartD: 'Reopen the water valve, turn the control back on at {rh}, damper to WINTER and a new pad.',
+  task_humStopT: 'Humidifier: shut it off for summer', task_humStopD: 'Close the water valve, turn the control off and set the damper to SUMMER.',
+  task_irrigOnT: 'Sprinkler system: spring start', task_irrigOnD: 'Check the rain sensor (required) and program Tuesday and Friday, 8 to 10 pm.',
+  task_hoodsT: 'Snow: clear the outdoor hoods', task_hoodsD: 'The exchanger’s outdoor vents must stay clear of snow and frost.',
+  nextT: 'Next pickups', agendaT: 'Coming up', thisWeek: 'This week', nextWeek: 'Next week', weekOf: 'Week of {d}',
+  lblToday: 'Today', lblTomorrow: 'Tomorrow', cdToday: 'today', cdTomorrow: 'tomorrow', cdIn: 'in {n} d',
+  more: 'Show more', waterPill: 'Sprinklers', waterPillS: '8 to 10 pm', branchesPillS: '5 to 10 days',
+  endSoon: 'The 2026 calendar ends in {n} days. NDIP usually publishes the next one in mid-December: add the 2027 dates to SCHEDULE.',
+  ended: 'The 2026 calendar is over. Add the 2027 dates to SCHEDULE (ndip.org, collection calendar).',
+  rulesBinsT: 'Pickup rules',
+  rulesBins: ['Bins out from 7 pm the night before, back in by 7 am the day after pickup.', 'Place them 50 to 150 cm from the street, wheels toward the house.', 'Yard waste: paper bags of 40 L max or reusable containers (25 kg max).', 'Bulky items: 3rd Thursday of the month. Not accepted: construction debris, appliances, electronics, yard waste.', 'Branches: 10 cm diameter max, out from the Saturday before the pickup.'],
+  rulesWaterT: 'Watering rules',
+  rulesWater: ['Sprinklers, soaker hoses and automatic systems: Tuesday and Friday, 8 to 10 pm.', 'Hose with an automatic shut-off nozzle: any time for gardens, vegetable gardens, flower beds, planters, trees and shrubs. The lawn isn’t on that list, so it follows the Tuesday and Friday schedule.', 'New lawn or planting: free permit, daily 6 to 8 am and 8 to 10 pm for 15 days. No permits July 1 to August 31. New sod may be watered all day on the day it’s laid.', 'Automatic systems must have a rain or soil-moisture sensor.', 'Pool or spa: no filling from 6 am to 8 pm.', 'Fines: $150 to $500 for a first offence.'],
+  srcCal: 'Sources: ndip.org, bylaws 505 and 572, NDIP 2026 calendar.',
+  foot: 'Icon: the Pointe-du-Moulin windmill (1705), NDIP’s emblem. Weather: Open-Meteo.',
+  calAddT: 'Add to calendar', calAddLead: 'Each reminder comes with a 9 am alert.', calIcs: 'iPhone Calendar (.ics)', calGoogle: 'Google', cancel: 'Cancel',
+  calFine: 'On iPhone, open the downloaded file and tap “Add All”.', calReady: 'Calendar file ready',
+  rep_y: 'every year', rep_q: 'every 3 months', remWhen: '{d}, 9 am · {rep}',
+  rem_humStartT: 'Humidifier: turn it back on', rem_humStopT: 'Humidifier: shut it off for summer',
+  rem_winterT: 'Winter prep: faucets and sprinklers', rem_irrigOnT: 'Sprinkler system: spring start',
+  rem_allT: 'Home reminders'
+}
 };
 
-const SEASONS_META = {
-    'deep-winter': { emoji:'🥶', fr:'Grand Froid',       en:'Deep Winter',   panelId:'panel-dw' },
-    'mild-winter': { emoji:'❄️', fr:'Hiver Doux',        en:'Mild Winter',   panelId:'panel-mw' },
-    'spring-fall': { emoji:'🌿', fr:'Printemps/Automne', en:'Spring/Fall',   panelId:'panel-sf' },
-    'summer':      { emoji:'☀️', fr:'Été',               en:'Summer',        panelId:'panel-su' },
+/* ================================================================
+   3. ÉTAT ET OUTILS
+   ================================================================ */
+const KEY = 'mcnabb.v2', WXKEY = 'mcnabb.wx.v2';
+function load(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* stockage indisponible */ } }
+const S = Object.assign({ lang: null, tab: 'today', applied: {}, ack: {}, tasks: {}, maint: {}, setup: { tie: 'unknown' }, hum: null }, load(KEY, {}));
+if (!S.lang) { let old = null; try { old = localStorage.getItem('mcnabb-lang'); } catch (e) {} S.lang = old === 'en' ? 'en' : 'fr'; }
+if (!['today', 'calendar', 'climate'].includes(S.tab)) S.tab = 'today';
+S.setup = Object.assign({ tie: 'unknown' }, S.setup);
+function persist() { save(KEY, S); }
+
+const $ = s => document.querySelector(s);
+function now() { return window.__MCNABB_NOW ? new Date(window.__MCNABB_NOW) : new Date(); }
+function t(k, v) {
+  let s = STR[S.lang][k]; if (s == null) s = STR.fr[k]; if (s == null) return k;
+  if (v && typeof s === 'string') s = s.replace(/\{(\w+)\}/g, (m, x) => (v[x] != null ? v[x] : m));
+  return s;
+}
+function tl(k, v) { return (STR[S.lang][k] || STR.fr[k] || []).map(s => s.replace(/\{(\w+)\}/g, (m, x) => (v && v[x] != null ? v[x] : m))); }
+function loc() { return S.lang === 'fr' ? 'fr-CA' : 'en-CA'; }
+function fmtNum(n, d) { let s = new Intl.NumberFormat(loc(), { maximumFractionDigits: d || 0 }).format(n); if (/^[-\u2212]0([.,]0+)?$/.test(s)) s = s.slice(1); return s.replace(/^-/, '\u2212'); }
+function pct(n) { return S.lang === 'fr' ? fmtNum(n) + NB + '%' : fmtNum(n) + '%'; }
+function deg(n, c) { const v = fmtNum(Math.round(n)); return c ? v + NB + '°C' : v + '°'; }
+function mm(n) { const v = fmtNum(n < 10 ? Math.round(n * 10) / 10 : Math.round(n), 1); return v + NB + 'mm'; }
+function signedMm(n) { return (n > 0 ? '+' : '') + mm(n); }
+function fmtTime(h, m) {
+  if (S.lang === 'fr') return m ? h + NB + 'h' + NB + String(m).padStart(2, '0') : h + NB + 'h';
+  const ap = h >= 12 ? 'pm' : 'am', hh = h % 12 || 12; return (m ? hh + ':' + String(m).padStart(2, '0') : hh) + NB + ap;
+}
+function pad(n) { return String(n).padStart(2, '0'); }
+function isoOf(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function dateOf(s) { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d, 12); }
+function addDays(s, n) { const d = dateOf(s); d.setDate(d.getDate() + n); return isoOf(d); }
+function diffDays(a, b) { return Math.round((dateOf(b) - dateOf(a)) / 864e5); }
+function dowOf(s) { return dateOf(s).getDay(); }
+function mmdd(s) { return s.slice(5); }
+function fmtDate(s, o) { return new Intl.DateTimeFormat(loc(), o).format(dateOf(s)); }
+function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+function parseLocal(s) { const [d, tm] = s.split('T'); const [y, m, dd] = d.split('-').map(Number); const [hh, mi] = (tm || '0:0').split(':').map(Number); return new Date(y, m - 1, dd, hh, mi || 0); }
+function inWindow(md, a, b) { return a <= b ? (md >= a && md <= b) : (md >= a || md <= b); }
+function seasonYear(N) { return N.getMonth() >= 7 ? N.getFullYear() : N.getFullYear() - 1; }
+function stripTags(s) { return s.replace(/<[^>]+>/g, ''); }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function shortDay(s) { return fmtDate(s, { weekday: 'short' }).replace('.', ''); }
+function longDate(s) { return fmtDate(s, { weekday: 'long', day: 'numeric', month: 'long' }); }
+function dayMonth(s) { return fmtDate(s, { day: 'numeric', month: 'long' }); }
+
+for (const k in SCHEDULE) SCHEDULE[k].sort();
+const SET = {}; for (const k in SCHEDULE) SET[k] = new Set(SCHEDULE[k]);
+const LAST_DATE = Object.values(SCHEDULE).reduce((m, a) => (a.length && a[a.length - 1] > m ? a[a.length - 1] : m), '');
+
+function inWaterSeason(s) { return inWindow(mmdd(s), WATER_SEASON[0], WATER_SEASON[1]); }
+function isWaterNight(s) { return inWaterSeason(s) && AUTO_WATER_DAYS.includes(dowOf(s)); }
+function eventsOn(s) { const out = TYPE_ORDER.filter(k => SET[k] && SET[k].has(s)); if (isWaterNight(s)) out.push('water'); return out; }
+function nextOf(type, from) { return (SCHEDULE[type] || []).find(d => d >= from) || null; }
+function binList(types) { return types.map(k => TYPES[k].icon + NB + t('type_' + k)).join(', '); }
+function cdTxt(n) { return n <= 0 ? t('cdToday') : n === 1 ? t('cdTomorrow') : t('cdIn', { n }); }
+
+/* ================================================================
+   4. MÉTÉO
+   ================================================================ */
+let WX = load(WXKEY, null);
+let wxState = WX ? 'cache' : 'loading';
+function normalize(j) {
+  const h = j.hourly, d = j.daily, c = j.current || {};
+  return {
+    fetchedAt: now().getTime(),
+    current: { time: c.time, t: c.temperature_2m, rh: c.relative_humidity_2m, td: c.dew_point_2m, feels: c.apparent_temperature, p: c.precipitation, code: c.weather_code, isDay: c.is_day },
+    hourly: h.time.map((tm, i) => ({ time: tm, t: h.temperature_2m[i], rh: h.relative_humidity_2m[i], td: h.dew_point_2m[i], p: h.precipitation[i] || 0, pp: h.precipitation_probability ? h.precipitation_probability[i] : null, code: h.weather_code[i] })),
+    daily: d.time.map((tm, i) => ({ date: tm, tmax: d.temperature_2m_max[i], tmin: d.temperature_2m_min[i], p: d.precipitation_sum[i] || 0, pp: d.precipitation_probability_max ? d.precipitation_probability_max[i] : null, et0: d.et0_fao_evapotranspiration[i] || 0, code: d.weather_code[i] }))
+  };
+}
+async function fetchWeather(force) {
+  if (window.__MCNABB_WX) { WX = normalize(window.__MCNABB_WX); wxState = 'live'; return true; }
+  if (!force && WX && now().getTime() - WX.fetchedAt < 20 * 60 * 1000) { wxState = 'live'; return false; }
+  try {
+    const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = ctl ? setTimeout(() => ctl.abort(), 12000) : null;
+    const r = await fetch(WX_URL, ctl ? { signal: ctl.signal, cache: 'no-store' } : { cache: 'no-store' });
+    if (timer) clearTimeout(timer);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    WX = normalize(await r.json()); save(WXKEY, WX); wxState = 'live'; return true;
+  } catch (e) { wxState = WX ? 'offline' : 'none'; return false; }
+}
+function isRain(c) { return (c >= 51 && c <= 67) || (c >= 80 && c <= 82) || c >= 95; }
+function isSnow(c) { return (c >= 71 && c <= 77) || c === 85 || c === 86; }
+function wmo(c, day) {
+  const M = [[[0], day ? '☀️' : '🌙', 'Dégagé', 'Clear'], [[1], day ? '🌤️' : '🌙', 'Plutôt dégagé', 'Mostly clear'], [[2], '⛅', 'Partiellement nuageux', 'Partly cloudy'], [[3], '☁️', 'Nuageux', 'Cloudy'],
+    [[45, 48], '🌫️', 'Brouillard', 'Fog'], [[51, 53, 55], '🌦️', 'Bruine', 'Drizzle'], [[56, 57], '🌧️', 'Bruine verglaçante', 'Freezing drizzle'], [[61, 63, 65], '🌧️', 'Pluie', 'Rain'],
+    [[66, 67], '🌧️', 'Pluie verglaçante', 'Freezing rain'], [[71, 73, 75, 77], '❄️', 'Neige', 'Snow'], [[80, 81, 82], '🌦️', 'Averses', 'Showers'], [[85, 86], '🌨️', 'Averses de neige', 'Snow showers'], [[95, 96, 99], '⛈️', 'Orages', 'Thunderstorms']];
+  for (const [codes, e, fr, en] of M) if (codes.includes(+c)) return { e, label: S.lang === 'fr' ? fr : en };
+  return { e: '🌤️', label: S.lang === 'fr' ? 'Variable' : 'Mixed' };
+}
+function derive(wx, N) {
+  if (!wx || !wx.hourly || !wx.hourly.length) return null;
+  const H = wx.hourly, key = isoOf(N) + 'T' + pad(N.getHours()) + ':00';
+  let i = H.findIndex(h => h.time === key);
+  if (i < 0) { if (key < H[0].time || key > H[H.length - 1].time) return null; i = Math.max(0, H.findIndex(h => h.time > key) - 1); }
+  const next = H.slice(i, i + 24); if (next.length < 12) return null;
+  const last24 = H.slice(Math.max(0, i - 24), i);
+  const num = v => v != null && !isNaN(v);
+  const vals = (a, f) => a.map(f).filter(num);
+  const sum = (a, f) => a.reduce((s, x) => s + (f(x) || 0), 0);
+  const avg = a => a.reduce((s, x) => s + x, 0) / a.length;
+  const tN = vals(next, h => h.t), tdN = vals(next, h => h.td);
+  const c = wx.current || {};
+  const fresh = c.time && Math.abs(N - parseLocal(c.time)) < 90 * 60 * 1000;
+  const hr = N.getHours();
+  const cur = fresh ? c : { t: H[i].t, td: H[i].td, rh: H[i].rh, feels: H[i].t, code: H[i].code, isDay: hr >= 7 && hr < 19 ? 1 : 0 };
+  const tonight = []; for (let j = i; j < H.length && tonight.length < 22; j++) { tonight.push(H[j]); if (j > i && H[j].time.slice(11) === '09:00') break; }
+  const today = isoOf(N), di = wx.daily.findIndex(d => d.date === today);
+  let bal = null;
+  if (di > 0) { const past = wx.daily.slice(Math.max(0, di - 7), di); bal = sum(past, d => d.p) - 0.8 * sum(past, d => d.et0); }
+  const d3 = di >= 0 ? vals(wx.daily.slice(di, di + 3), d => d.tmin) : [];
+  let best = null, run = null;
+  next.forEach((h, k) => {
+    const dry = num(h.td) && h.td <= 12.5 && h.t <= 26;
+    if (dry) { if (!run) run = { s: k, e: k }; else run.e = k; }
+    else if (run) { if (!best || run.e - run.s > best.e - best.s) best = run; run = null; }
+  });
+  if (run && (!best || run.e - run.s > best.e - best.s)) best = run;
+  const dT = di >= 0 ? wx.daily[di] : null;
+  return {
+    ok: true, cur, fetchedAt: wx.fetchedAt,
+    tmin24: Math.min(...tN), tmax24: Math.max(...tN), tavg24: avg(tN), tdAvg24: avg(tdN), tdMax24: Math.max(...tdN),
+    rain24: sum(last24, h => h.p), rainNext12: sum(H.slice(i, i + 12), h => h.p), ppNext12: Math.max(0, ...vals(H.slice(i, i + 12), h => h.pp)),
+    tonightMin: Math.min(...vals(tonight, h => h.t)), balance7: bal, frost3: d3.length ? Math.min(...d3) : Math.min(...tN),
+    snow24: last24.concat([H[i]]).some(h => isSnow(h.code)),
+    dryRun: best && best.e - best.s >= 2 ? { from: next[best.s].time, to: next[Math.min(best.e + 1, next.length - 1)].time } : null,
+    series: next, hi: dT ? dT.tmax : Math.max(...tN), lo: dT ? dT.tmin : Math.min(...tN)
+  };
+}
+function normalsDer(N) {
+  const [lo, hi, td] = NORMALS[N.getMonth() + 1];
+  return { ok: false, cur: null, tmin24: lo, tmax24: hi, tavg24: (lo + hi) / 2, tdAvg24: td, tdMax24: td + 2, rain24: null, rainNext12: null, ppNext12: null,
+    tonightMin: lo, balance7: null, frost3: lo, snow24: false, dryRun: null, series: null, hi, lo };
+}
+function dewPoint(T, RH) { const a = 17.62, b = 243.12, g = Math.log(RH / 100) + a * T / (b + T); return b * g / (a - g); }
+
+/* ================================================================
+   5. RECOMMANDATIONS
+   ================================================================ */
+function parseX(k) { if (!k) return null; const [mode, sp, rh] = k.split('|'); return { mode, speed: sp === '-' ? null : +sp, rh: +rh }; }
+function humOn(N) {
+  if (S.hum && S.hum.at && seasonYear(dateOf(S.hum.at)) === seasonYear(N)) return !!S.hum.on;
+  return false; // par défaut : fermé tant que le démarrage d'automne n'est pas noté
+}
+function recommend(der, N) {
+  const apX = parseX(S.applied.exchanger);
+  const appliedHeat = !!apX && apX.rh <= 50;
+  const heatIn = der.tavg24 < 9 || der.tmin24 < 2;
+  const heatOut = der.tavg24 >= 12 && der.tmin24 >= 6;
+  const heat = apX ? (appliedHeat ? !heatOut : heatIn) : (der.tavg24 < 10 || der.tmin24 < 1);
+  const cool = !heat && (der.tmax24 >= 25 || der.tdAvg24 >= 16);
+  const regime = heat ? 'heat' : cool ? 'cool' : 'mild';
+  let band = heatBand(der.tmin24);
+  if (heat && appliedHeat) {
+    const near = [band, heatBand(der.tmin24 + 1.5), heatBand(der.tmin24 - 1.5)];
+    const keep = near.find(b => XRH_BAND[b] === apX.rh);
+    if (keep != null) band = keep;
+  }
+  let mode, speed, rh, why;
+  if (heat) { mode = 'exch'; speed = 1; rh = XRH_BAND[band]; why = 'x_heat'; }
+  else {
+    const td = der.tdAvg24;
+    const dry = apX && apX.mode === 'int' ? td <= 12 : apX && apX.mode === 'exch' ? td < 14 : td <= 13;
+    mode = dry ? 'exch' : 'int'; speed = dry ? 1 : null; rh = 90; why = dry ? 'x_dry' : 'x_humid';
+  }
+  const exchanger = { mode, speed, rh, why, key: mode + '|' + (speed == null ? '-' : speed) + '|' + rh };
+  const on = humOn(N);
+  const humidifier = on ? { on: true, rh: HUM_BAND[band], key: 'on|' + HUM_BAND[band], why: band >= 3 ? 'h_cold' : 'h_band' } : { on: false, key: 'off', why: 'h_offD' };
+  let thermo;
+  if (regime === 'cool') thermo = { label: 't_cool', why: 't_coolD' };
+  else if (regime === 'heat') thermo = S.setup.tie === 'noInterlock' ? { label: 't_heatOn', why: 't_heatOnD' } : { label: 't_heat', why: 't_heatD' };
+  else thermo = { label: 't_mild', why: 't_mildD' };
+  const c = der.cur;
+  const windows = regime !== 'heat' && der.ok && c && c.t >= 15 && c.t <= 24 && c.td <= 13 && !isRain(c.code) && c.isDay;
+  return { regime, band, exchanger, humidifier, thermo, windows };
+}
+function applied(dev, key) { const a = S.applied[dev]; return !a ? 'new' : a === key ? 'ok' : 'change'; }
+function exchSummary(x) { if (!x) return ''; return (x.mode === 'int' ? '⏲' + NB + t('m_int') : '⇄' + NB + t('spd', { n: x.speed })) + ' · ' + pct(x.rh); }
+function humSummary(h) { return h.on ? pct(h.rh) : t('h_off'); }
+
+/* Arrosage */
+function wateringCard(N, der) {
+  const today = isoOf(N), h = N.getHours();
+  if (!isWaterNight(today) || h >= 22) return null;
+  let v, d;
+  if (!der.ok) { v = 'unknown'; d = t('w_unknown'); }
+  else if (der.tonightMin <= 2) { v = 'frost'; d = t('w_frost', { t: deg(der.tonightMin, true) }); }
+  else if (der.rain24 >= 5) { v = 'skip'; d = t('w_rain24', { mm: mm(der.rain24) }); }
+  else if (der.rainNext12 >= 5 || (der.ppNext12 >= 70 && der.rainNext12 >= 2)) { v = 'wait'; d = t('w_rainSoon', { mm: mm(der.rainNext12), pp: pct(der.ppNext12) }); }
+  else if (der.balance7 != null && (der.balance7 <= -10 || (der.balance7 <= -5 && der.tmax24 >= 27))) { v = 'water'; d = t('w_deficit', { mm: mm(-der.balance7) }); }
+  else if (der.balance7 != null) { v = 'optional'; d = t('w_ok', { bal: signedMm(der.balance7) }); }
+  else { v = 'unknown'; d = t('w_unknown'); }
+  const tone = { water: 'ok', skip: 'info', wait: 'info', optional: 'neutral', frost: 'warn', unknown: 'neutral' }[v];
+  return { key: 'water|' + today, pri: h >= 20 ? 6 : 20, tone, icon: '💧', title: t('waterT'), detail: t('waterAuto') + ' ' + d,
+    chip: { text: t('v_' + v), tone }, ack: v === 'water' ? t('watered') : t('ok') };
+}
+
+/* Tâches saisonnières */
+const TASKS = [
+  { id: 'faucets',  from: '09-15', to: '12-15', icon: '🚰', tone: 'warn', rem: 'winter', when: (d, N) => d.frost3 <= 0 || mmdd(isoOf(N)) >= '10-10' },
+  { id: 'irrigOff', from: '09-25', to: '12-15', icon: '💦', tone: 'warn', rem: 'winter', when: (d, N) => mmdd(isoOf(N)) >= '10-01' || d.frost3 <= -2 },
+  { id: 'humStart', from: '09-20', to: '03-31', icon: '💧', tone: 'info', rem: 'humStart', how: true,
+    when: (d, N) => !humOn(N) && (inWindow(mmdd(isoOf(N)), '10-15', '03-31') || (d.tmin24 < 5 && d.tavg24 < 10)),
+    done: () => { S.hum = { on: true, at: isoOf(now()) }; S.applied.humidifier = 'on|' + HUM_BAND[heatBand(DER.tmin24)]; } },
+  { id: 'humStop',  from: '04-15', to: '06-30', icon: '🌤️', tone: 'info', rem: 'humStop', how: true,
+    when: (d, N) => humOn(N) && (mmdd(isoOf(N)) >= '05-15' || (d.frost3 >= 3 && d.tavg24 >= 12)),
+    done: () => { S.hum = { on: false, at: isoOf(now()) }; S.applied.humidifier = 'off'; } },
+  { id: 'irrigOn',  from: '05-01', to: '06-10', icon: '🌱', tone: 'ok', rem: 'irrigOn', when: () => true },
+  { id: 'hoods',    from: '12-01', to: '03-31', icon: '❄️', tone: 'info', per: 'week', when: d => d.snow24 }
+];
+function taskKey(task, N) {
+  if (task.per === 'week') { const s = isoOf(N); const mon = addDays(s, -((dowOf(s) + 6) % 7)); return task.id + '|' + mon; }
+  return task.id + '|' + seasonYear(N);
+}
+
+/* Entretien */
+function maintStatus(m, N) {
+  const last = S.maint[m.id]; const today = isoOf(N);
+  if (!last) return { state: 'never', left: null, due: null, last: null };
+  const due = addDays(last, m.days), left = diffDays(today, due);
+  return { state: left < 0 ? 'over' : left === 0 ? 'today' : left <= 14 ? 'soon' : 'ok', left, due, last };
+}
+
+/* ================================================================
+   6. RAPPELS DE CALENDRIER (.ics et Google)
+   ================================================================ */
+function nextOn(md, N) { const y = N.getFullYear(); const d = y + '-' + md; return d < isoOf(N) ? (y + 1) + '-' + md : d; }
+function remSpec(id, N) {
+  const today = isoOf(N);
+  const hs = { rh: pct(35) };
+  switch (id) {
+    case 'humStart': return { uid: 'hum-start', icon: '💧', title: t('rem_humStartT'), desc: tl('steps_humStart', hs).map(stripTags).join('\n'), date: nextOn('10-15', N), rrule: 'FREQ=YEARLY', rep: 'y' };
+    case 'humStop': return { uid: 'hum-stop', icon: '🌤️', title: t('rem_humStopT'), desc: tl('steps_humStop').map(stripTags).join('\n'), date: nextOn('05-15', N), rrule: 'FREQ=YEARLY', rep: 'y' };
+    case 'winter': return { uid: 'winter-prep', icon: '🚰', title: t('rem_winterT'), desc: t('task_faucetsD') + '\n' + t('task_irrigOffD'), date: nextOn('10-15', N), rrule: 'FREQ=YEARLY', rep: 'y' };
+    case 'irrigOn': return { uid: 'irrig-on', icon: '🌱', title: t('rem_irrigOnT'), desc: t('task_irrigOnD'), date: nextOn('05-01', N), rrule: 'FREQ=YEARLY', rep: 'y' };
+  }
+  if (id.startsWith('maint:')) {
+    const m = MAINT.find(x => x.id === id.slice(6)); const st = maintStatus(m, N);
+    const date = st.state === 'never' ? addDays(today, 7) : st.due > today ? st.due : addDays(today, 1);
+    return { uid: 'maint-' + m.id, icon: m.icon, title: t('mi_' + m.id), desc: t('mi_' + m.id + 'S') + (m.link ? '\n' + m.link : ''), url: m.link, date,
+      rrule: m.days === 90 ? 'FREQ=MONTHLY;INTERVAL=3' : 'FREQ=YEARLY', rep: m.days === 90 ? 'q' : 'y' };
+  }
+  return null;
+}
+function icsText(s) { return String(s).replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;'); }
+function icsFold(line) {
+  const enc = new TextEncoder(); if (enc.encode(line).length <= 75) return line;
+  const out = []; let cur = '', n = 0;
+  for (const ch of line) { const l = enc.encode(ch).length; if (n + l > 74) { out.push(cur); cur = ' ' + ch; n = 1 + l; } else { cur += ch; n += l; } }
+  out.push(cur); return out.join('\r\n');
+}
+function buildICS(evs) {
+  const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//McNabb//Maison NDIP//FR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+  for (const e of evs) {
+    const d = e.date.replace(/-/g, '');
+    L.push('BEGIN:VEVENT', 'UID:mcnabb-' + e.uid + '@mcnabb.maison', 'DTSTAMP:' + stamp, 'DTSTART:' + d + 'T090000', 'DTEND:' + d + 'T091500');
+    if (e.rrule) L.push('RRULE:' + e.rrule);
+    L.push('SUMMARY:' + icsText(e.title));
+    if (e.desc) L.push('DESCRIPTION:' + icsText(e.desc));
+    if (e.url) L.push('URL:' + e.url);
+    L.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + icsText(e.title), 'TRIGGER:PT0M', 'END:VALARM', 'END:VEVENT');
+  }
+  L.push('END:VCALENDAR');
+  return L.map(icsFold).join('\r\n') + '\r\n';
+}
+function gcalURL(e) {
+  const d = e.date.replace(/-/g, '');
+  const p = new URLSearchParams({ action: 'TEMPLATE', text: e.title, dates: d + 'T090000/' + d + 'T091500', details: e.desc || '' });
+  if (e.rrule) p.set('recur', 'RRULE:' + e.rrule);
+  return 'https://calendar.google.com/calendar/render?' + p.toString();
+}
+let SHEET_EVS = [];
+function openReminders(ids) {
+  const N = now();
+  SHEET_EVS = ids.map(id => remSpec(id, N)).filter(Boolean);
+  if (!SHEET_EVS.length) return;
+  const rows = SHEET_EVS.map(e => `<div class="rem"><div class="tile t-info">${e.icon}</div><div class="rt"><b>${esc(e.title)}</b>
+    <span>${t('remWhen', { d: cap(longDate(e.date)), rep: t('rep_' + e.rep) })}</span></div>
+    <a href="${esc(gcalURL(e))}" target="_blank" rel="noopener">${t('calGoogle')}</a></div>`).join('');
+  $('#sheetBody').innerHTML = `<h2 id="sheetTitle">${SHEET_EVS.length > 1 ? t('rem_allT') : t('calAddT')}</h2><p class="lead">${t('calAddLead')}</p>${rows}
+    <div class="btns"><button class="btn pri block" data-a="ics">${I.calPlus}${t('calIcs')}</button><button class="btn block" data-a="sheetClose">${t('cancel')}</button></div>
+    <p class="fine">${t('calFine')}</p>`;
+  $('#sheet').hidden = false;
+}
+function downloadICS() {
+  const name = SHEET_EVS.length > 1 ? 'mcnabb-rappels.ics' : 'mcnabb-' + SHEET_EVS[0].uid + '.ics';
+  const blob = new Blob([buildICS(SHEET_EVS)], { type: 'text/calendar;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = name; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+  toast(t('calReady'));
+}
+
+/* ================================================================
+   7. INTERFACE
+   ================================================================ */
+function svg(p, sw) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
+const I = {
+  today: svg('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/>'),
+  cal: svg('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01" stroke-width="2.7"/>'),
+  clim: svg('<path d="M3 8.5h10.5a2.75 2.75 0 1 0-2.75-2.75"/><path d="M3 12.5h15a3 3 0 1 1-3 3"/><path d="M3 16.5h6"/>'),
+  exch: svg('<path d="M4 8h15M15 4l4 4-4 4"/><path d="M20 16H5M9 12l-4 4 4 4"/>'),
+  clock: svg('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  drop: svg('<path d="M12 3.2s6 6.1 6 10.6a6 6 0 0 1-12 0C6 9.3 12 3.2 12 3.2z"/>'),
+  thermo: svg('<path d="M14 14.6V5a2 2 0 1 0-4 0v9.6a4 4 0 1 0 4 0z"/><path d="M12 11v5"/>'),
+  refresh: svg('<path d="M20 12a8 8 0 1 1-2.35-5.65"/><path d="M20 4.5V9h-4.5"/>'),
+  chev: svg('<path d="M9 5.5 15.5 12 9 18.5"/>', 2.4),
+  check: svg('<path d="M5 12.5l4.2 4.2L19 7"/>', 2.6),
+  calPlus: svg('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M12 12.8v5M9.5 15.3h5"/>'),
+  home: svg('<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/>')
 };
+const WAVE = '<svg class="wave" viewBox="0 0 400 30" preserveAspectRatio="none" aria-hidden="true">'
+  + '<path class="w-grass" d="M0 13 C 70 5 150 22 230 13 S 350 5 400 11 V30 H0 Z"/>'
+  + '<path class="w-bg" d="M0 21 C 90 12 170 30 260 20 S 360 13 400 18 V30 H0 Z"/>'
+  + '<path class="w-line" d="M0 21 C 90 12 170 30 260 20 S 360 13 400 18"/></svg>';
 
-// WMO weather codes
-function wmoInfo(code) {
-    if (code === 0)               return { emoji:'☀️',  fr:'Ciel dégagé',           en:'Clear sky',       rain:false };
-    if (code === 1)               return { emoji:'🌤️', fr:'Généralement dégagé',   en:'Mainly clear',    rain:false };
-    if (code === 2)               return { emoji:'⛅',  fr:'Partiellement nuageux', en:'Partly cloudy',   rain:false };
-    if (code === 3)               return { emoji:'☁️',  fr:'Nuageux',               en:'Overcast',        rain:false };
-    if ([45,48].includes(code))   return { emoji:'🌫️', fr:'Brouillard',            en:'Fog',             rain:false };
-    if (code>=51 && code<=57)     return { emoji:'🌦️', fr:'Bruine',                en:'Drizzle',         rain:true  };
-    if (code>=61 && code<=65)     return { emoji:'🌧️', fr:'Pluie',                 en:'Rain',            rain:true  };
-    if (code>=66 && code<=67)     return { emoji:'🌨️', fr:'Pluie verglaçante',     en:'Freezing rain',   rain:true  };
-    if (code>=71 && code<=77)     return { emoji:'❄️',  fr:'Neige',                 en:'Snow',            rain:false };
-    if (code>=80 && code<=82)     return { emoji:'🌦️', fr:'Averses de pluie',      en:'Rain showers',    rain:true  };
-    if (code>=85 && code<=86)     return { emoji:'🌨️', fr:'Averses de neige',      en:'Snow showers',    rain:false };
-    if (code>=95)                 return { emoji:'⛈️', fr:'Orage',                 en:'Thunderstorm',    rain:true  };
-    return { emoji:'🌤️', fr:'Variable', en:'Mixed', rain:false };
+function hero(o) {
+  return `<header class="hero ${o.night ? 'night' : ''}"><div class="hero-top"><div class="brand"><img src="icons/icon-192.png" alt="" onerror="this.style.display='none'">McNabb</div>
+    <button class="lang" data-a="lang" aria-label="${t('langAria')}">${t('langBtn')}</button></div>
+    <div class="hero-in"><h1 class="lt">${o.title}</h1>${o.sub ? `<p class="hs">${o.sub}</p>` : ''}${o.extra || ''}</div>${WAVE}</header>`;
+}
+function sec(title, aside) { return `<div class="sec"><h2>${title}</h2>${aside || ''}</div>`; }
+function chip(text, tone) { return `<span class="chip t-${tone || 'neutral'}">${text}</span>`; }
+function greet(N) { const h = N.getHours(); return h >= 5 && h < 12 ? t('gMorning') : h >= 12 && h < 18 ? t('gAfternoon') : t('gEvening'); }
+function hhmm(ms) { const d = new Date(ms); return fmtTime(d.getHours(), d.getMinutes()); }
+function hourOf(s) { return fmtTime(+s.slice(11, 13), 0); }
+
+let N, DER, REC, TODAY;
+function context() {
+  N = now(); TODAY = isoOf(N);
+  DER = derive(WX, N) || normalsDer(N);
+  REC = recommend(DER, N);
 }
 
-// ── STATE ─────────────────────────────────────────────────────────────
-let lang = 'fr';
-let currentPage = 'schedule';
-let weatherData = null;
-let weatherAt   = 0;
-const WEATHER_TTL = 30 * 60 * 1000;
-const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=45.3668&longitude=-73.9325&current=temperature_2m,apparent_temperature,weathercode&timezone=America%2FToronto&forecast_days=1';
-const AUTO_DAYS   = new Set([2, 5]); // Tue=2, Fri=5
-
-const L = k => LBL[lang][k] || k;
-
-// ── DATE HELPERS ──────────────────────────────────────────────────────
-function todayISO() {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-function daysFrom(iso) {
-    return Math.round((new Date(iso+'T12:00:00') - new Date(todayISO()+'T12:00:00')) / 86400000);
-}
-function fmtDate(iso) {
-    return new Date(iso+'T12:00:00').toLocaleDateString(
-        lang==='fr' ? 'fr-CA' : 'en-CA',
-        { weekday:'short', month:'short', day:'numeric' }
-    );
-}
-function cdTxt(days) {
-    if (days===0) return L('t0');
-    if (days===1) return L('t1');
-    return L('tn').replace('{n}', days);
-}
-function dowOf(iso) {
-    return new Date(iso+'T12:00:00').getDay();
-}
-
-// ── SCHEDULE (unified Collections + Watering) ─────────────────────────
-function renderSchedule() {
-    const now   = new Date();
-    const today = todayISO();
-    const dow   = now.getDay();
-    const h     = now.getHours();
-    const min   = now.getMinutes();
-    const month = now.getMonth() + 1;
-    const types = Object.keys(SCHEDULE);
-
-    // Date label
-    document.getElementById('sched-date').textContent =
-        now.toLocaleDateString(lang==='fr'?'fr-CA':'en-CA',
-            { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-
-    // ── Pickup state ──
-    const todayPickups = types.filter(t => SCHEDULE[t].includes(today));
-    const hasPickups   = todayPickups.length > 0;
-
-    // ── Watering state ──
-    const isAutoDay  = AUTO_DAYS.has(dow);
-    const inWindow   = isAutoDay && h >= 20 && h < 22;
-    const beforeWin  = isAutoDay && h < 20;
-    const noPermit   = month >= 7 && month <= 8;
-
-    // Find next auto window
-    let nextWater = null;
-    if (!inWindow) {
-        for (let i = 0; i <= 7; i++) {
-            const d = (dow + i) % 7;
-            if (AUTO_DAYS.has(d)) {
-                if (i===0 && h>=22) continue;
-                const dt = new Date(now); dt.setDate(dt.getDate() + i);
-                const dayNames = { fr:['dim','lun','mar','mer','jeu','ven','sam'], en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] };
-                const dn = i===0 ? (lang==='fr'?"auj.":'today')
-                         : i===1 ? (lang==='fr'?'demain':'tomorrow')
-                         : dayNames[lang][d];
-                nextWater = { days:i, dn };
-                break;
-            }
-        }
+/* ---------- Aujourd'hui ---------- */
+function buildActions() {
+  const today = TODAY, tom = addDays(today, 1), h = N.getHours(), md = mmdd(today);
+  const A = [];
+  const todayBins = eventsOn(today).filter(k => TYPES[k].bin);
+  const tomBins = eventsOn(tom).filter(k => TYPES[k].bin);
+  const hints = list => [list.includes('leaves') ? t('hintLeaves') : '', list.includes('bulkyItems') ? t('hintBulky') : ''].filter(Boolean).join(' ');
+  if (todayBins.length) {
+    if (h < 12) A.push({ key: 'binsToday|' + today, pri: 8, tone: 'warn', icon: TYPES[todayBins[0]].icon, title: t('binsTodayT'), detail: (t('binsTodayD', { list: binList(todayBins) }) + ' ' + hints(todayBins)).trim(), chip: { text: h < 7 ? t('before7') : t('now'), tone: 'warn' }, ack: t('ok') });
+    else A.push({ key: 'binsBack|' + today, pri: 45, tone: 'neutral', icon: '↩️', title: t('binsBackT'), detail: t('binsBackD', { list: binList(todayBins) }), ack: t('done') });
+  }
+  if (tomBins.length) {
+    const late = h >= 19;
+    A.push({ key: 'binsTonight|' + tom, pri: late ? 4 : 14, tone: late ? 'alert' : 'warn', icon: TYPES[tomBins[0]].icon, title: t('binsTonightT'),
+      detail: (t('binsTonightD', { list: binList(tomBins) }) + ' ' + hints(tomBins)).trim(), chip: { text: late ? t('now') : t('from7'), tone: late ? 'alert' : 'warn' }, ack: t('out') });
+  }
+  const w = wateringCard(N, DER); if (w) A.push(w);
+  if (DER.ok && DER.tonightMin <= 1 && (inWindow(md, '04-01', '06-20') || inWindow(md, '09-01', '11-20')))
+    A.push({ key: 'frost|' + today, pri: 12, tone: 'warn', icon: '❄️', title: t('frostT'), detail: t('frostD', { t: deg(DER.tonightMin, true) }) + (DER.tonightMin <= -2 ? ' ' + t('frostHard') : ''), ack: t('ok') });
+  // Réglages à changer
+  const x = REC.exchanger, xs = applied('exchanger', x.key);
+  if (xs !== 'ok') A.push({ pri: xs === 'change' ? 24 : 34, tone: 'info', icon: I.exch, title: t(xs === 'change' ? 'devNewT' : 'devFirstT', { dev: t('exchT') }),
+    detail: t(x.why, { tmin: deg(DER.tmin24, true), td: deg(DER.tdAvg24, true) }), chip: { text: exchSummary(x), tone: 'info' },
+    buttons: [{ label: t('set'), a: 'apply', data: { dev: 'exchanger', v: x.key }, primary: true }, { label: t('how'), a: 'how', data: { v: 'how-x' } }] });
+  const hm = REC.humidifier;
+  if (hm.on) { const hs = applied('humidifier', hm.key); if (hs !== 'ok') A.push({ pri: 26, tone: 'info', icon: I.drop, title: t(hs === 'change' ? 'devNewT' : 'devFirstT', { dev: t('humT') }),
+    detail: t(hm.why, { tmin: deg(DER.tmin24, true), rh: pct(hm.rh) }), chip: { text: pct(hm.rh), tone: 'info' },
+    buttons: [{ label: t('set'), a: 'apply', data: { dev: 'humidifier', v: hm.key }, primary: true }] }); }
+  // Tâches saisonnières
+  for (const task of TASKS) {
+    if (!inWindow(md, task.from, task.to) || !task.when(DER, N)) continue;
+    const k = taskKey(task, N); const isDone = !!S.tasks[k];
+    if (isDone && S.tasks[k] !== today) continue;
+    const vars = { rh: pct(HUM_BAND[heatBand(DER.tmin24)]) };
+    const btns = [{ label: t('done'), a: 'task', data: { id: task.id }, primary: true }];
+    if (task.rem) btns.push({ label: t('remind'), a: 'remind', data: { v: task.rem }, icon: I.calPlus });
+    A.push({ key: 'task:' + k, taskKey: k, pri: 30, tone: task.tone, icon: task.icon, title: t('task_' + task.id + 'T'), detail: t('task_' + task.id + 'D', vars), buttons: btns, done: isDone });
+  }
+  // Branches
+  const br = nextOf('branches', addDays(today, -11));
+  if (br) {
+    const dd = diffDays(today, br), sat = addDays(br, -(((dowOf(br) + 1) % 7) || 7));
+    if (dd > 0 && dd <= 7) A.push({ key: 'branches|' + br, pri: 36, tone: 'ok', icon: '🌿', title: t('branchesT', { day: longDate(br) }), detail: t('branchesD', { sat: dayMonth(sat) }), ack: t('ok') });
+    else if (dd <= 0 && dd >= -11) A.push({ key: 'branchesOn|' + br, pri: 50, tone: 'neutral', icon: '🌿', title: t('branchesOnT'), detail: t('branchesOnD', { day: longDate(br) }), ack: t('ok') });
+  }
+  const tx = nextOf('taxes', today);
+  if (tx && diffDays(today, tx) <= 5) A.push({ key: 'taxes|' + tx, pri: 38, tone: 'neutral', icon: '🧾', title: t('taxesT'), detail: t('taxesD', { when: tx === today ? t('cdToday') : longDate(tx) }), ack: t('ok') });
+  if (SET.cityMeeting.has(today) && h < 22) A.push({ key: 'council|' + today, pri: 55, tone: 'neutral', icon: '🏛️', title: t('councilT'), detail: t('councilD'), ack: t('ok') });
+  if (REC.windows) A.push({ key: 'windows|' + today, pri: 52, tone: 'ok', icon: '🪟', title: t('windowsT'), detail: t('windowsD', { t: deg(DER.cur.t), td: deg(DER.cur.td) }), ack: t('ok') });
+  // Entretien
+  for (const m of MAINT) {
+    const st = maintStatus(m, N);
+    if (st.state === 'over' || st.state === 'today' || (st.state === 'soon' && st.left <= 7)) {
+      const d = st.state === 'over' ? t('maintOverD', { n: -st.left }) : st.state === 'today' ? t('maintTodayD') : t('maintSoonD', { d: longDate(st.due) });
+      A.push({ pri: st.state === 'over' ? 18 : 32, tone: st.state === 'over' ? 'alert' : 'warn', icon: m.icon, title: t('maintDueT', { name: t('mi_' + m.id) }), detail: d,
+        buttons: [{ label: t('doneToday'), a: 'maint', data: { id: m.id }, primary: true }, { label: t('remind'), a: 'remind', data: { v: 'maint:' + m.id }, icon: I.calPlus }] });
     }
+  }
+  if (!S.maint.furnaceFilter) A.push({ key: 'filterAsk', pri: 60, tone: 'neutral', icon: '🌬️', title: t('filterAskT'), detail: t('filterAskD'), buttons: [{ label: t('filterAskB'), a: 'gomaint', data: { v: 'furnaceFilter' }, primary: true }], dismiss: true });
+  const standalone = window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  if (!standalone && /iPhone|iPad|iPod/.test(navigator.userAgent)) A.push({ key: 'install', pri: 70, tone: 'info', icon: '📱', title: t('installT'), detail: t('installD'), ack: t('ok'), persistAck: true });
 
-    // ── Today card ──
-    let cardClass, todayHTML = '';
+  for (const a of A) if (a.key && S.ack[a.key]) a.done = true;
+  return A.filter(a => !(a.dismiss && a.done) && !(a.persistAck && a.done)).sort((a, b) => (a.done - b.done) || (a.pri - b.pri));
+}
+function actCard(a) {
+  const btns = [];
+  if (!a.done) {
+    (a.buttons || []).forEach(b => btns.push(`<button class="btn ${b.primary ? 'pri' : ''}" data-a="${b.a}"${Object.entries(b.data || {}).map(([k, v]) => ` data-${k}="${esc(v)}"`).join('')}>${b.icon || ''}${b.label}</button>`));
+    if (a.ack) btns.push(`<button class="btn pri" data-a="ack" data-k="${esc(a.key)}">${a.ack}</button>`);
+    if (a.dismiss) btns.push(`<button class="btn ghost" data-a="ack" data-k="${esc(a.key)}">${t('later')}</button>`);
+  } else if (a.key) btns.push(`<button class="btn ghost" data-a="unack" data-k="${esc(a.key)}"${a.taskKey ? ` data-task="${esc(a.taskKey)}"` : ''}>${t('undo')}</button>`);
+  const long = a.chip && stripTags(a.chip.text).length > 12;
+  const ch = a.chip && !a.done ? chip(a.chip.text, a.chip.tone) : '';
+  return `<article class="card act t-${a.tone}${a.done ? ' is-done' : ''}"><div class="tile">${a.done ? I.check : a.icon}</div>
+    <div><h3>${a.title}</h3>${long && ch ? `<div class="chip-line">${ch}</div>` : ''}${a.detail ? `<p>${a.detail}</p>` : ''}</div>${!long && ch ? ch : '<span></span>'}
+    ${btns.length ? `<div class="actions">${btns.join('')}</div>` : ''}</article>`;
+}
+function wxHero() {
+  if (!DER.ok) return `<p class="wx-msg">${wxState === 'loading' ? t('wxLoading') : t('wxNone')}</p>`;
+  const c = DER.cur, w = wmo(c.code, c.isDay);
+  const upd = wxState === 'offline' ? t('updOff', { t: hhmm(DER.fetchedAt) }) : t('upd', { t: hhmm(DER.fetchedAt) });
+  return `<div class="wx"><div class="wx-t num">${deg(c.t)}</div><div class="wx-r"><div class="wx-cond">${w.e} ${w.label}</div>
+    <div class="wx-meta num">${t('feels')} ${deg(c.feels)}<br>${t('hiLo', { hi: deg(DER.hi), lo: deg(DER.lo) })}</div></div></div>
+    <div class="wx-row num"><span class="wchip">${t('hum')} ${pct(c.rh)}</span><span class="wchip">${t('dew')} ${deg(c.td)}</span><span class="wchip">${t(inWindow(mmdd(TODAY), '11-01', '03-31') ? 'precip24' : 'rain24')} ${mm(DER.rain24)}</span></div>
+    <button class="wx-upd" data-a="refresh">${I.refresh}${upd}</button>`;
+}
+function settingsRows() {
+  const x = REC.exchanger, hm = REC.humidifier;
+  const st = s => s === 'ok' ? chip(t('upToDate'), 'ok') : s === 'change' ? chip(t('change'), 'warn') : chip(t('toSet'), 'info');
+  const row = (icon, label, val, status) => `<button class="row" data-a="tab" data-v="climate"><span class="ri">${icon}</span><span class="rl"><b>${label}</b><span>${val}</span></span>${status || ''}<span class="chev">${I.chev}</span></button>`;
+  return `<div class="card rows">${row(I.exch, t('exchT'), exchSummary(x), st(applied('exchanger', x.key)))}
+    ${row(I.drop, t('humT'), hm.on ? pct(hm.rh) + ' · ' + t('h_damperW') : t('h_off') + ' · ' + t('h_damperS'), hm.on ? st(applied('humidifier', hm.key)) : '')}
+    ${row(I.thermo, t('thermoT'), t(REC.thermo.label), '')}</div>`;
+}
+function weekStrip() {
+  let html = '<div class="week">';
+  for (let i = 0; i < 7; i++) {
+    const d = addDays(TODAY, i), evs = eventsOn(d);
+    const icons = evs.slice(0, 3).map(k => TYPES[k].icon).join('<br>') + (evs.length > 3 ? `<small>+${evs.length - 3}</small>` : '');
+    html += `<button class="day${i === 0 ? ' today' : ''}" data-a="jump" data-v="${d}" aria-label="${esc(longDate(d))}"><span class="dn">${shortDay(d)}</span><span class="dd num">${dateOf(d).getDate()}</span><span class="ev">${icons}</span></button>`;
+  }
+  return html + '</div>';
+}
+function renderToday() {
+  const acts = buildActions();
+  BADGE.today = acts.filter(a => !a.done && a.pri < 60).length;
+  const night = DER.ok && DER.cur ? !DER.cur.isDay : (N.getHours() < 6 || N.getHours() >= 20);
+  let html = hero({ title: greet(N), sub: cap(longDate(TODAY)), night, extra: wxHero() });
+  html += '<div class="wrap">' + sec(t('secTodo'));
+  html += '<div class="stack">' + (acts.some(a => !a.done) ? '' : `<div class="card empty"><div class="e">🌿</div><b>${t('emptyT')}</b><span>${t('emptyD')}</span></div>`) + acts.map(actCard).join('') + '</div>';
+  html += sec(t('secSettings'), `<button class="aside-btn" data-a="tab" data-v="climate">${t('seeClim')}</button>`) + settingsRows();
+  html += sec(t('secWeek'), `<button class="aside-btn" data-a="tab" data-v="calendar">${t('seeCal')}</button>`) + weekStrip();
+  html += `<p class="foot">${t('foot')}</p></div>`;
+  $('#page-today').innerHTML = html;
+}
 
-    if (hasPickups && (inWindow || beforeWin)) {
-        // Dual: pickups + watering
-        cardClass = 's-dual';
-        todayHTML = `
-            <div class="today-lbl">${L('today')}</div>
-            <div class="tc-section">
-                <div class="tc-sub-lbl">🚛 ${L('collectionsToday')}</div>
-                <div class="chip-row">
-                    ${todayPickups.map(t=>`<div class="pickup-chip">${ICONS[t]} ${L(t)}</div>`).join('')}
-                </div>
-            </div>
-            <div class="tc-section">
-                ${inWindow
-                    ? `<div class="water-inline">💧 <span>${L('waterOpen')}</span></div>`
-                    : `<div class="water-inline">💧 <span>${L('waterTonight')}</span> <span class="wi-badge">${L('waterTonightBadge')}</span></div>`
-                }
-            </div>`;
-    } else if (hasPickups) {
-        // Pickups only
-        cardClass = 's-busy';
-        todayHTML = `
-            <div class="today-lbl">${L('today')}</div>
-            <div class="tc-section">
-                <div class="chip-row">
-                    ${todayPickups.map(t=>`<div class="pickup-chip">${ICONS[t]} ${L(t)}</div>`).join('')}
-                </div>
-            </div>`;
-    } else if (inWindow) {
-        // Watering window open NOW
-        cardClass = 's-water-open';
-        todayHTML = `
-            <div class="today-lbl">${lang==='fr'?'Maintenant':'Right Now'}</div>
-            <div class="tc-section">
-                <div class="tc-message">💧 ${L('waterOpen')}</div>
-            </div>`;
-    } else if (beforeWin) {
-        // Watering tonight
-        cardClass = 's-water-soon';
-        const minsLeft = (20-h)*60 - min;
-        const hh = Math.floor(minsLeft/60), mm = minsLeft%60;
-        const ts = hh>0 ? `${hh}h${mm>0?String(mm).padStart(2,'0'):''}` : `${mm}min`;
-        todayHTML = `
-            <div class="today-lbl">${L('today')}</div>
-            <div class="tc-section">
-                <div class="water-inline">
-                    💧 <span>${L('waterTonight')}</span>
-                    <span class="wi-badge">${L('waterTonightBadge')}</span>
-                </div>
-                <div style="font-size:.82em;opacity:.8;margin-top:6px">
-                    ${lang==='fr'?`Dans ${ts}`:`In ${ts}`}
-                </div>
-            </div>`;
-    } else {
-        // All clear
-        cardClass = 's-free';
-        todayHTML = `
-            <div class="today-lbl">${L('today')}</div>
-            <div class="tc-section">
-                <div class="tc-message">${L('allClear')}</div>
-                ${nextWater ? `<div style="font-size:.82em;opacity:.8;margin-top:6px">💧 ${L('waterNext').replace('{d}', nextWater.dn)}</div>` : ''}
-            </div>`;
+/* ---------- Calendrier ---------- */
+let calWeeks = 6;
+function renderCalendar() {
+  let html = hero({ title: t('tabCal'), sub: t('calSub') }) + '<div class="wrap">';
+  const nx = TYPE_ORDER.map(k => ({ k, d: nextOf(k, TODAY) })).filter(x => x.d).sort((a, b) => a.d < b.d ? -1 : 1);
+  html += sec(t('nextT')) + '<div class="next">' + nx.map(({ k, d }) => {
+    const n = diffDays(TODAY, d);
+    return `<button class="nx" data-a="jump" data-v="${d}"><div class="ic">${TYPES[k].icon}</div><b>${t('type_' + k)}</b><span>${cap(fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short' }))}</span>${chip(cdTxt(n), n <= 1 ? 'warn' : 'neutral')}</button>`;
+  }).join('') + '</div>';
+  const left = LAST_DATE ? diffDays(TODAY, LAST_DATE) : -1;
+  if (left < 0) html += `<div class="banner">📅 ${t('ended')}</div>`;
+  else if (left <= 45) html += `<div class="banner">📅 ${t('endSoon', { n: left })}</div>`;
+  html += sec(t('agendaT'));
+  const mon0 = addDays(TODAY, -dowOf(TODAY)); /* semaines du dimanche au samedi, comme le calendrier de NDIP */
+  let shown = 0;
+  for (let w = 0; w < calWeeks; w++) {
+    const mon = addDays(mon0, w * 7); let rows = '';
+    for (let i = 0; i < 7; i++) {
+      const d = addDays(mon, i); if (d < TODAY) continue;
+      const evs = eventsOn(d); if (!evs.length) continue;
+      const n = diffDays(TODAY, d);
+      const pills = evs.map(k => k === 'water' ? `<span class="pill water">💧 ${t('waterPill')} <small>${t('waterPillS')}</small></span>`
+        : `<span class="pill">${TYPES[k].icon} ${t('type_' + k)}${k === 'branches' ? ` <small>${t('branchesPillS')}</small>` : ''}</span>`).join('');
+      rows += `<div class="aday${n === 0 ? ' is-today' : ''}" id="d-${d}"><div class="dt"><div class="w">${shortDay(d)}</div><div class="n num">${dateOf(d).getDate()}</div></div>
+        <div>${n <= 1 ? `<div class="lbl">${n === 0 ? t('lblToday') : t('lblTomorrow')}</div>` : ''}<div class="pills">${pills}</div></div></div>`;
+      shown++;
     }
-
-    // ── Weather tip (watering-relevant) ──
-    let weatherTip = '';
-    if (weatherData) {
-        const wmo = wmoInfo(weatherData.code);
-        const temp = weatherData.temp;
-        if (wmo.rain && temp > 0 && (inWindow || beforeWin)) {
-            weatherTip = `
-                <div class="smart-tip blue">
-                    <div class="st-icon">🌧️</div>
-                    <div>
-                        <div class="st-title">${lang==='fr'?'Pluie en cours — arrosage peut-être inutile':'Rain detected — watering may not be needed'}</div>
-                        <div class="st-detail">${lang==='fr'?'La nature s\'en charge ce soir — considérez passer votre tour.':'Nature is handling it tonight — consider skipping your window.'}</div>
-                    </div>
-                </div>`;
-        } else if (temp > 28 && (inWindow || beforeWin)) {
-            weatherTip = `
-                <div class="smart-tip orange">
-                    <div class="st-icon">☀️</div>
-                    <div>
-                        <div class="st-title">${lang==='fr'?'Forte chaleur — arrosez ce soir impérativement':'Hot day — tonight\'s window is especially important'}</div>
-                        <div class="st-detail">${lang==='fr'?'Arroser le soir limite l\'évaporation — l\'eau atteint directement les racines.':'Evening watering reduces evaporation — water reaches roots directly.'}</div>
-                    </div>
-                </div>`;
-        }
-    }
-
-    // ── Upcoming pickups (limit 8, mark watering days) ──
-    const upcoming = types
-        .map(type => {
-            const next = SCHEDULE[type].filter(d => d >= today).sort()[0];
-            if (!next) return null;
-            return { type, days: daysFrom(next), date: next, isWaterDay: AUTO_DAYS.has(dowOf(next)) };
-        })
-        .filter(Boolean).sort((a,b) => a.days-b.days).slice(0,8);
-
-    let pickupListHTML = upcoming.map(({ type, days, date, isWaterDay }) => {
-        const bc = days===0?'t':days===1?'tm':days<=4?'sn':'';
-        return `
-            <div class="pickup-row">
-                <div class="pi-icon ${type}">${ICONS[type]}</div>
-                <div class="pi-info">
-                    <div class="pi-name">${L(type)}</div>
-                    <div class="pi-meta">
-                        <span class="pi-date">${fmtDate(date)}</span>
-                        ${bc ? `<span class="badge ${bc}">${cdTxt(days)}</span>` : ''}
-                        ${isWaterDay ? `<span class="pi-water">💧 ${lang==='fr'?'soir':'eve.'}</span>` : ''}
-                    </div>
-                </div>
-                <div class="pi-cd">${cdTxt(days)}</div>
-            </div>`;
-    }).join('');
-
-    // ── Watering section (week grid + permit) ──
-    const DAY_ORDER = [1,2,3,4,5,6,0];
-    const dfr = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    const den = ['Su','Mo','Tu','We','Th','Fr','Sa'];
-    const gridCells = DAY_ORDER.map(d => {
-        const isWD = AUTO_DAYS.has(d), isToday = d===dow;
-        const name = (lang==='fr'?dfr:den)[d];
-        return `<div class="day-cell ${isWD?'wd':'nwd'} ${isToday?'now':''}">
-            <div class="dc-name">${name}</div>
-            <div class="dc-emoji">${isWD?'💧':'—'}</div>
-            ${isWD ? `<div class="dc-time">${lang==='fr'?'20–22h':'8–10p'}</div>` : ''}
-        </div>`;
-    }).join('');
-
-    const noPermitBanner = noPermit
-        ? `<div class="alert warn" style="margin-bottom:0"><strong>${L('noPermitMsg')}</strong></div>` : '';
-    const permitBody = `
-        ${noPermitBanner}
-        <div class="sys-row" style="margin-bottom:6px"><strong>${L('permitWith')}</strong> ${L('permitDetail')}</div>
-        <div class="sys-row" style="margin-bottom:6px"><strong>${L('permitDur')}</strong></div>
-        <div class="sys-row">${L('permitFor')}</div>`;
-
-    const waterSectionHTML = `
-        <div class="water-section">
-            <div class="water-section-hdr">
-                <div class="water-section-title">💧 ${L('waterSection')}</div>
-                <div class="water-section-sub">${L('waterRule')}</div>
-            </div>
-            <div class="week-grid">${gridCells}</div>
-            <div class="water-footer">
-                <div class="manual-note">✅ ${L('manualOK')}</div>
-            </div>
-            <div style="padding: 0 15px 14px">
-                <div class="edu-card" style="margin-bottom:0;box-shadow:none;border:1px solid #f0f0f0">
-                    <button class="edu-toggle" onclick="toggleEdu(this)">
-                        <span class="edu-tl">📋 ${L('permitTitle')}</span>
-                        <span class="edu-ch">▼</span>
-                    </button>
-                    <div class="edu-body">${permitBody}</div>
-                </div>
-            </div>
-        </div>`;
-
-    // ── Assemble ──
-    document.getElementById('sched-render').innerHTML = `
-        <div class="today-card ${cardClass}">${todayHTML}</div>
-        ${weatherTip}
-        <div class="sec-label">${L('next')}</div>
-        <div class="pickup-list">${pickupListHTML}</div>
-        <div class="sec-label">💧 ${L('waterSection')}</div>
-        ${waterSectionHTML}
-    `;
-
-    // Nav dot: green if pickup today or window open, blue if watering tonight
-    const navS = document.getElementById('nav-schedule');
-    navS.classList.toggle('has-green', hasPickups || inWindow);
-    navS.classList.toggle('has-blue',  !hasPickups && beforeWin && !inWindow);
+    if (!rows) continue;
+    const label = w === 0 ? t('thisWeek') : w === 1 ? t('nextWeek') : t('weekOf', { d: dayMonth(mon) });
+    html += `<div class="wk"><h3>${label}</h3><div class="list">${rows}</div></div>`;
+  }
+  const endShown = addDays(mon0, calWeeks * 7);
+  if (LAST_DATE && endShown <= LAST_DATE) html += `<button class="btn block more" data-a="more" style="margin-top:14px">${t('more')}</button>`;
+  html += '<div class="stack" style="margin-top:22px">';
+  html += `<details class="acc" data-id="rules-bins"><summary>🗑️ ${t('rulesBinsT')}</summary><div class="acc-body"><ul>${tl('rulesBins').map(s => `<li>${s}</li>`).join('')}</ul></div></details>`;
+  html += `<details class="acc" data-id="rules-water"><summary>💧 ${t('rulesWaterT')}</summary><div class="acc-body"><ul>${tl('rulesWater').map(s => `<li>${s}</li>`).join('')}</ul></div></details>`;
+  html += `</div><p class="foot">${t('srcCal')}</p></div>`;
+  $('#page-calendar').innerHTML = html;
 }
 
-// ── WEATHER + HVAC ────────────────────────────────────────────────────
-async function fetchWeather() {
-    if (weatherData && (Date.now()-weatherAt) < WEATHER_TTL) { renderHvac(); return; }
-    try {
-        const res  = await fetch(WEATHER_URL);
-        const data = await res.json();
-        weatherData = {
-            temp:      data.current.temperature_2m,
-            feelsLike: data.current.apparent_temperature,
-            code:      data.current.weathercode
-        };
-        weatherAt = Date.now();
-    } catch { weatherData = null; }
-    renderHvac();
-    renderSchedule(); // refresh watering tip with weather
+/* ---------- Climat ---------- */
+function lcd(x) {
+  const name = x.mode === 'int' ? t('m_int') : t('m_exch');
+  return `<div class="lcd" role="img" aria-label="${esc(name + ', ' + t('spd', { n: 1 }) + ', ' + pct(x.rh))}"><div class="m">${x.mode === 'int' ? I.clock : I.exch}<span>${name}</span></div>
+    <div class="sp"><span>${t('lcdSpd')}</span><b>1</b></div><div class="rh"><span>${t('lcdRh')}</span><b>${x.rh}<small>%</small></b></div></div>`;
+}
+function statusChip(s) { return s === 'ok' ? chip(I.check.replace('<svg', '<svg style="width:13px;height:13px"') + t('upToDate'), 'ok') : s === 'change' ? chip(t('change'), 'warn') : chip(t('toSet'), 'info'); }
+function chartSVG(series, mode) {
+  const vals = series.map(h => mode === 'td' ? h.td : h.t);
+  if (vals.filter(v => v != null).length < 6) return '';
+  const W = 330, H = 124, pl = 28, pr = 10, pt = 8, pb = 22;
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  if (mode === 'td') { lo = Math.min(lo, 9); hi = Math.max(hi, 17); } else { lo = Math.min(lo, 0); hi = Math.max(hi, 2); }
+  lo = Math.floor(lo - 1); hi = Math.ceil(hi + 1);
+  const x = i => pl + i * (W - pl - pr) / (series.length - 1);
+  const y = v => pt + (hi - v) * (H - pt - pb) / (hi - lo);
+  let g = '';
+  if (mode === 'td') {
+    g += `<rect class="b-hum" x="${pl}" y="${y(hi)}" width="${W - pl - pr}" height="${Math.max(0, y(16) - y(hi))}" rx="4"/>`;
+    g += `<rect class="b-mid" x="${pl}" y="${y(16)}" width="${W - pl - pr}" height="${Math.max(0, y(13) - y(16))}"/>`;
+  }
+  const step = hi - lo > 18 ? 10 : hi - lo > 9 ? 5 : 2;
+  for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) g += `<line class="gl" x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}"/><text class="tx" x="${pl - 6}" y="${y(v) + 3.5}" text-anchor="end">${fmtNum(v)}°</text>`;
+  const pts = vals.map((v, i) => v == null ? null : [x(i), y(v)]).filter(Boolean);
+  const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  let labels = ''; [0, 6, 12, 18, series.length - 1].forEach(i => { if (series[i]) labels += `<text class="tx" x="${x(i)}" y="${H - 5}" text-anchor="${i === 0 ? 'start' : i === series.length - 1 ? 'end' : 'middle'}">${i === 0 ? t('now') : hourOf(series[i].time)}</text>`; });
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(mode === 'td' ? t('chartTd') : t('chartT'))}">${g}<path class="cl" d="${d}"/><circle class="cdot" cx="${pts[0][0]}" cy="${pts[0][1]}" r="4.5"/>${labels}</svg>`;
+}
+function outdoorCard() {
+  if (!DER.ok) return `<article class="card"><div class="dev-h"><div class="tile t-neutral">🌡️</div><div class="nm"><b>${t('outT')}</b><span>${t('wxNone')}</span></div></div></article>`;
+  const c = DER.cur, heat = REC.regime === 'heat';
+  const houseTd = heat ? dewPoint(21, REC.humidifier.on ? REC.humidifier.rh : 35) : REC.regime === 'cool' ? dewPoint(23.5, 50) : dewPoint(21, 50);
+  const diff = DER.tdAvg24 - houseTd;
+  const verdict = diff > 1.5 ? t('v_wetter') : diff < -1.5 ? t('v_drier') : t('v_same');
+  const pos = v => Math.max(2, Math.min(98, (v / 24) * 100));
+  const series = DER.series;
+  let html = `<article class="card"><div class="dev-h"><div class="tile t-info">${I.clim}</div><div class="nm"><b>${t('outT')}</b><span>${wmo(c.code, c.isDay).e} ${wmo(c.code, c.isDay).label}</span></div></div>
+    <div class="out-top" style="margin-top:12px"><div class="big num">${deg(c.t)}</div><div class="facts num">${t('hum')} <b>${pct(c.rh)}</b><br>${t('dew')} <b>${deg(c.td, true)}</b></div></div>`;
+  if (!heat) {
+    html += `<div class="meter-wrap"><div class="meter"><span class="mk house" style="left:${pos(houseTd)}%"></span><span class="mk" style="left:${pos(DER.tdAvg24)}%"></span></div>
+      <div class="mlabels"><span>${t('zDry')}</span><span>${t('zOk')}</span><span>${t('zHum')}</span><span>${t('zMug')}</span></div>
+      <div class="legend"><span><i style="background:var(--text)"></i>${t('outTd', { td: deg(DER.tdAvg24, true) })}</span><span><i style="background:var(--accent)"></i>${t('houseTd', { td: deg(houseTd, true) })}</span></div></div>
+      <p class="verdict">${verdict}</p>`;
+  }
+  html += `<div class="chart"><div class="ct">${heat ? t('chartT') : t('chartTd')}</div>${chartSVG(series, heat ? 't' : 'td')}</div>`;
+  if (!heat && DER.dryRun && REC.exchanger.mode === 'int') html += `<p class="tipline">${t('dryWin', { from: hourOf(DER.dryRun.from), to: hourOf(DER.dryRun.to) })}</p>`;
+  if (REC.windows) html += `<div class="tipbox">🪟 ${t('windowsD', { t: deg(c.t), td: deg(c.td) })}</div>`;
+  return html + '</article>';
+}
+function exchCard() {
+  const x = REC.exchanger, st = applied('exchanger', x.key);
+  let why = t(x.why, { tmin: deg(DER.tmin24, true), td: deg(DER.tdAvg24, true) }); if (x.rh === 90) why += ' ' + t('x_rh90');
+  const steps = x.mode === 'int' ? tl('steps_int', { rh: pct(x.rh) }) : tl('steps_exch', { n: x.speed, rh: pct(x.rh) });
+  const prev = st === 'change' ? `<p class="from">${t('devWas', { v: exchSummary(parseX(S.applied.exchanger)) })}</p>` : '';
+  return `<article class="card"><div class="dev-h"><div class="tile t-info">${I.exch}</div><div class="nm"><b>${t('exchT')}</b><span>${t('exchSub')}</span></div>${statusChip(st)}</div>
+    ${lcd(x)}<p class="why">${why}</p>${prev}
+    <details class="acc inner" data-id="how-x"><summary>${t('how')}</summary><div class="acc-body"><ol class="steps">${steps.map(s => `<li>${s}</li>`).join('')}</ol><p class="tipline">${t('tip3s')}</p></div></details>
+    <div class="dev-actions">${st === 'ok' ? '' : `<button class="btn pri" data-a="apply" data-dev="exchanger" data-v="${x.key}">${t('set')}</button>`}</div></article>`;
+}
+function humCard() {
+  const hm = REC.humidifier, md = mmdd(TODAY);
+  let body, actions = '';
+  const startSteps = tl('steps_humStart', { rh: pct(HUM_BAND[REC.band]) }), stopSteps = tl('steps_humStop');
+  if (hm.on) {
+    const st = applied('humidifier', hm.key);
+    body = `<div class="lcd big-only"><div class="note">${t('h_damperW')}</div><div class="rh"><span>${t('lcdRh')}</span><b>${hm.rh}<small>%</small></b></div></div>
+      <p class="why">${t(hm.why, { tmin: deg(DER.tmin24, true), rh: pct(hm.rh) })}</p>
+      ${inWindow(md, '03-15', '06-30') ? `<p class="from">${t('h_nextStop', { d: dayMonth(nextOn('05-15', N)) })}</p>` : ''}
+      <details class="acc inner" data-id="how-hstop"><summary>${t('humStopHow')}</summary><div class="acc-body"><ol class="steps">${stopSteps.map(s => `<li>${s}</li>`).join('')}</ol></div></details>`;
+    actions = (st === 'ok' ? '' : `<button class="btn pri" data-a="apply" data-dev="humidifier" data-v="${hm.key}">${t('set')}</button>`)
+      + `<button class="btn" data-a="humOff">${t('humStopped')}</button><button class="btn" data-a="remind" data-v="humStop">${I.calPlus}${t('remind')}</button>`;
+    return `<article class="card"><div class="dev-h"><div class="tile t-info">${I.drop}</div><div class="nm"><b>${t('humT')}</b><span>${t('humSub')}</span></div>${statusChip(st)}</div>${body}<div class="dev-actions">${actions}</div></article>`;
+  }
+  body = `<div class="lcd big-only"><div class="note">${t('h_damperS')}</div><div class="rh"><span>${t('lcdRh')}</span><b style="font-size:26px">${t('h_off')}</b></div></div>
+    <p class="why">${t('h_offD')}</p><p class="from">${t('h_nextStart', { d: dayMonth(nextOn('10-15', N)) })}</p>
+    <details class="acc inner" data-id="how-hstart"><summary>${t('humStartHow')}</summary><div class="acc-body"><ol class="steps">${startSteps.map(s => `<li>${s}</li>`).join('')}</ol></div></details>`;
+  actions = `<button class="btn pri" data-a="remind" data-v="humStart">${I.calPlus}${t('remind')}</button><button class="btn" data-a="humOn">${t('humAlready')}</button>`;
+  return `<article class="card"><div class="dev-h"><div class="tile t-neutral">${I.drop}</div><div class="nm"><b>${t('humT')}</b><span>${t('humSub')}</span></div>${chip(t('h_off'), 'neutral')}</div>${body}<div class="dev-actions">${actions}</div></article>`;
+}
+function thermoCard() {
+  return `<article class="card"><div class="dev-h"><div class="tile t-info">${I.thermo}</div><div class="nm"><b>${t('thermoT')}</b><span>${t('thermoSub')}</span></div></div>
+    <p class="verdict" style="margin-top:12px">${t(REC.thermo.label)}</p><p class="why" style="margin-top:4px">${t(REC.thermo.why)}</p></article>`;
+}
+function setupCard() {
+  const opts = ['interlock', 'noInterlock', 'dedicated', 'unknown'];
+  const tie = S.setup.tie;
+  return `<article class="card"><div class="dev-h"><div class="tile t-neutral">${I.home}</div><div class="nm"><b>${t('setupT')}</b><span>${t('setupQ')}</span></div></div>
+    <div class="seg">${opts.map(o => `<button class="${tie === o ? 'on' : ''}" data-a="setup" data-v="${o}" aria-pressed="${tie === o}">${t('tie_' + o)}</button>`).join('')}</div>
+    <div class="energy"><p>${t('e_base')} ${t('e_' + tie)}</p>${REC.regime !== 'heat' ? `<p>${t('e_water')}</p>` : ''}</div></article>`;
+}
+function refTable() {
+  const rowsW = [['0' + NB + '°C +', 0], ['0 → −6' + NB + '°C', 1], ['−6 → −12' + NB + '°C', 2], ['−12 → −18' + NB + '°C', 3], ['< −18' + NB + '°C', 4]]
+    .map(([c, b]) => `<tr><td>${c}</td><td>⇄${NB}1 · ${pct(XRH_BAND[b])}</td><td>${pct(HUM_BAND[b])}</td></tr>`).join('');
+  return `<p><b>${t('refSummer')}</b></p><table class="ref"><tr><th>${t('refColCond')}</th><th>${t('refColX')}</th><th>${t('refColH')}</th></tr>
+    <tr><td>${t('refHumid')}</td><td>⏲ · ${pct(90)}</td><td>${t('refHumOff')}</td></tr><tr><td>${t('refDry')}</td><td>⇄${NB}1 · ${pct(90)}</td><td>${t('refHumOff')}</td></tr></table>
+    <p style="margin-top:14px"><b>${t('refWinter')}</b></p><table class="ref"><tr><th>${t('refColCond')}</th><th>${t('refColX')}</th><th>${t('refColH')}</th></tr>${rowsW}</table><p>${t('refNote')}</p>`;
+}
+function maintList() {
+  const items = MAINT.map(m => {
+    const st = maintStatus(m, N);
+    const c = st.state === 'never' ? chip(t('ms_never'), 'neutral') : st.state === 'over' ? chip(t('ms_over', { n: -st.left }), 'alert')
+      : st.state === 'today' ? chip(t('ms_today'), 'warn') : chip(t('ms_ok', { n: st.left }), st.state === 'soon' ? 'warn' : 'ok');
+    const info = st.last ? t('last', { d: dayMonth(st.last) }) + ' · ' + t('nextDue', { d: dayMonth(st.due) }) : t('mi_' + m.id + 'S');
+    return `<div class="mi" id="m-${m.id}"><div class="mi-h"><b>${m.icon} ${t('mi_' + m.id)}</b>${c}</div><div class="sub">${st.last ? t('mi_' + m.id + 'S') + '<br>' + info : info}</div>
+      <div class="ctl"><button class="btn pri" data-a="maint" data-id="${m.id}">${t('doneToday')}</button>
+      <button class="btn" data-a="remind" data-v="maint:${m.id}">${I.calPlus}${t('remindShort')}</button>
+      ${m.link ? `<a href="${m.link}" target="_blank" rel="noopener">${t('buy')}</a>` : ''}</div>
+      <label class="other">${t('otherDate')}<input type="date" data-maint="${m.id}" value="${st.last || ''}" max="${TODAY}" aria-label="${esc(t('dateAria'))}"></label></div>`;
+  }).join('');
+  return `<div class="card" style="padding:0;overflow:hidden">${items}</div><button class="btn block" data-a="remindAll" style="margin-top:10px">${I.calPlus}${t('maintAll')}</button>`;
+}
+function renderClimate() {
+  BADGE.climate = (applied('exchanger', REC.exchanger.key) === 'change' ? 1 : 0) + (REC.humidifier.on && applied('humidifier', REC.humidifier.key) === 'change' ? 1 : 0);
+  let html = hero({ title: t('tabClim'), sub: t('climSub'), night: DER.ok && DER.cur && !DER.cur.isDay }) + '<div class="wrap"><div class="stack" style="margin-top:6px">';
+  html += outdoorCard() + exchCard() + humCard() + thermoCard() + setupCard();
+  html += `<details class="acc" data-id="why"><summary>🎓 ${t('whyT')}</summary><div class="acc-body">${tl('why').map(p => `<p>${p}</p>`).join('')}<p style="font-size:12.5px;color:var(--text-3)">${t('whySrc')}</p></div></details>`;
+  html += `<details class="acc" data-id="ref"><summary>📋 ${t('refT')}</summary><div class="acc-body">${refTable()}</div></details></div>`;
+  html += sec(t('maintT')) + maintList();
+  html += `<p class="foot">${t('foot')}</p></div>`;
+  $('#page-climate').innerHTML = html;
 }
 
-function renderHvac() {
-    const wCard = document.getElementById('weather-card');
-    if (weatherData) {
-        const { temp, feelsLike, code } = weatherData;
-        const wmo    = wmoInfo(code);
-        const season = temp<-15?'deep-winter':temp<0?'mild-winter':temp<15?'spring-fall':'summer';
-        const smeta  = SEASONS_META[season];
-        const bgCls  = temp<-15?'ww-bg-deep':temp<0?'ww-bg-cold':temp<15?'ww-bg-mild':'ww-bg-warm';
-
-        wCard.innerHTML = `
-            <div class="weather-widget ${bgCls}">
-                <div class="ww-left">
-                    <div class="ww-emoji">${wmo.emoji}</div>
-                    <div class="ww-temp">${Math.round(temp)}°C</div>
-                    <div class="ww-feels">${lang==='fr'?'Ressenti':'Feels'} ${Math.round(feelsLike)}°C</div>
-                </div>
-                <div class="ww-right">
-                    <div class="ww-place">NDIP · ${lang==='fr'?'Maintenant':'Now'}</div>
-                    <div class="ww-cond">${lang==='fr'?wmo.fr:wmo.en}</div>
-                    <div class="ww-suggest">${smeta.emoji} ${lang==='fr'?smeta.fr:smeta.en}</div>
-                </div>
-            </div>`;
-
-        // Auto-select season card + panel
-        document.querySelectorAll('.season-card').forEach(c => c.classList.remove('selected'));
-        document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
-        const card  = document.querySelector(`.season-card[data-season="${season}"]`);
-        const panel = document.getElementById(smeta.panelId);
-        if (card)  card.classList.add('selected');
-        if (panel) panel.classList.add('active');
-
-        // Smart tip
-        const tipEl = document.getElementById('hvac-smart-tip');
-        const tip   = getHvacTip(temp, feelsLike, code, season);
-        tipEl.innerHTML = tip ? `
-            <div class="smart-tip ${tip.color}">
-                <div class="st-icon">${tip.icon}</div>
-                <div>
-                    <div class="st-title">${lang==='fr'?tip.fr.t:tip.en.t}</div>
-                    <div class="st-detail">${lang==='fr'?tip.fr.d:tip.en.d}</div>
-                </div>
-            </div>` : '';
-    } else {
-        wCard.innerHTML = `
-            <div class="ww-loading">
-                🌡️ ${lang==='fr'?'Météo non disponible — sélectionnez la saison manuellement.':'Weather unavailable — select season manually below.'}
-            </div>`;
-        document.getElementById('hvac-smart-tip').innerHTML = '';
-    }
+/* ---------- Coque ---------- */
+const BADGE = { today: 0, climate: 0 };
+function renderTabbar() {
+  const tabs = [['today', I.today, t('tabToday')], ['calendar', I.cal, t('tabCal')], ['climate', I.clim, t('tabClim')]];
+  $('#tabbar').innerHTML = tabs.map(([id, icon, label]) => `<button class="tab${S.tab === id ? ' on' : ''}" data-a="tab" data-v="${id}" aria-current="${S.tab === id ? 'page' : 'false'}">${icon}<span>${label}</span>${BADGE[id] ? `<span class="badge">${BADGE[id]}</span>` : ''}</button>`).join('');
+}
+const OPEN = new Set();
+function renderAll() {
+  context();
+  document.documentElement.lang = S.lang;
+  renderToday(); renderCalendar(); renderClimate(); renderTabbar();
+  document.querySelectorAll('details[data-id]').forEach(d => { if (OPEN.has(d.dataset.id)) d.open = true; });
+  showTab();
+}
+function showTab() {
+  for (const id of ['today', 'calendar', 'climate']) $('#page-' + id).classList.toggle('on', S.tab === id);
+  $('#compactTitle').textContent = S.tab === 'today' ? t('tabToday') : S.tab === 'calendar' ? t('tabCal') : t('tabClim');
+  watchTitle();
+}
+let io = null;
+function watchTitle() {
+  if (io) io.disconnect();
+  const el = document.querySelector('.page.on .lt');
+  if (!el || !('IntersectionObserver' in window)) return;
+  const top = parseFloat(getComputedStyle(document.querySelector('.scrim')).height) || 0;
+  io = new IntersectionObserver(([e]) => document.body.classList.toggle('scrolled', !e.isIntersecting), { rootMargin: '-' + (top + 44) + 'px 0px 0px 0px' });
+  io.observe(el);
+}
+const scrollPos = {};
+function go(tab) {
+  if (tab === S.tab) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+  scrollPos[S.tab] = window.scrollY; S.tab = tab; persist();
+  renderTabbar(); showTab(); window.scrollTo(0, scrollPos[tab] || 0);
+}
+let toastTimer = null;
+function toast(msg) { const el = $('#toast'); el.textContent = msg; el.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('on'), 1900); }
+function jumpTo(id) {
+  requestAnimationFrame(() => { const el = document.getElementById(id); if (!el) return; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
 }
 
-function getHvacTip(temp, feelsLike, code, season) {
-    const wmo = wmoInfo(code);
-
-    // Hot — most people running AC (heat pump or central). AC already dehumidifies.
-    if (temp > 24 || feelsLike > 27) return {
-        color:'orange', icon:'❄️',
-        fr:{ t:'Chaleur — climatiseur recommandé', d:'Gardez l\'humidificateur fermé. L\'échangeur d\'air peut tourner en mode échange pour renouveler l\'air.' },
-        en:{ t:'Warm day — run the AC', d:'Keep the humidifier OFF. The air exchanger can run in exchange mode to refresh indoor air.' }
-    };
-
-    // Pleasant temps only (8–20°C) — actually comfortable to open windows
-    if (temp >= 8 && temp < 20 && !wmo.rain && [0,1,2].includes(code)) return {
-        color:'green', icon:'🪟',
-        fr:{ t:'Beau temps frais — ventilation naturelle possible', d:'Envisagez d\'entrouvrir les fenêtres plutôt que faire tourner l\'échangeur d\'air à plein régime.' },
-        en:{ t:'Nice cool weather — natural ventilation possible', d:'Consider cracking windows instead of running the air exchanger at full speed.' }
-    };
-
-    // Rain — outdoor air is humid, exchanger will help
-    if (wmo.rain && temp > 5) return {
-        color:'blue', icon:'🌧️',
-        fr:{ t:'Pluie — air extérieur humide', d:'L\'échangeur d\'air évacuera l\'excès d\'humidité intérieure. Vérifiez que le palier Aldes est bien réglé.' },
-        en:{ t:'Rain — humid outdoor air', d:'The air exchanger will remove excess indoor moisture. Verify your Aldes humidity step is set correctly.' }
-    };
-
-    // Extreme cold — condensation risk
-    if (temp < -20) return {
-        color:'red', icon:'🥶',
-        fr:{ t:'Froid extrême — surveillez les fenêtres', d:'Condensation sur les vitres? Réduisez l\'humidificateur de 5%. Mode Minuterie de l\'échangeur d\'air essentiel.' },
-        en:{ t:'Extreme cold — watch your windows', d:'Condensation on glass? Reduce humidifier by 5%. Timer mode on the air exchanger is essential.' }
-    };
-
-    // Cold & dry — humidifier will work hard
-    if (temp < -10) return {
-        color:'blue', icon:'💧',
-        fr:{ t:'Air extérieur très sec', d:'L\'humidificateur travaillera fort. Vérifiez le tampon régulièrement et maintenez 30–35% pour protéger les planchers.' },
-        en:{ t:'Very dry outdoor air', d:'Humidifier will work harder. Check the pad regularly and maintain 30–35% to protect wood floors.' }
-    };
-
-    return null;
-}
-
-// ── UI ────────────────────────────────────────────────────────────────
-function showPage(name) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-'+name).classList.add('active');
-    document.getElementById('nav-'+name).classList.add('active');
-    currentPage = name;
-    localStorage.setItem('mcnabb-page', name);
-    if (name==='schedule') renderSchedule();
-    if (name==='hvac')     fetchWeather();
-    window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-function toggleLang() {
-    lang = lang==='fr' ? 'en' : 'fr';
-    document.body.classList.toggle('french', lang==='fr');
-    document.documentElement.lang = lang;
-    localStorage.setItem('mcnabb-lang', lang);
-    if (currentPage==='schedule') renderSchedule();
-    if (currentPage==='hvac')     renderHvac();
-}
-
-function showSettings(panelId, cardEl) {
-    document.querySelectorAll('.season-card').forEach(c => c.classList.remove('selected'));
-    document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
-    cardEl.classList.add('selected');
-    const panel = document.getElementById(panelId);
-    if (!panel) return;
-    panel.classList.add('active');
-    // Scroll to the panel (which now sits above the grid)
-    setTimeout(() => {
-        const hh  = document.querySelector('.app-header').offsetHeight;
-        const top = panel.getBoundingClientRect().top + window.pageYOffset - hh - 16;
-        window.scrollTo({ top, behavior:'smooth' });
-    }, 80);
-}
-
-function toggleEdu(btn) {
-    btn.classList.toggle('open');
-    btn.nextElementSibling.classList.toggle('open');
-}
-
-function showModal(id)  { const m=document.getElementById(id); if(m){m.classList.add('active');document.body.style.overflow='hidden';} }
-function closeModal(id) { const m=document.getElementById(id); if(m){m.classList.remove('active');document.body.style.overflow='';} }
-
-// ── INIT ──────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-    const sl = localStorage.getItem('mcnabb-lang');
-    if (sl) {
-        lang = sl;
-        document.body.classList.toggle('french', lang==='fr');
-        document.documentElement.lang = lang;
-    }
-
-    const sp = localStorage.getItem('mcnabb-page');
-    if (sp && sp !== 'schedule') {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('page-'+sp)?.classList.add('active');
-        document.getElementById('nav-'+sp)?.classList.add('active');
-        currentPage = sp;
-    }
-
-    renderSchedule();
-    fetchWeather(); // fetch immediately; will re-render schedule if rain tip applies
-
-    setInterval(() => {
-        renderSchedule();
-        if ((Date.now()-weatherAt) > WEATHER_TTL) fetchWeather();
-    }, 60000);
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-a]'); if (!el) return;
+  const a = el.dataset.a;
+  if (a === 'tab') go(el.dataset.v);
+  else if (a === 'lang') { S.lang = S.lang === 'fr' ? 'en' : 'fr'; persist(); renderAll(); }
+  else if (a === 'ack') { S.ack[el.dataset.k] = TODAY; persist(); renderAll(); toast(t('noted')); }
+  else if (a === 'unack') { delete S.ack[el.dataset.k]; if (el.dataset.task) delete S.tasks[el.dataset.task]; persist(); renderAll(); }
+  else if (a === 'apply') { S.applied[el.dataset.dev] = el.dataset.v; persist(); renderAll(); toast(t('appliedToast')); }
+  else if (a === 'task') { const task = TASKS.find(x => x.id === el.dataset.id); if (task) { S.tasks[taskKey(task, N)] = TODAY; if (task.done) task.done(); persist(); renderAll(); toast(t('noted')); } }
+  else if (a === 'maint') { S.maint[el.dataset.id] = TODAY; persist(); renderAll(); toast(t('noted')); }
+  else if (a === 'gomaint') { go('climate'); jumpTo('m-' + el.dataset.v); }
+  else if (a === 'how') { OPEN.add(el.dataset.v); go('climate'); const d = document.querySelector('details[data-id="' + el.dataset.v + '"]'); if (d) { d.open = true; requestAnimationFrame(() => d.closest('.card').scrollIntoView({ behavior: 'smooth', block: 'start' })); } }
+  else if (a === 'setup') { S.setup.tie = el.dataset.v; persist(); renderAll(); }
+  else if (a === 'humOn') { S.hum = { on: true, at: TODAY }; persist(); renderAll(); toast(t('noted')); }
+  else if (a === 'humOff') { S.hum = { on: false, at: TODAY }; S.applied.humidifier = 'off'; persist(); renderAll(); toast(t('noted')); }
+  else if (a === 'remind') openReminders([el.dataset.v]);
+  else if (a === 'remindAll') openReminders(['humStart', 'humStop', 'winter', 'irrigOn', 'maint:furnaceFilter', 'maint:hrvFilters', 'maint:hrvCore', 'maint:hrvDrain']);
+  else if (a === 'ics') downloadICS();
+  else if (a === 'sheetClose') $('#sheet').hidden = true;
+  else if (a === 'more') { calWeeks += 6; renderCalendar(); document.querySelectorAll('#page-calendar details[data-id]').forEach(d => { if (OPEN.has(d.dataset.id)) d.open = true; }); watchTitle(); }
+  else if (a === 'jump') { const d = el.dataset.v; if (S.tab !== 'calendar') go('calendar'); const need = diffDays(TODAY, d); if (need > calWeeks * 7 - 7) { calWeeks = Math.ceil(need / 7) + 2; renderCalendar(); } jumpTo('d-' + d); }
+  else if (a === 'refresh') refresh(true);
 });
-
-document.addEventListener('keydown', e => {
-    if (e.key==='Escape') {
-        document.querySelectorAll('.modal.active').forEach(m => {
-            m.classList.remove('active');
-            document.body.style.overflow = '';
-        });
-    }
+document.addEventListener('change', e => {
+  const inp = e.target.closest('input[data-maint]'); if (!inp) return;
+  if (inp.value) S.maint[inp.dataset.maint] = inp.value; else delete S.maint[inp.dataset.maint];
+  persist(); renderAll();
 });
+document.addEventListener('toggle', e => { const d = e.target; if (d.matches && d.matches('details[data-id]')) { if (d.open) OPEN.add(d.dataset.id); else OPEN.delete(d.dataset.id); } }, true);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#sheet').hidden = true; });
+
+async function refresh(force) {
+  const ok = await fetchWeather(force);
+  renderAll();
+  if (force) toast(ok ? t('wxUpdated') : t('wxFailed'));
+}
+/* Ménage des accusés de réception de plus de 14 jours */
+(function cleanAcks() {
+  const lim = addDays(isoOf(now()), -14);
+  for (const k in S.ack) if (typeof S.ack[k] !== 'string' || (S.ack[k] < lim && k !== 'install')) delete S.ack[k];
+  persist();
+})();
+
+renderAll();
+refresh(false);
+let lastMin = -1;
+setInterval(() => { const m = now().getMinutes(); if (m !== lastMin) { lastMin = m; renderAll(); } }, 30000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refresh(false); });
+if ('serviceWorker' in navigator && location.protocol === 'https:') window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+window.__mcnabb = { derive, recommend, buildICS, remSpec, state: S };
+})();
 </script>
 </body>
 </html>
