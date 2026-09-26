@@ -78,6 +78,19 @@ a{color:var(--accent)}
 .brand img{width:30px;height:30px;border-radius:8px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);object-fit:cover}
 .lang{height:30px;min-width:46px;padding:0 12px;border-radius:15px;background:rgba(255,255,255,.2);color:#fff;font-weight:700;font-size:13px;letter-spacing:.05em}
 .lang:active{background:rgba(255,255,255,.34)}
+.top-btns{display:flex;align-items:center;gap:8px}
+.lang.bell{width:34px;min-width:34px;padding:0;display:grid;place-items:center;position:relative}
+.lang.bell svg{width:17px;height:17px}
+.lang.bell .dot{position:absolute;top:5px;right:6px;width:7px;height:7px;border-radius:50%;background:#FFD166;box-shadow:0 0 0 2px rgba(15,72,99,.9)}
+.swrow{display:flex;align-items:center;gap:12px;width:100%;padding:12px 0;text-align:left}
+.swrow+.swrow{border-top:.5px solid var(--sep)}
+.swrow .tx{flex:1;min-width:0}
+.swrow b{display:block;font-size:15px;font-weight:650}
+.swrow .tx span{display:block;font-size:13px;color:var(--text-2);margin-top:1px;font-weight:400}
+.sw{flex:0 0 auto;width:51px;height:31px;border-radius:16px;background:var(--sep-strong);position:relative;transition:background .2s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.25);transition:transform .2s}
+.sw.on{background:#34C759}
+.sw.on::after{transform:translateX(20px)}
 .lt{font-size:34px;line-height:1.08;font-weight:800;letter-spacing:-.022em;margin-top:10px}
 .hs{font-size:15.5px;opacity:.88;margin-top:3px}
 .wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:30px;display:block}
@@ -300,6 +313,8 @@ table.ref+p{margin-top:10px}
 body.scrolled .compact{transform:none}
 .toast{position:fixed;left:50%;bottom:calc(100px + var(--safe-b));transform:translate(-50%,16px);opacity:0;background:rgba(13,34,48,.94);color:#fff;padding:10px 16px;border-radius:14px;font-size:14px;font-weight:650;z-index:90;transition:opacity .22s,transform .22s;pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+body.sheet-open .toast{top:calc(var(--safe-t) + 14px);bottom:auto;transform:translate(-50%,-16px)}
+body.sheet-open .toast.on{transform:translate(-50%,0)}
 </style>
 </head>
 <body>
@@ -318,6 +333,7 @@ body.scrolled .compact{transform:none}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:24px">Activez JavaScript pour utiliser l’app.</p></noscript>
 
+<script src="schedule.js"></script>
 <script>
 (function () {
 'use strict';
@@ -325,53 +341,10 @@ body.scrolled .compact{transform:none}
 /* ================================================================
    1. DONNÉES À METTRE À JOUR CHAQUE ANNÉE  /  YEARLY DATA UPDATE
    ----------------------------------------------------------------
-   Source : https://www.ndip.org/calendrier-des-collectes
-   En décembre, ajoutez les dates 2027 (AAAA-MM-JJ) à chaque liste.
-   Vérifié contre le calendrier officiel 2026 de NDIP.
+   Les dates des collectes sont dans schedule.js (lu aussi par le service de notifications).
+   Source : https://www.ndip.org/calendrier-des-collectes  ·  En décembre, ajoutez l'année suivante.
    ================================================================ */
-const SCHEDULE = {
-  organics: [
-    '2026-01-07','2026-01-14','2026-01-21','2026-01-28','2026-02-04','2026-02-11','2026-02-18',
-    '2026-02-25','2026-03-04','2026-03-11','2026-03-18','2026-03-25','2026-04-01','2026-04-08',
-    '2026-04-15','2026-04-22','2026-04-29','2026-05-06','2026-05-13','2026-05-20','2026-05-27',
-    '2026-06-03','2026-06-10','2026-06-17','2026-06-24','2026-07-01','2026-07-08','2026-07-15',
-    '2026-07-22','2026-07-29','2026-08-05','2026-08-12','2026-08-19','2026-08-26','2026-09-02',
-    '2026-09-09','2026-09-16','2026-09-23','2026-09-30','2026-10-07','2026-10-14','2026-10-21',
-    '2026-10-28','2026-11-04','2026-11-11','2026-11-18','2026-11-25','2026-12-02','2026-12-09',
-    '2026-12-16','2026-12-23','2026-12-30'
-  ],
-  recyclables: [
-    '2026-01-12','2026-01-26','2026-02-09','2026-02-23','2026-03-09','2026-03-23','2026-04-06',
-    '2026-04-20','2026-05-04','2026-05-18','2026-06-01','2026-06-15','2026-06-29','2026-07-13',
-    '2026-07-27','2026-08-10','2026-08-24','2026-09-07','2026-09-21','2026-10-05','2026-10-19',
-    '2026-11-02','2026-11-16','2026-11-30','2026-12-14','2026-12-28'
-  ],
-  garbage: [
-    '2026-01-02','2026-01-15','2026-01-29','2026-02-12','2026-02-26','2026-03-12','2026-03-26',
-    '2026-04-09','2026-04-23','2026-05-07','2026-05-21','2026-06-04','2026-06-18','2026-07-02',
-    '2026-07-16','2026-07-30','2026-08-13','2026-08-27','2026-09-10','2026-09-24','2026-10-08',
-    '2026-10-22','2026-11-05','2026-11-19','2026-12-03','2026-12-17','2026-12-31'
-  ],
-  leaves: [
-    '2026-05-06','2026-05-20','2026-06-03','2026-06-17','2026-07-01','2026-07-15','2026-07-29',
-    '2026-08-12','2026-08-26','2026-09-09','2026-09-23','2026-10-07','2026-10-21','2026-11-04',
-    '2026-11-18'
-  ],
-  bulkyItems: [
-    '2026-02-19','2026-03-19','2026-04-16','2026-05-21','2026-06-18','2026-07-16','2026-08-20',
-    '2026-09-17','2026-10-15','2026-11-19','2026-12-17'
-  ],
-  branches: [
-    '2026-05-25','2026-09-08','2026-10-26'
-  ],
-  cityMeeting: [
-    '2026-01-20','2026-02-10','2026-03-10','2026-04-14','2026-05-12','2026-06-09','2026-07-14',
-    '2026-08-11','2026-09-08','2026-10-13','2026-11-10','2026-12-08'
-  ],
-  taxes: [
-    '2026-02-20','2026-05-21','2026-08-19','2026-11-17'
-  ]
-};
+const SCHEDULE = window.MCNABB_SCHEDULE || {};   /* voir schedule.js */
 
 /* Règlement 505 : systèmes automatiques et arroseurs, mardi et vendredi, 20 h à 22 h.
    L'app n'affiche les soirs d'arrosage qu'en saison (le règlement, lui, s'applique toute l'année). */
@@ -386,6 +359,9 @@ const WX_URL = 'https://api.open-meteo.com/v1/forecast?latitude=45.3668&longitud
   + '&past_days=7&forecast_days=3&timezone=America%2FToronto';
 /* Qualité de l'air (CAMS via Open-Meteo) : sert à ne jamais suggérer d'ouvrir les fenêtres dans la fumée */
 const AQ_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality?latitude=45.3668&longitude=-73.9325&current=pm2_5&timezone=America%2FToronto';
+/* Notifications (facultatif) : collez ici l'adresse de votre Worker Cloudflare (voir SETUP.md),
+   p. ex. 'https://mcnabb-push.votrenom.workers.dev'. Laissez vide pour ne pas afficher la cloche. */
+const PUSH_API = '';
 /* Fenêtres ouvertes : conditions jugées agréables et sans risque */
 const WIN = { tMin: 13, tMax: 25, tdMax: 15, pm25Max: 35 };
 
@@ -401,6 +377,7 @@ const TYPES = {
   water:       { icon: '💧' }
 };
 const TYPE_ORDER = ['organics', 'recyclables', 'garbage', 'leaves', 'bulkyItems', 'branches', 'cityMeeting', 'taxes'];
+for (const k of TYPE_ORDER) if (!Array.isArray(SCHEDULE[k])) SCHEDULE[k] = [];
 
 const MAINT = [
   { id: 'furnaceFilter', days: 90,  icon: '🌬️', link: 'https://www.furnacefilters.ca/products/20-x-25-x-4-merv-8-pleated-filters-case-of-4' },
@@ -558,8 +535,8 @@ fr: {
   nextT: 'Prochaines collectes', agendaT: 'À venir', thisWeek: 'Cette semaine', nextWeek: 'Semaine prochaine', weekOf: 'Semaine du {d}',
   lblToday: 'Aujourd’hui', lblTomorrow: 'Demain', cdToday: 'aujourd’hui', cdTomorrow: 'demain', cdIn: 'dans {n} j',
   more: 'Voir plus loin', waterPill: 'Arrosage auto', waterPillS: '20 h à 22 h', branchesPillS: '5 à 10 jours',
-  endSoon: 'Le calendrier 2026 se termine dans {n} jours. NDIP publie le suivant vers la mi-décembre : ajoutez les dates 2027 dans SCHEDULE.',
-  ended: 'Le calendrier 2026 est terminé. Ajoutez les dates 2027 dans SCHEDULE (ndip.org, calendrier des collectes).',
+  endSoon: 'Le calendrier 2026 se termine dans {n} jours. NDIP publie le suivant vers la mi-décembre : ajoutez les dates 2027 dans schedule.js.',
+  ended: 'Le calendrier 2026 est terminé. Ajoutez les dates 2027 dans schedule.js (ndip.org, calendrier des collectes).',
   rulesBinsT: 'Collectes : les règles',
   rulesBins: ['Sortez les bacs dès 19 h la veille et rentrez-les au plus tard à 7 h le lendemain de la collecte.', 'Placez-les à 50 à 150 cm de la rue, roues vers la maison.', 'Résidus verts : sacs de papier de 40 L au maximum ou contenants réutilisables (25 kg au maximum).', 'Rebuts volumineux : le 3e jeudi du mois. Refusés : matériaux de construction, électroménagers, électroniques, résidus verts.', 'Branches : diamètre maximal de 10 cm, sorties à partir du samedi qui précède la collecte.'],
   rulesWaterT: 'Arrosage : les règles',
@@ -571,7 +548,21 @@ fr: {
   rep_y: 'chaque année', rep_q: 'aux 3 mois', remWhen: '{d}, 9 h · {rep}',
   rem_humStartT: 'Humidificateur : remise en marche', rem_humStopT: 'Humidificateur : arrêt pour l’été',
   rem_winterT: 'Préparer l’hiver : robinets et arrosage', rem_irrigOnT: 'Arrosage automatique : remise en service',
-  rem_allT: 'Rappels de la maison'
+  rem_allT: 'Rappels de la maison',
+  notifT: 'Notifications',
+  notifLead: 'Recevez les rappels sur ce téléphone, même quand l’app est fermée. Choisissez ce qui vous intéresse :',
+  notifLeadOn: 'Les rappels arrivent sur ce téléphone. Choisissez ce qui vous intéresse :',
+  notifIOS: 'Sur iPhone, les notifications fonctionnent une fois l’app ajoutée à l’écran d’accueil. Dans Safari, touchez Partager ⎙ puis « Sur l’écran d’accueil », ouvrez McNabb depuis l’écran d’accueil et revenez ici.',
+  notifNo: 'Ce navigateur ne permet pas les notifications.',
+  notifDenied: 'Les notifications sont bloquées pour McNabb. Pour les permettre : Réglages ▸ Notifications ▸ McNabb.',
+  notifOn: 'Activer les notifications', notifOff: 'Désactiver sur ce téléphone', notifTest: 'Envoyer un test',
+  notifTestSent: 'Test envoyé : il arrive dans quelques secondes', notifEnabled: 'Notifications activées ✓', notifFail: 'Impossible pour le moment. Réessayez plus tard.', notifOffToast: 'Notifications désactivées',
+  notifQuiet: 'Jamais entre 22 h et 7 h.',
+  cat_bins: 'Collectes', cat_binsD: 'La veille à 19 h : bacs à sortir, branches.',
+  cat_garden: 'Jardin et arrosage', cat_gardenD: 'Soirs d’arrosage, gel, préparation de l’hiver.',
+  cat_windows: 'Fenêtres', cat_windowsD: 'Beaux jours pour aérer, quand fermer, fumée.',
+  cat_home: 'Maison', cat_homeD: 'Humidificateur et entretien des filtres.',
+  pushAskT: 'Recevoir les rappels sur ce téléphone', pushAskD: 'Bacs à sortir, soirs d’arrosage, quand fermer les fenêtres : même quand l’app est fermée.', pushAskB: 'Activer'
 },
 en: {
   tabToday: 'Today', tabCal: 'Calendar', tabClim: 'Climate',
@@ -705,8 +696,8 @@ en: {
   nextT: 'Next pickups', agendaT: 'Coming up', thisWeek: 'This week', nextWeek: 'Next week', weekOf: 'Week of {d}',
   lblToday: 'Today', lblTomorrow: 'Tomorrow', cdToday: 'today', cdTomorrow: 'tomorrow', cdIn: 'in {n} d',
   more: 'Show more', waterPill: 'Sprinklers', waterPillS: '8 to 10 pm', branchesPillS: '5 to 10 days',
-  endSoon: 'The 2026 calendar ends in {n} days. NDIP usually publishes the next one in mid-December: add the 2027 dates to SCHEDULE.',
-  ended: 'The 2026 calendar is over. Add the 2027 dates to SCHEDULE (ndip.org, collection calendar).',
+  endSoon: 'The 2026 calendar ends in {n} days. NDIP usually publishes the next one in mid-December: add the 2027 dates to schedule.js.',
+  ended: 'The 2026 calendar is over. Add the 2027 dates to schedule.js (ndip.org, collection calendar).',
   rulesBinsT: 'Pickup rules',
   rulesBins: ['Bins out from 7 pm the night before, back in by 7 am the day after pickup.', 'Place them 50 to 150 cm from the street, wheels toward the house.', 'Yard waste: paper bags of 40 L max or reusable containers (25 kg max).', 'Bulky items: 3rd Thursday of the month. Not accepted: construction debris, appliances, electronics, yard waste.', 'Branches: 10 cm diameter max, out from the Saturday before the pickup.'],
   rulesWaterT: 'Watering rules',
@@ -718,7 +709,21 @@ en: {
   rep_y: 'every year', rep_q: 'every 3 months', remWhen: '{d}, 9 am · {rep}',
   rem_humStartT: 'Humidifier: turn it back on', rem_humStopT: 'Humidifier: shut it off for summer',
   rem_winterT: 'Winter prep: faucets and sprinklers', rem_irrigOnT: 'Sprinkler system: spring start',
-  rem_allT: 'Home reminders'
+  rem_allT: 'Home reminders',
+  notifT: 'Notifications',
+  notifLead: 'Get reminders on this phone, even when the app is closed. Pick what matters to you:',
+  notifLeadOn: 'Reminders arrive on this phone. Pick what matters to you:',
+  notifIOS: 'On iPhone, notifications work once the app is on your Home Screen. In Safari, tap Share ⎙ then “Add to Home Screen”, open McNabb from the Home Screen and come back here.',
+  notifNo: 'This browser doesn’t support notifications.',
+  notifDenied: 'Notifications are blocked for McNabb. To allow them: Settings ▸ Notifications ▸ McNabb.',
+  notifOn: 'Turn on notifications', notifOff: 'Turn off on this phone', notifTest: 'Send a test',
+  notifTestSent: 'Test sent: it should arrive in a few seconds', notifEnabled: 'Notifications on ✓', notifFail: 'Not possible right now. Try again later.', notifOffToast: 'Notifications off',
+  notifQuiet: 'Never between 10 pm and 7 am.',
+  cat_bins: 'Pickups', cat_binsD: 'The evening before at 7 pm: bins to put out, branches.',
+  cat_garden: 'Garden and watering', cat_gardenD: 'Watering nights, frost, winter prep.',
+  cat_windows: 'Windows', cat_windowsD: 'Nice days to air out, when to close, smoke.',
+  cat_home: 'Home', cat_homeD: 'Humidifier and filter reminders.',
+  pushAskT: 'Get reminders on this phone', pushAskD: 'Bins to put out, watering nights, when to close the windows: even when the app is closed.', pushAskB: 'Turn on'
 }
 };
 
@@ -728,11 +733,11 @@ en: {
 const KEY = 'mcnabb.v2', WXKEY = 'mcnabb.wx.v2';
 function load(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
 function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* stockage indisponible */ } }
-const S = Object.assign({ lang: null, tab: 'today', applied: {}, ack: {}, tasks: {}, maint: {}, setup: { tie: 'unknown' }, hum: null, win: null }, load(KEY, {}));
+const S = Object.assign({ lang: null, tab: 'today', applied: {}, ack: {}, tasks: {}, maint: {}, setup: { tie: 'unknown' }, hum: null, win: null, push: null }, load(KEY, {}));
 if (!S.lang) { let old = null; try { old = localStorage.getItem('mcnabb-lang'); } catch (e) {} S.lang = old === 'en' ? 'en' : 'fr'; }
 if (!['today', 'calendar', 'climate'].includes(S.tab)) S.tab = 'today';
 S.setup = Object.assign({ tie: 'unknown' }, S.setup);
-function persist() { save(KEY, S); }
+function persist() { save(KEY, S); queuePushSync(); }
 
 const $ = s => document.querySelector(s);
 function now() { return window.__MCNABB_NOW ? new Date(window.__MCNABB_NOW) : new Date(); }
@@ -1029,6 +1034,8 @@ function gcalURL(e) {
   if (e.rrule) p.set('recur', 'RRULE:' + e.rrule);
   return 'https://calendar.google.com/calendar/render?' + p.toString();
 }
+function showSheet() { $('#sheet').hidden = false; document.body.classList.add('sheet-open'); }
+function hideSheet() { $('#sheet').hidden = true; document.body.classList.remove('sheet-open'); }
 let SHEET_EVS = [];
 function openReminders(ids) {
   const N = now();
@@ -1040,7 +1047,7 @@ function openReminders(ids) {
   $('#sheetBody').innerHTML = `<h2 id="sheetTitle">${SHEET_EVS.length > 1 ? t('rem_allT') : t('calAddT')}</h2><p class="lead">${t('calAddLead')}</p>${rows}
     <div class="btns"><button class="btn pri block" data-a="ics">${I.calPlus}${t('calIcs')}</button><button class="btn block" data-a="sheetClose">${t('cancel')}</button></div>
     <p class="fine">${t('calFine')}</p>`;
-  $('#sheet').hidden = false;
+  showSheet();
 }
 function downloadICS() {
   const name = SHEET_EVS.length > 1 ? 'mcnabb-rappels.ics' : 'mcnabb-' + SHEET_EVS[0].uid + '.ics';
@@ -1068,7 +1075,8 @@ const I = {
   chev: svg('<path d="M9 5.5 15.5 12 9 18.5"/>', 2.4),
   check: svg('<path d="M5 12.5l4.2 4.2L19 7"/>', 2.6),
   calPlus: svg('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4M12 12.8v5M9.5 15.3h5"/>'),
-  home: svg('<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/>')
+  home: svg('<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z"/>'),
+  bell: svg('<path d="M6 16.5V11a6 6 0 1 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>')
 };
 const WAVE = '<svg class="wave" viewBox="0 0 400 30" preserveAspectRatio="none" aria-hidden="true">'
   + '<path class="w-grass" d="M0 13 C 70 5 150 22 230 13 S 350 5 400 11 V30 H0 Z"/>'
@@ -1077,7 +1085,7 @@ const WAVE = '<svg class="wave" viewBox="0 0 400 30" preserveAspectRatio="none" 
 
 function hero(o) {
   return `<header class="hero ${o.night ? 'night' : ''}"><div class="hero-top"><div class="brand"><img src="icons/icon-192.png" alt="" onerror="this.style.display='none'">McNabb</div>
-    <button class="lang" data-a="lang" aria-label="${t('langAria')}">${t('langBtn')}</button></div>
+    <div class="top-btns">${PUSH_API ? `<button class="lang bell" data-a="notif" aria-label="${esc(t('notifT'))}">${I.bell}${S.push && S.push.on ? '' : '<span class="dot"></span>'}</button>` : ''}<button class="lang" data-a="lang" aria-label="${t('langAria')}">${t('langBtn')}</button></div></div>
     <div class="hero-in"><h1 class="lt">${o.title}</h1>${o.sub ? `<p class="hs">${o.sub}</p>` : ''}${o.extra || ''}</div>${WAVE}</header>`;
 }
 function sec(title, aside) { return `<div class="sec"><h2>${title}</h2>${aside || ''}</div>`; }
@@ -1167,6 +1175,7 @@ function buildActions() {
   const standalone = window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
   if (!standalone && /iPhone|iPad|iPod/.test(navigator.userAgent)) A.push({ key: 'install', pri: 70, tone: 'info', icon: '📱', title: t('installT'), detail: t('installD'), ack: t('ok'), persistAck: true });
 
+  if (pushStatus() === 'ready' && Notification.permission === 'default') A.push({ key: 'pushAsk', pri: 58, tone: 'info', icon: '🔔', title: t('pushAskT'), detail: t('pushAskD'), buttons: [{ label: t('pushAskB'), a: 'pushOn', primary: true }], dismiss: true });
   for (const a of A) if (a.key && S.ack[a.key]) a.done = true;
   return A.filter(a => !(a.dismiss && a.done) && !(a.persistAck && a.done)).sort((a, b) => (a.done - b.done) || (a.pri - b.pri));
 }
@@ -1404,6 +1413,8 @@ function renderAll() {
   renderToday(); renderCalendar(); renderClimate(); renderTabbar();
   document.querySelectorAll('details[data-id]').forEach(d => { if (OPEN.has(d.dataset.id)) d.open = true; });
   showTab();
+  if ('setAppBadge' in navigator && S.push && S.push.on && typeof Notification !== 'undefined' && Notification.permission === 'granted')
+    (BADGE.today ? navigator.setAppBadge(BADGE.today) : navigator.clearAppBadge()).catch(() => {});
 }
 function showTab() {
   for (const id of ['today', 'calendar', 'climate']) $('#page-' + id).classList.toggle('on', S.tab === id);
@@ -1431,6 +1442,100 @@ function jumpTo(id) {
   requestAnimationFrame(() => { const el = document.getElementById(id); if (!el) return; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
 }
 
+/* ================================================================
+   8. NOTIFICATIONS (facultatif, via le Worker Cloudflare)
+   ================================================================ */
+const IOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+function isStandalone() { return window.navigator.standalone === true || !!(window.matchMedia && matchMedia('(display-mode: standalone)').matches); }
+function pushStatus() {
+  if (!PUSH_API) return 'off';
+  if (IOS && !isStandalone()) return 'install';
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || typeof Notification === 'undefined') return 'unsupported';
+  if (Notification.permission === 'denied') return 'denied';
+  return S.push && S.push.on ? 'on' : 'ready';
+}
+function b64uBytes(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; const b = atob(s), out = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) out[i] = b.charCodeAt(i); return out; }
+function api(path, body) {
+  return fetch(PUSH_API.replace(/\/+$/, '') + path, body ? { method: 'POST', body: JSON.stringify(body) } : {})
+    .then(r => r.json().then(j => { if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status); return j; }));
+}
+function pushPrefs() { return Object.assign({ bins: true, garden: true, windows: true, home: true }, (S.push && S.push.prefs) || {}); }
+function pushState() {
+  const tasks = {}, today = isoOf(now());
+  for (const k in S.tasks) if (/^(faucets|irrigOff|humStart|humStop)\|\d{4}$/.test(k)) tasks[k] = S.tasks[k];
+  return { win: S.win || null, hum: S.hum || null, maint: S.maint || {}, tasks, winNo: S.ack['winOffer|' + today] ? today : null };
+}
+function pushSig() { return JSON.stringify([S.lang, pushPrefs(), pushState()]); }
+function subscribeWith(reg, key) { return reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64uBytes(key) }); }
+async function enablePush() {
+  let perm = 'default';
+  try { perm = await Notification.requestPermission(); } catch (e) { perm = 'denied'; }   /* doit partir directement du toucher */
+  if (perm !== 'granted') { renderAll(); openNotifSheet(true); return; }
+  try {
+    const key = (S.push && S.push.key) || (await api('/vapid')).publicKey;
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (sub && S.push && S.push.key && S.push.key !== key) { await sub.unsubscribe(); sub = null; }
+    if (!sub) sub = await subscribeWith(reg, key);
+    S.push = Object.assign({}, S.push, { on: true, key, prefs: pushPrefs() });
+    await api('/sync', { subscription: sub.toJSON(), lang: S.lang, prefs: pushPrefs(), state: pushState() });
+    S.push.synced = pushSig(); S.push.checked = Date.now(); save(KEY, S);
+    renderAll(); openNotifSheet(true); toast(t('notifEnabled'));
+  } catch (e) { S.push = Object.assign({}, S.push, { on: false }); save(KEY, S); renderAll(); openNotifSheet(true); toast(t('notifFail')); }
+}
+async function disablePush() {
+  try {
+    const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription();
+    if (sub) { const ep = sub.endpoint; await sub.unsubscribe().catch(() => {}); await api('/unsubscribe', { endpoint: ep }).catch(() => {}); }
+  } catch (e) { /* rien */ }
+  S.push = { on: false, prefs: pushPrefs() }; save(KEY, S);
+  if ('clearAppBadge' in navigator) navigator.clearAppBadge().catch(() => {});
+  renderAll(); openNotifSheet(true); toast(t('notifOffToast'));
+}
+async function testPush() {
+  try {
+    const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription();
+    if (!sub) throw new Error('no subscription');
+    await api('/test', { endpoint: sub.endpoint, lang: S.lang }); toast(t('notifTestSent'));
+  } catch (e) { toast(t('notifFail')); }
+}
+let syncTimer = null;
+function queuePushSync() { if (!PUSH_API || !S.push || !S.push.on) return; clearTimeout(syncTimer); syncTimer = setTimeout(() => pushSync(false), 1500); }
+async function pushSync(force) {
+  if (pushStatus() !== 'on') return;
+  const sig = pushSig();
+  if (!force && sig === S.push.synced) return;
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) { S.push.on = false; save(KEY, S); renderAll(); return; }
+    if (force) {   /* clé changée côté Worker ? on se réabonne sans rien demander */
+      const { publicKey } = await api('/vapid');
+      if (publicKey && publicKey !== S.push.key) { await sub.unsubscribe().catch(() => {}); sub = await subscribeWith(reg, publicKey); S.push.key = publicKey; }
+    }
+    await api('/sync', { subscription: sub.toJSON(), lang: S.lang, prefs: pushPrefs(), state: pushState() });
+    S.push.synced = sig; S.push.checked = Date.now(); save(KEY, S);
+  } catch (e) { /* on réessaiera à la prochaine ouverture */ }
+}
+function pushHealth() { if (pushStatus() !== 'on') return; if (Date.now() - (S.push.checked || 0) > 12 * 3600 * 1000) pushSync(true); else queuePushSync(); }
+function catList(P) {
+  return ['bins', 'garden', 'windows', 'home'].map(c => `<button class="swrow" data-a="pref" data-v="${c}" role="switch" aria-checked="${P[c]}">
+    <span class="tx"><b>${t('cat_' + c)}</b><span>${t('cat_' + c + 'D')}</span></span><span class="sw${P[c] ? ' on' : ''}" aria-hidden="true"></span></button>`).join('');
+}
+function openNotifSheet(onlyIfOpen) {
+  if (onlyIfOpen && ($('#sheet').hidden || !$('#sheetBody [data-notif]'))) return;
+  const st = pushStatus(), P = pushPrefs();
+  let body;
+  if (st === 'install') body = `<p class="lead">${t('notifIOS')}</p>`;
+  else if (st === 'unsupported') body = `<p class="lead">${t('notifNo')}</p>`;
+  else if (st === 'denied') body = `<p class="lead">${t('notifDenied')}</p>`;
+  else if (st === 'on') body = `<p class="lead">${t('notifLeadOn')}</p>${catList(P)}<div class="btns"><button class="btn pri block" data-a="pushTest">${t('notifTest')}</button><button class="btn block" data-a="pushOff">${t('notifOff')}</button></div><p class="fine">${t('notifQuiet')}</p>`;
+  else body = `<p class="lead">${t('notifLead')}</p>${catList(P)}<div class="btns"><button class="btn pri block" data-a="pushOn">${I.bell}${t('notifOn')}</button></div><p class="fine">${t('notifQuiet')}</p>`;
+  $('#sheetBody').innerHTML = `<div data-notif><h2 id="sheetTitle">${t('notifT')}</h2>${body}</div>`;
+  showSheet();
+}
+function tabFromHash() { const h = (location.hash || '').slice(1); return ['today', 'calendar', 'climate'].includes(h) ? h : null; }
+
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-a]'); if (!el) return;
   const a = el.dataset.a;
@@ -1454,7 +1559,12 @@ document.addEventListener('click', e => {
   else if (a === 'remind') openReminders([el.dataset.v]);
   else if (a === 'remindAll') openReminders(['humStart', 'humStop', 'winter', 'irrigOn', 'maint:furnaceFilter', 'maint:hrvFilters', 'maint:hrvCore', 'maint:hrvDrain']);
   else if (a === 'ics') downloadICS();
-  else if (a === 'sheetClose') $('#sheet').hidden = true;
+  else if (a === 'sheetClose') hideSheet();
+  else if (a === 'notif') openNotifSheet();
+  else if (a === 'pushOn') enablePush();
+  else if (a === 'pushOff') disablePush();
+  else if (a === 'pushTest') testPush();
+  else if (a === 'pref') { const P = pushPrefs(); P[el.dataset.v] = !P[el.dataset.v]; S.push = Object.assign({ on: false }, S.push, { prefs: P }); persist(); openNotifSheet(); }
   else if (a === 'more') { calWeeks += 6; renderCalendar(); document.querySelectorAll('#page-calendar details[data-id]').forEach(d => { if (OPEN.has(d.dataset.id)) d.open = true; }); watchTitle(); }
   else if (a === 'jump') { const d = el.dataset.v; if (S.tab !== 'calendar') go('calendar'); const need = diffDays(TODAY, d); if (need > calWeeks * 7 - 7) { calWeeks = Math.ceil(need / 7) + 2; renderCalendar(); } jumpTo('d-' + d); }
   else if (a === 'refresh') refresh(true);
@@ -1465,7 +1575,7 @@ document.addEventListener('change', e => {
   persist(); renderAll();
 });
 document.addEventListener('toggle', e => { const d = e.target; if (d.matches && d.matches('details[data-id]')) { if (d.open) OPEN.add(d.dataset.id); else OPEN.delete(d.dataset.id); } }, true);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#sheet').hidden = true; });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') hideSheet(); });
 
 async function refresh(force) {
   const ok = await fetchWeather(force);
@@ -1479,12 +1589,17 @@ async function refresh(force) {
   persist();
 })();
 
+const hashTab = tabFromHash();
+if (hashTab) { S.tab = hashTab; try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* rien */ } }
 renderAll();
 refresh(false);
+pushHealth();
+window.addEventListener('hashchange', () => { const h = tabFromHash(); if (h) go(h); });
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { const tb = e.data && e.data.tab; if (['today', 'calendar', 'climate'].includes(tb)) go(tb); });
 let lastMin = -1;
 setInterval(() => { const m = now().getMinutes(); if (m !== lastMin) { lastMin = m; renderAll(); } }, 30000);
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refresh(false); });
-if ('serviceWorker' in navigator && location.protocol === 'https:') window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { refresh(false); pushHealth(); } });
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 window.__mcnabb = { derive, recommend, buildICS, remSpec, state: S };
 })();
 </script>
