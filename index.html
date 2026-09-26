@@ -242,7 +242,6 @@ kbd{display:inline-block;min-width:24px;padding:0 6px;border-radius:6px;backgrou
 .cl{fill:none;stroke:var(--accent);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .cdot{fill:var(--accent);stroke:var(--card);stroke-width:2.5}
 .tx{fill:var(--text-3);font-size:10.5px;font-weight:650;font-family:inherit}
-.tipbox{margin-top:12px;padding:11px 13px;border-radius:12px;background:var(--ok-bg);color:var(--ok);font-size:14px;font-weight:600;line-height:1.4}
 .seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
 .seg button{border-radius:11px;padding:10px 8px;background:var(--neutral-bg);font-size:13.5px;font-weight:620;line-height:1.28}
 .seg button.on{background:var(--sky-600);color:#fff}
@@ -448,7 +447,6 @@ fr: {
   w_frost: 'Gel possible cette nuit ({t}) : évitez d’arroser.',
   w_unknown: 'Sans météo, vérifiez si la terre est sèche à 2 cm.',
   frostT: 'Gel possible cette nuit', frostD: 'Minimum prévu {t}. Rentrez les plantes en pot et couvrez les plates-bandes fragiles.', frostHard: 'Rangez aussi les boyaux.',
-  windowsT: 'Ouvrez les fenêtres', windowsD: 'Air doux et sec dehors ({t}, rosée {td}). Pendant ce temps, l’échangeur peut rester en attente (⇄ 0).',
   branchesT: 'Collecte de branches dès {day}', branchesD: 'Sortez-les à partir du samedi {sat}. Diamètre maximal de 10 cm. Passage sur 5 à 10 jours ouvrables.',
   branchesOnT: 'Collecte de branches en cours', branchesOnD: 'Le camion passe sur 5 à 10 jours ouvrables à partir du {day}.',
   taxesT: 'Taxes municipales', taxesD: 'Versement dû {when}.',
@@ -488,14 +486,13 @@ fr: {
   v_wetter: 'Plus humide que la maison : ventiler ajoute de l’humidité.', v_drier: 'Plus sec que la maison : ventiler assèche.', v_same: 'Semblable à la maison : peu d’effet sur l’humidité.',
   zDry: 'Sec', zOk: 'Confort', zHum: 'Humide', zMug: 'Lourd',
   chartTd: 'Point de rosée, 24 prochaines heures', chartT: 'Température, 24 prochaines heures',
-  dryWin: 'Air sec prévu de {from} à {to}.',
   setupT: 'Mon installation', setupQ: 'Les conduits de l’échangeur rejoignent-ils ceux de la fournaise ?',
   tie_interlock: 'Oui, et le ventilateur démarre avec lui', tie_noInterlock: 'Oui, sans interverrouillage', tie_dedicated: 'Non, conduits séparés', tie_unknown: 'Je ne sais pas',
   e_base: 'L’échangeur consomme peu : environ 30 à 60 W à basse vitesse.',
   e_interlock: 'Mais chaque minute d’échange fait aussi tourner le ventilateur de la fournaise : 350 à 500 W avec un moteur standard, 75 à 125 W avec un moteur ECM. En continu tout l’été, c’est souvent la vraie cause d’une facture plus salée. La minuterie coupe ce temps des deux tiers.',
   e_noInterlock: 'Aldes demande que le ventilateur de la fournaise tourne quand l’échangeur tourne. Laissé en marche tout l’été, il consomme 350 à 500 W avec un moteur standard et renvoie l’humidité du serpentin dans la maison. Un interverrouillage règle les deux problèmes.',
   e_dedicated: 'Vos conduits sont séparés : le ventilateur de la fournaise n’a pas à tourner. Le vrai coût de l’été, c’est l’humidité que la clim doit retirer.',
-  e_unknown: 'Pour vérifier : thermostat sur AUTO sans chauffage ni clim, mettez l’échangeur en ⇄ 2. Si le ventilateur de la fournaise démarre, ils sont interverrouillés.',
+  e_unknown: 'Pour vérifier : thermostat sur AUTO sans chauffage ni clim, mettez l’échangeur en ⇄ 2. Si le ventilateur de la fournaise démarre, ils sont interverrouillés. Remettez ensuite le réglage recommandé.',
   e_water: 'Par temps lourd, l’échange continu fait entrer environ un demi-litre à un litre d’eau par heure, que la clim doit ensuite retirer.',
   whyT: 'Pourquoi ces réglages', refT: 'Tableau de référence',
   why: [
@@ -535,7 +532,7 @@ fr: {
   rulesWaterT: 'Arrosage : les règles',
   rulesWater: ['Arroseurs, boyaux suintants et systèmes automatiques : mardi et vendredi, 20 h à 22 h.', 'Boyau muni d’un pistolet à fermeture automatique : en tout temps pour les jardins, potagers, plates-bandes, jardinières, arbres et arbustes. La pelouse n’est pas dans cette liste : elle suit l’horaire du mardi et du vendredi.', 'Nouvelle pelouse ou plantation : permis gratuit, tous les jours de 6 h à 8 h et de 20 h à 22 h pendant 15 jours. Aucun permis du 1er juillet au 31 août. Tourbe neuve : arrosage permis toute la journée de la pose.', 'Système automatique : sonde de pluie ou d’humidité du sol obligatoire.', 'Piscine ou spa : remplissage interdit de 6 h à 20 h.', 'Amendes : de 150 $ à 500 $ pour une première infraction.'],
   srcCal: 'Sources : ndip.org, règlements 505 et 572, calendrier 2026 de NDIP.',
-  foot: 'Icône : le moulin de Pointe-du-Moulin (1705), emblème de NDIP. Météo : Open-Meteo.',
+  wxCredit: 'Données météo : Open-Meteo.com',
   calAddT: 'Ajouter au calendrier', calAddLead: 'Chaque rappel arrive avec une alerte à 9 h.', calIcs: 'Calendrier de l’iPhone (.ics)', calGoogle: 'Google', cancel: 'Annuler',
   calFine: 'Sur iPhone, ouvrez le fichier téléchargé puis touchez « Tout ajouter ».', calReady: 'Fichier de calendrier prêt',
   rep_y: 'chaque année', rep_q: 'aux 3 mois', remWhen: '{d}, 9 h · {rep}',
@@ -572,7 +569,6 @@ en: {
   w_frost: 'Frost possible tonight ({t}): skip watering.',
   w_unknown: 'No weather data: check whether the soil is dry 2 cm down.',
   frostT: 'Frost possible tonight', frostD: 'Low of {t}. Bring potted plants in and cover tender beds.', frostHard: 'Put the hoses away too.',
-  windowsT: 'Open the windows', windowsD: 'Mild, dry air outside ({t}, dew point {td}). Meanwhile the exchanger can sit on standby (⇄ 0).',
   branchesT: 'Branch pickup starts {day}', branchesD: 'Put them out from Saturday {sat}. 10 cm diameter max. Pickup runs 5 to 10 business days.',
   branchesOnT: 'Branch pickup under way', branchesOnD: 'Trucks pass over 5 to 10 business days from {day}.',
   taxesT: 'Property tax', taxesD: 'Instalment due {when}.',
@@ -612,14 +608,13 @@ en: {
   v_wetter: 'Wetter than the house: ventilating adds moisture.', v_drier: 'Drier than the house: ventilating dries it out.', v_same: 'About the same as indoors: little effect on humidity.',
   zDry: 'Dry', zOk: 'Comfy', zHum: 'Humid', zMug: 'Muggy',
   chartTd: 'Dew point, next 24 hours', chartT: 'Temperature, next 24 hours',
-  dryWin: 'Dry air expected from {from} to {to}.',
   setupT: 'My setup', setupQ: 'Do the exchanger ducts connect to the furnace ducts?',
   tie_interlock: 'Yes, and the furnace fan starts with it', tie_noInterlock: 'Yes, no interlock', tie_dedicated: 'No, separate ducts', tie_unknown: 'Not sure',
   e_base: 'The exchanger itself is frugal: about 30 to 60 W on low.',
   e_interlock: 'But every minute of exchange also runs the furnace fan: 350 to 500 W on a standard motor, 75 to 125 W on an ECM motor. Running nonstop all summer, that is often the real cause of a higher bill. The timer cuts that time by two thirds.',
   e_noInterlock: 'Aldes requires the furnace fan to run whenever the exchanger runs. Left on all summer it draws 350 to 500 W on a standard motor and blows coil moisture back into the house. An interlock fixes both.',
   e_dedicated: 'Your ducts are separate, so the furnace fan doesn’t need to run. The real summer cost is the moisture the AC has to remove.',
-  e_unknown: 'To check: thermostat on AUTO with no heating or cooling call, set the exchanger to ⇄ 2. If the furnace fan starts, they’re interlocked.',
+  e_unknown: 'To check: thermostat on AUTO with no heating or cooling call, set the exchanger to ⇄ 2. If the furnace fan starts, they’re interlocked. Then put it back to the recommended setting.',
   e_water: 'On muggy days, continuous exchange brings in roughly half a litre to a litre of water per hour, which the AC then has to remove.',
   whyT: 'Why these settings', refT: 'Reference table',
   why: [
@@ -659,7 +654,7 @@ en: {
   rulesWaterT: 'Watering rules',
   rulesWater: ['Sprinklers, soaker hoses and automatic systems: Tuesday and Friday, 8 to 10 pm.', 'Hose with an automatic shut-off nozzle: any time for gardens, vegetable gardens, flower beds, planters, trees and shrubs. The lawn isn’t on that list, so it follows the Tuesday and Friday schedule.', 'New lawn or planting: free permit, daily 6 to 8 am and 8 to 10 pm for 15 days. No permits July 1 to August 31. New sod may be watered all day on the day it’s laid.', 'Automatic systems must have a rain or soil-moisture sensor.', 'Pool or spa: no filling from 6 am to 8 pm.', 'Fines: $150 to $500 for a first offence.'],
   srcCal: 'Sources: ndip.org, bylaws 505 and 572, NDIP 2026 calendar.',
-  foot: 'Icon: the Pointe-du-Moulin windmill (1705), NDIP’s emblem. Weather: Open-Meteo.',
+  wxCredit: 'Weather data: Open-Meteo.com',
   calAddT: 'Add to calendar', calAddLead: 'Each reminder comes with a 9 am alert.', calIcs: 'iPhone Calendar (.ics)', calGoogle: 'Google', cancel: 'Cancel',
   calFine: 'On iPhone, open the downloaded file and tap “Add All”.', calReady: 'Calendar file ready',
   rep_y: 'every year', rep_q: 'every 3 months', remWhen: '{d}, 9 am · {rep}',
@@ -784,13 +779,6 @@ function derive(wx, N) {
   let bal = null;
   if (di > 0) { const past = wx.daily.slice(Math.max(0, di - 7), di); bal = sum(past, d => d.p) - 0.8 * sum(past, d => d.et0); }
   const d3 = di >= 0 ? vals(wx.daily.slice(di, di + 3), d => d.tmin) : [];
-  let best = null, run = null;
-  next.forEach((h, k) => {
-    const dry = num(h.td) && h.td <= 12.5 && h.t <= 26;
-    if (dry) { if (!run) run = { s: k, e: k }; else run.e = k; }
-    else if (run) { if (!best || run.e - run.s > best.e - best.s) best = run; run = null; }
-  });
-  if (run && (!best || run.e - run.s > best.e - best.s)) best = run;
   const dT = di >= 0 ? wx.daily[di] : null;
   return {
     ok: true, cur, fetchedAt: wx.fetchedAt,
@@ -798,14 +786,13 @@ function derive(wx, N) {
     rain24: sum(last24, h => h.p), rainNext12: sum(H.slice(i, i + 12), h => h.p), ppNext12: Math.max(0, ...vals(H.slice(i, i + 12), h => h.pp)),
     tonightMin: Math.min(...vals(tonight, h => h.t)), balance7: bal, frost3: d3.length ? Math.min(...d3) : Math.min(...tN),
     snow24: last24.concat([H[i]]).some(h => isSnow(h.code)),
-    dryRun: best && best.e - best.s >= 2 ? { from: next[best.s].time, to: next[Math.min(best.e + 1, next.length - 1)].time } : null,
     series: next, hi: dT ? dT.tmax : Math.max(...tN), lo: dT ? dT.tmin : Math.min(...tN)
   };
 }
 function normalsDer(N) {
   const [lo, hi, td] = NORMALS[N.getMonth() + 1];
   return { ok: false, cur: null, tmin24: lo, tmax24: hi, tavg24: (lo + hi) / 2, tdAvg24: td, tdMax24: td + 2, rain24: null, rainNext12: null, ppNext12: null,
-    tonightMin: lo, balance7: null, frost3: lo, snow24: false, dryRun: null, series: null, hi, lo };
+    tonightMin: lo, balance7: null, frost3: lo, snow24: false, series: null, hi, lo };
 }
 function dewPoint(T, RH) { const a = 17.62, b = 243.12, g = Math.log(RH / 100) + a * T / (b + T); return b * g / (a - g); }
 
@@ -845,9 +832,7 @@ function recommend(der, N) {
   if (regime === 'cool') thermo = { label: 't_cool', why: 't_coolD' };
   else if (regime === 'heat') thermo = S.setup.tie === 'noInterlock' ? { label: 't_heatOn', why: 't_heatOnD' } : { label: 't_heat', why: 't_heatD' };
   else thermo = { label: 't_mild', why: 't_mildD' };
-  const c = der.cur;
-  const windows = regime !== 'heat' && der.ok && c && c.t >= 15 && c.t <= 24 && c.td <= 13 && !isRain(c.code) && c.isDay;
-  return { regime, band, exchanger, humidifier, thermo, windows };
+  return { regime, band, exchanger, humidifier, thermo };
 }
 function applied(dev, key) { const a = S.applied[dev]; return !a ? 'new' : a === key ? 'ok' : 'change'; }
 function exchSummary(x) { if (!x) return ''; return (x.mode === 'int' ? '⏲' + NB + t('m_int') : '⇄' + NB + t('spd', { n: x.speed })) + ' · ' + pct(x.rh); }
@@ -1057,7 +1042,6 @@ function buildActions() {
   const tx = nextOf('taxes', today);
   if (tx && diffDays(today, tx) <= 5) A.push({ key: 'taxes|' + tx, pri: 38, tone: 'neutral', icon: '🧾', title: t('taxesT'), detail: t('taxesD', { when: tx === today ? t('cdToday') : longDate(tx) }), ack: t('ok') });
   if (SET.cityMeeting.has(today) && h < 22) A.push({ key: 'council|' + today, pri: 55, tone: 'neutral', icon: '🏛️', title: t('councilT'), detail: t('councilD'), ack: t('ok') });
-  if (REC.windows) A.push({ key: 'windows|' + today, pri: 52, tone: 'ok', icon: '🪟', title: t('windowsT'), detail: t('windowsD', { t: deg(DER.cur.t), td: deg(DER.cur.td) }), ack: t('ok') });
   // Entretien
   for (const m of MAINT) {
     const st = maintStatus(m, N);
@@ -1122,7 +1106,7 @@ function renderToday() {
   html += '<div class="stack">' + (acts.some(a => !a.done) ? '' : `<div class="card empty"><div class="e">🌿</div><b>${t('emptyT')}</b><span>${t('emptyD')}</span></div>`) + acts.map(actCard).join('') + '</div>';
   html += sec(t('secSettings'), `<button class="aside-btn" data-a="tab" data-v="climate">${t('seeClim')}</button>`) + settingsRows();
   html += sec(t('secWeek'), `<button class="aside-btn" data-a="tab" data-v="calendar">${t('seeCal')}</button>`) + weekStrip();
-  html += `<p class="foot">${t('foot')}</p></div>`;
+  html += '</div>';
   $('#page-today').innerHTML = html;
 }
 
@@ -1211,8 +1195,6 @@ function outdoorCard() {
       <p class="verdict">${verdict}</p>`;
   }
   html += `<div class="chart"><div class="ct">${heat ? t('chartT') : t('chartTd')}</div>${chartSVG(series, heat ? 't' : 'td')}</div>`;
-  if (!heat && DER.dryRun && REC.exchanger.mode === 'int') html += `<p class="tipline">${t('dryWin', { from: hourOf(DER.dryRun.from), to: hourOf(DER.dryRun.to) })}</p>`;
-  if (REC.windows) html += `<div class="tipbox">🪟 ${t('windowsD', { t: deg(c.t), td: deg(c.td) })}</div>`;
   return html + '</article>';
 }
 function exchCard() {
@@ -1284,7 +1266,7 @@ function renderClimate() {
   html += `<details class="acc" data-id="why"><summary>🎓 ${t('whyT')}</summary><div class="acc-body">${tl('why').map(p => `<p>${p}</p>`).join('')}<p style="font-size:12.5px;color:var(--text-3)">${t('whySrc')}</p></div></details>`;
   html += `<details class="acc" data-id="ref"><summary>📋 ${t('refT')}</summary><div class="acc-body">${refTable()}</div></details></div>`;
   html += sec(t('maintT')) + maintList();
-  html += `<p class="foot">${t('foot')}</p></div>`;
+  html += `<p class="foot">${t('wxCredit')}</p></div>`;
   $('#page-climate').innerHTML = html;
 }
 
