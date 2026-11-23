@@ -303,10 +303,10 @@ table.ref+p{margin-top:10px}
 .rk-ticks span:first-child{transform:none}
 .rk-ticks span:last-child{transform:translateX(-100%)}
 .rk-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:12px}
-.rk-day{border-radius:11px;padding:6px 0 7px;background:var(--neutral-bg);font-size:11px;font-weight:720;color:var(--text-3);text-transform:uppercase;letter-spacing:.03em;line-height:1.25}
-.rk-day b{display:block;font-size:16px;color:var(--text);letter-spacing:0}
-.rk-day.on{background:var(--sky-600);color:rgba(255,255,255,.85)}
-.rk-day.on b{color:#fff}
+.rk-day{position:relative;border-radius:11px;padding:10px 0 13px;background:var(--neutral-bg);font-size:12px;font-weight:720;color:var(--text-2);text-transform:uppercase;letter-spacing:.03em;line-height:1.2}
+.rk-day.today::after{content:"";position:absolute;left:50%;bottom:5px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--accent)}
+.rk-day.on{background:var(--sky-600);color:#fff}
+.rk-day.on.today::after{background:#fff}
 .rk-filt{display:flex;gap:6px;margin:10px -14px 0;padding:0 14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .rk-filt::-webkit-scrollbar{display:none}
 .rk-f{flex:0 0 auto;height:30px;padding:0 12px;border-radius:15px;background:var(--neutral-bg);font-size:13px;font-weight:650;color:var(--text-2);display:inline-flex;align-items:center;gap:6px}
@@ -437,10 +437,11 @@ const MAINT = [
 /* Patinoire réfrigérée du parc des Éperviers, horaire de l'hiver 2026-2027 (affiche de NDIP).
    Chaque bloc : [début, fin, activité], en heures (11.5 = 11 h 30).
    p = patin libre, h = hockey libre, f = hockey famille, r = ringuette libre, m = HMIP (glace réservée), g = entretien de la glace.
-   season : ouverture et fermeture (MM-JJ). Ajustez quand NDIP annonce les vraies dates.
+   season : ouverture et fermeture (MM-JJ). La saison 2025-2026 a ouvert le 15 novembre et a duré environ cinq mois
+   (ndip.org, Néomédia) ; la fermeture du 15 avril est une estimation. Ajustez quand NDIP annonce les vraies dates.
    La carte apparaît « preview » jours avant l'ouverture. Affluence (preuve de résidence) : en semaine dès peakFrom, toute la fin de semaine. */
 const RINK = {
-  season: ['12-01', '03-15'], preview: 14, peakFrom: 17, start: 8, end: 23,
+  season: ['11-15', '04-15'], preview: 14, peakFrom: 17, start: 8, end: 23,
   week: [
     /* dimanche */ [[8, 11.5, 'f'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 16.5, 'p'], [16.5, 17, 'g'], [17, 19.5, 'p'], [19.5, 20, 'g'], [20, 23, 'h']],
     /* lundi    */ [[8, 11.5, 'p'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 15.5, 'h'], [15.5, 16.5, 'p'], [16.5, 17, 'g'], [17, 19.5, 'h'], [19.5, 20, 'g'], [20, 22, 'h']],
@@ -633,12 +634,12 @@ fr: {
   pushAskT: 'Recevoir les rappels sur ce téléphone', pushAskD: 'Bacs à sortir, soirs d’arrosage, quand fermer les fenêtres : même quand l’app est fermée.', pushAskB: 'Activer',
   rk_secT: 'Patinoire', rk_place: 'Parc des Éperviers · patinoire réfrigérée',
   rk_p: 'Patin libre', rk_h: 'Hockey libre', rk_f: 'Hockey famille', rk_r: 'Ringuette libre', rk_m: 'HMIP · glace réservée', rk_g: 'Entretien de la glace',
-  rk_all: 'Tout', rk_fp: 'Patin', rk_fh: 'Hockey', rk_ff: 'Famille', rk_fr: 'Ringuette', rk_today: 'Auj.',
+  rk_all: 'Tout', rk_fp: 'Patin', rk_fh: 'Hockey', rk_ff: 'Famille', rk_fr: 'Ringuette',
   rk_until: 'Jusqu’à {t}', rk_thenNow: 'puis {a}', rk_then: 'puis {a} à {t}', rk_range: '{a} à {b}',
   rk_closed: 'Fermée pour l’entretien', rk_opensAt: 'Ouvre à {t} avec {a}.', rk_night: 'Fermée pour la nuit', rk_tomorrow: 'Demain à {t} : {a}.', rk_ended: 'C’était la dernière soirée de la saison.',
   rk_hours: 'Ouvert de {a} à {b}', rk_skateAt: 'patin libre à {list}',
   rk_next: 'Prochaine fois : {when} à {t}', rk_nowOn: 'En cours, jusqu’à {t}', rk_none: 'Rien d’ici une semaine.', rk_noneDay: 'Pas de {a} ce jour-là.',
-  rk_opens: 'Ouverture prévue le {d}', rk_opensSub: 'Selon la météo. Touchez un jour pour voir l’horaire.',
+  rk_opens: 'Ouverture prévue le {d}', rk_opensSub: 'Selon la météo. Touchez un jour pour voir l’horaire.', rk_over: 'La saison sera terminée d’ici là.',
   rk_peak: 'Affluence · carte Accès NDIP', rk_free: 'Accès libre, sans surveillance', rk_kids: '12 ans et moins, avec un adulte', rk_gear: 'Casque et gants',
   rk_peakS: 'affluence', rk_nowS: 'Maintenant', rk_infoT: 'Bon à savoir',
   rk_info: ['Affluence (lundi au vendredi dès 17 h, fins de semaine toute la journée) : preuve de résidence exigée. Montrez la carte Accès NDIP, physique ou dans l’app Espace citoyen NDIP.',
@@ -814,12 +815,12 @@ en: {
   pushAskT: 'Get reminders on this phone', pushAskD: 'Bins to put out, watering nights, when to close the windows: even when the app is closed.', pushAskB: 'Turn on',
   rk_secT: 'Ice rink', rk_place: 'Parc des Éperviers · refrigerated rink',
   rk_p: 'Free skate', rk_h: 'Open hockey', rk_f: 'Family hockey', rk_r: 'Open ringette', rk_m: 'HMIP · reserved ice', rk_g: 'Ice maintenance',
-  rk_all: 'All', rk_fp: 'Skate', rk_fh: 'Hockey', rk_ff: 'Family', rk_fr: 'Ringette', rk_today: 'Today',
+  rk_all: 'All', rk_fp: 'Skate', rk_fh: 'Hockey', rk_ff: 'Family', rk_fr: 'Ringette',
   rk_until: 'Until {t}', rk_thenNow: 'then {a}', rk_then: 'then {a} at {t}', rk_range: '{a} to {b}',
   rk_closed: 'Closed for maintenance', rk_opensAt: 'Opens at {t} with {a}.', rk_night: 'Closed for the night', rk_tomorrow: 'Tomorrow at {t}: {a}.', rk_ended: 'That was the last night of the season.',
   rk_hours: 'Open {a} to {b}', rk_skateAt: 'free skate at {list}',
   rk_next: 'Next: {when} at {t}', rk_nowOn: 'On now, until {t}', rk_none: 'Nothing in the next week.', rk_noneDay: 'No {a} that day.',
-  rk_opens: 'Planned opening: {d}', rk_opensSub: 'Weather permitting. Tap a day to see the schedule.',
+  rk_opens: 'Planned opening: {d}', rk_opensSub: 'Weather permitting. Tap a day to see the schedule.', rk_over: 'The season will be over by then.',
   rk_peak: 'Peak · NDIP Accès card', rk_free: 'Open access, unsupervised', rk_kids: '12 and under, with an adult', rk_gear: 'Helmet and gloves',
   rk_peakS: 'peak', rk_nowS: 'Now', rk_infoT: 'Good to know',
   rk_info: ['Peak hours (weekdays from 5 pm, all day on weekends): proof of residence required. Show your NDIP Accès card, physical or in the Espace citoyen NDIP app.',
@@ -1230,12 +1231,14 @@ function context() {
 }
 
 /* ---------- Patinoire (carte de l'onglet Aujourd'hui) ---------- */
-const RK = { off: 0, flt: null, sel: null };   /* jour affiché, activité filtrée, bloc touché : en mémoire seulement */
+const RK = { dow: null, flt: null, sel: null };   /* jour de la semaine affiché (null = aujourd'hui), activité filtrée, bloc touché : en mémoire seulement */
+const RK_WEEK = [1, 2, 3, 4, 5, 6, 0];            /* l'horaire se répète chaque semaine : lundi à dimanche */
 function rkT(h) { return fmtTime(Math.floor(h), Math.round((h % 1) * 60)); }
 function rkName(k) { return t('rk_' + k); }
 function rkLow(k) { return k === 'm' ? rkName(k) : rkName(k).toLowerCase(); }
 function rkRange(b) { return t('rk_range', { a: rkT(b[0]), b: rkT(b[1]) }); }
-function rkWhen(d) { const n = diffDays(TODAY, d); return n === 0 ? t('cdToday') : n === 1 ? t('cdTomorrow') : longDate(d); }
+function rkDayName(d) { return fmtDate(d, { weekday: 'long' }); }
+function rkWhen(d) { const n = diffDays(TODAY, d); return n === 0 ? t('cdToday') : n === 1 ? t('cdTomorrow') : rkDayName(d); }
 function rkStatusNow(d, bl, nh) {   /* ce qui se passe sur la glace à cette heure-ci */
   const c = bl.find(b => nh >= b[0] && nh < b[1]);
   if (c) {
@@ -1260,10 +1263,10 @@ function rinkInfo() {
     <p class="tipline"><a href="tel:+15144534128,0">${t('rk_call')}</a></p></div></details>`;
 }
 function rinkCard() {
-  const s = rinkSeason(TODAY), base = TODAY < s.open ? s.open : TODAY;
-  const days = []; for (let i = 0; i < 7; i++) { const d = addDays(base, i); if (d > s.close) break; days.push(d); }
-  if (RK.off >= days.length) RK.off = 0;
-  const d = days[RK.off], bl = rkBlocks(d) || [], isT = d === TODAY;
+  const s = rinkSeason(TODAY), base = TODAY < s.open ? s.open : TODAY, bdow = dowOf(base);
+  const dateFor = w => addDays(base, (w - bdow + 7) % 7);   /* prochaine occurrence de ce jour (pour la météo et l'heure actuelle) */
+  const dow = RK.dow == null ? bdow : RK.dow;
+  const d = dateFor(dow), bl = rkBlocks(d) || [], isT = d === TODAY;
   if (RK.sel != null && !bl[RK.sel]) RK.sel = null;
   const nh = N.getHours() + N.getMinutes() / 60;
   let head, sub, sb = null, sbDay = d;
@@ -1278,10 +1281,11 @@ function rinkCard() {
     else sub = t('rk_none');
   } else if (isT) {
     ({ sb, head, sub } = rkStatusNow(d, bl, nh));
-  } else if (RK.off === 0 && TODAY < s.open) { head = t('rk_opens', { d: longDate(s.open) }); sub = t('rk_opensSub'); }
+  } else if (d === base && TODAY < s.open) { head = t('rk_opens', { d: longDate(s.open) }); sub = t('rk_opensSub'); }
+  else if (!bl.length) { head = cap(rkDayName(d)); sub = t('rk_over'); }
   else {
     const pl = bl.filter(b => b[2] === 'p');
-    head = cap(longDate(d));
+    head = cap(rkDayName(d));
     sub = t('rk_hours', { a: rkT(bl[0][0]), b: rkT(bl[bl.length - 1][1]) }) + (pl.length ? ' · ' + t('rk_skateAt', { list: pl.map(b => rkT(b[0])).join(', ') }) : '');
   }
   const tags = [];
@@ -1296,7 +1300,10 @@ function rinkCard() {
     return `<button class="rk-seg${dim ? ' dim' : ''}${RK.sel === i ? ' sel' : ''}" style="left:${x(b[0])};width:${x(RINK.start + b[1] - b[0])};--c:var(--rk-${b[2]})" data-a="rkSel" data-v="${i}" aria-label="${esc(rkName(b[2]) + ', ' + rkRange(b))}"></button>`;
   }).join('') + (isT && nh >= RINK.start && nh <= RINK.end ? `<span class="rk-nowl" style="left:${x(nh)}"></span>` : '');
   const ticks = [8, 12, 16, 20, 23].map(h => `<span style="left:${x(h)}">${rkT(h)}</span>`).join('');
-  const dayBtns = days.map((dd, i) => `<button class="rk-day${i === RK.off ? ' on' : ''}" data-a="rkDay" data-v="${i}" aria-pressed="${i === RK.off}" aria-label="${esc(longDate(dd))}">${dd === TODAY ? t('rk_today') : shortDay(dd)}<b class="num">${dateOf(dd).getDate()}</b></button>`).join('');
+  const dayBtns = RK_WEEK.map(w => {
+    const dd = dateFor(w), on = w === dow, today = dd === TODAY;
+    return `<button class="rk-day${on ? ' on' : ''}${today ? ' today' : ''}" data-a="rkDay" data-v="${w}" aria-pressed="${on}" aria-label="${esc(cap(rkDayName(dd)) + (today ? ', ' + t('cdToday') : ''))}">${shortDay(dd)}</button>`;
+  }).join('');
   const filt = [['', 'all'], ['p', 'fp'], ['h', 'fh'], ['f', 'ff'], ['r', 'fr']].map(([k, l]) => `<button class="rk-f${(RK.flt || '') === k ? ' on' : ''}" data-a="rkFilt" data-v="${k}" aria-pressed="${(RK.flt || '') === k}">${k ? `<i style="--c:var(--rk-${k})"></i>` : ''}${t('rk_' + l)}</button>`).join('');
   const rows = bl.map((b, i) => {
     if (b[2] === 'g' || (RK.flt && b[2] !== RK.flt)) return '';
@@ -1311,7 +1318,7 @@ function rinkCard() {
     <p class="rk-sub">${sub}</p><div class="rk-tags">${tags.join('')}</div>
     <div class="rk-strip">${strip}</div><div class="rk-ticks num" aria-hidden="true">${ticks}</div>
     <div class="rk-days">${dayBtns}</div><div class="rk-filt" role="group" aria-label="${esc(t('rk_secT'))}">${filt}</div>
-    <div class="rk-list">${rows || `<p class="rk-empty">${t('rk_noneDay', { a: rkLow(RK.flt) })}</p>`}</div></article>`;
+    <div class="rk-list">${rows || (RK.flt && bl.length ? `<p class="rk-empty">${t('rk_noneDay', { a: rkLow(RK.flt) })}</p>` : '')}</div></article>`;
 }
 function renderRink() { const el = $('#rink'); if (el) el.outerHTML = rinkCard(); }
 
@@ -1821,7 +1828,7 @@ document.addEventListener('click', e => {
   }
   else if (a === 'moreTodo') { TODO_ALL = true; renderToday(); }
   else if (a === 'seeHum') { go('climate'); requestAnimationFrame(() => { const c = document.getElementById('c-hum'); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); }
-  else if (a === 'rkDay') { RK.off = +el.dataset.v; RK.sel = null; renderRink(); }
+  else if (a === 'rkDay') { const w = +el.dataset.v, s = rinkSeason(TODAY); RK.dow = w === dowOf(TODAY < s.open ? s.open : TODAY) ? null : w; RK.sel = null; renderRink(); }
   else if (a === 'rkFilt') { RK.flt = el.dataset.v || null; RK.sel = null; renderRink(); }
   else if (a === 'rkSel') { const i = +el.dataset.v; RK.sel = RK.sel === i ? null : i; renderRink(); }
 });
