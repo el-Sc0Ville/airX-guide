@@ -323,6 +323,9 @@ table.ref+p{margin-top:10px}
 .rk-row.past{opacity:.45}
 .rk-row.sel{background:var(--neutral-bg)}
 .rk-empty{font-size:14px;color:var(--text-2);padding:10px 8px}
+.ri.rk-ri{background:var(--neutral-bg)}
+.ri.rk-ri .rk-pic{width:26px;height:16px}
+.calseg{margin-top:14px}
 
 /* bottom sheet */
 .sheet-wrap{position:fixed;inset:0;z-index:80}
@@ -466,14 +469,17 @@ const NORMALS = { 1:[-14.7,-5.3,-14], 2:[-12.9,-3.3,-13], 3:[-6.7,2.4,-8], 4:[1.
 const NB = '\u00A0';
 const STR = {
 fr: {
-  tabToday: 'Aujourd’hui', tabCal: 'Calendrier', tabClim: 'Climat',
+  tabToday: 'Aujourd’hui', tabCal: 'Calendrier', tabClim: 'Maison',
   langBtn: 'EN', langAria: 'Switch to English',
   gMorning: 'Bonjour', gAfternoon: 'Bon après-midi', gEvening: 'Bonsoir',
-  calSub: 'Collectes, arrosage et séances', climSub: 'Réglages selon la météo de NDIP',
+  calSub: 'Collectes, arrosage et séances', calSubRink: 'Collectes, patinoire et séances', climSub: 'Réglages recommandés selon la météo',
   feels: 'Ressenti', hum: 'Humidité', dew: 'Rosée', rain24: 'Pluie 24 h', precip24: 'Précip. 24 h', hiLo: 'Max {hi} · Min {lo}',
   upd: 'Mis à jour à {t}', updOff: 'Hors ligne · météo de {t}', wxLoading: 'Chargement de la météo…',
   wxNone: 'Météo indisponible. Les réglages suivent les normales de saison.', wxUpdated: 'Météo à jour', wxFailed: 'Météo injoignable',
-  secTodo: 'À faire', secWeek: 'Cette semaine', secSettings: 'Réglages de la maison', seeCal: 'Calendrier', seeClim: 'Détails',
+  secTodo: 'À faire', secTown: 'En ville', secSettings: 'Réglages recommandés', secSeason: 'Tâches de saison', secWhyToday: 'Pourquoi ces réglages aujourd’hui', secMore: 'Pour aller plus loin', seeCal: 'Calendrier',
+  segBins: 'Collectes', segRink: 'Patinoire', moreTodo: 'Voir {n} de plus', see: 'Voir', seasonDone: 'Fait le {d}',
+  nx_heat: 'Selon la nuit la plus froide prévue ({tmin}).', nx_dry: 'Air sec dehors (rosée {td}).', nx_humid: 'Air humide dehors (rosée {td}).',
+  calPending: 'Le calendrier {y} de NDIP n’est pas encore publié. Les dates s’afficheront dès qu’il le sera.',
   emptyT: 'Rien d’urgent aujourd’hui', emptyD: 'Profitez de la journée 🌿',
   done: 'C’est fait', undo: 'Annuler', set: 'C’est réglé', out: 'Sortis', watered: 'Arrosé', ok: 'Compris', how: 'Comment faire',
   remind: 'Me le rappeler', noted: 'Noté ✓', appliedToast: 'Réglage noté ✓', later: 'Plus tard',
@@ -516,7 +522,7 @@ fr: {
   winOfferT: 'Belle journée pour aérer', winOfferD: 'Air doux et sec dehors ({t}, rosée {td}) {until}. Au choix : ouvrez les fenêtres et mettez l’échangeur en attente (⇄ 0), ou gardez les fenêtres fermées avec l’échangeur en {setting}.',
   winOpenB: 'J’ouvre les fenêtres', winKeepB: 'Je garde l’échangeur', winOpenToast: 'Fenêtres ouvertes · échangeur en attente',
   winOpenT: 'Fenêtres ouvertes', winOpenD: 'Échangeur en attente (⇄ 0) et thermostat à Arrêt. Conditions bonnes {until} : l’app vous dira quand fermer.',
-  winNoWx: 'tant que la météo le permet', winClosedB: 'J’ai fermé', winOpenShort: 'fenêtres ouvertes',
+  winNoWx: 'tant que la météo le permet', winClosedB: 'J’ai fermé',
   winCloseT: 'Fermez les fenêtres', winCloseD: 'Remettez l’échangeur en {setting} et le thermostat comme d’habitude.',
   winUntil: 'jusque vers {h}', winRest: 'pour le reste de la journée',
   winSeg: 'Fenêtres', winSegClosed: 'Fermées', winSegOpen: 'Ouvertes',
@@ -644,14 +650,17 @@ fr: {
   rk_call: 'Services communautaires : 514 453-4128, poste 0', rk_src: 'Source : horaire de la patinoire, hiver 2026-2027 (NDIP).'
 },
 en: {
-  tabToday: 'Today', tabCal: 'Calendar', tabClim: 'Climate',
+  tabToday: 'Today', tabCal: 'Calendar', tabClim: 'Home',
   langBtn: 'FR', langAria: 'Passer en français',
   gMorning: 'Good morning', gAfternoon: 'Good afternoon', gEvening: 'Good evening',
-  calSub: 'Pickups, watering and meetings', climSub: 'Settings for NDIP weather',
+  calSub: 'Pickups, watering and meetings', calSubRink: 'Pickups, ice rink and meetings', climSub: 'Recommended settings for the weather',
   feels: 'Feels like', hum: 'Humidity', dew: 'Dew point', rain24: 'Rain 24 h', precip24: 'Precip 24 h', hiLo: 'H {hi} · L {lo}',
   upd: 'Updated {t}', updOff: 'Offline · weather from {t}', wxLoading: 'Loading weather…',
   wxNone: 'Weather unavailable. Settings follow seasonal normals.', wxUpdated: 'Weather updated', wxFailed: 'Weather unreachable',
-  secTodo: 'To do', secWeek: 'This week', secSettings: 'Home settings', seeCal: 'Calendar', seeClim: 'Details',
+  secTodo: 'To do', secTown: 'Around town', secSettings: 'Recommended settings', secSeason: 'Seasonal tasks', secWhyToday: 'Why these settings today', secMore: 'Learn more', seeCal: 'Calendar',
+  segBins: 'Pickups', segRink: 'Ice rink', moreTodo: 'Show {n} more', see: 'See', seasonDone: 'Done {d}',
+  nx_heat: 'Based on the coldest night ahead ({tmin}).', nx_dry: 'Dry air outside (dew point {td}).', nx_humid: 'Humid air outside (dew point {td}).',
+  calPending: 'NDIP hasn’t published the {y} calendar yet. Dates will show up as soon as it’s out.',
   emptyT: 'Nothing urgent today', emptyD: 'Enjoy the day 🌿',
   done: 'Done', undo: 'Undo', set: 'I set it', out: 'They’re out', watered: 'Watered', ok: 'Got it', how: 'How to do it',
   remind: 'Remind me', noted: 'Noted ✓', appliedToast: 'Setting noted ✓', later: 'Later',
@@ -694,7 +703,7 @@ en: {
   winOfferT: 'Nice day to air out the house', winOfferD: 'Mild, dry air outside ({t}, dew point {td}) {until}. Your pick: open the windows and put the exchanger on standby (⇄ 0), or keep them closed with the exchanger on {setting}.',
   winOpenB: 'Open the windows', winKeepB: 'Keep the exchanger', winOpenToast: 'Windows open · exchanger on standby',
   winOpenT: 'Windows open', winOpenD: 'Exchanger on standby (⇄ 0) and thermostat off. Good conditions {until}; the app will tell you when to close.',
-  winNoWx: 'while the weather allows', winClosedB: 'I closed them', winOpenShort: 'windows open',
+  winNoWx: 'while the weather allows', winClosedB: 'I closed them',
   winCloseT: 'Time to close the windows', winCloseD: 'Put the exchanger back to {setting} and the thermostat back to normal.',
   winUntil: 'until about {h}', winRest: 'for the rest of the day',
   winSeg: 'Windows', winSegClosed: 'Closed', winSegOpen: 'Open',
@@ -829,7 +838,7 @@ en: {
 const KEY = 'mcnabb.v2', WXKEY = 'mcnabb.wx.v2';
 function load(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
 function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* stockage indisponible */ } }
-const S = Object.assign({ lang: null, tab: 'today', applied: {}, ack: {}, tasks: {}, maint: {}, setup: { tie: 'unknown' }, hum: null, win: null, push: null }, load(KEY, {}));
+const S = Object.assign({ lang: null, tab: 'today', calSeg: 'bins', admin: false, applied: {}, ack: {}, tasks: {}, maint: {}, setup: { tie: 'unknown' }, hum: null, win: null, push: null }, load(KEY, {}));
 if (!S.lang) { let old = null; try { old = localStorage.getItem('mcnabb-lang'); } catch (e) {} S.lang = old === 'en' ? 'en' : 'fr'; }
 if (!['today', 'calendar', 'climate'].includes(S.tab)) S.tab = 'today';
 S.setup = Object.assign({ tie: 'unknown' }, S.setup);
@@ -1227,6 +1236,29 @@ function rkName(k) { return t('rk_' + k); }
 function rkLow(k) { return k === 'm' ? rkName(k) : rkName(k).toLowerCase(); }
 function rkRange(b) { return t('rk_range', { a: rkT(b[0]), b: rkT(b[1]) }); }
 function rkWhen(d) { const n = diffDays(TODAY, d); return n === 0 ? t('cdToday') : n === 1 ? t('cdTomorrow') : longDate(d); }
+function rkStatusNow(d, bl, nh) {   /* ce qui se passe sur la glace à cette heure-ci */
+  const c = bl.find(b => nh >= b[0] && nh < b[1]);
+  if (c) {
+    const nx = bl.slice(bl.indexOf(c) + 1).find(b => b[2] !== 'g');
+    return { sb: c, head: rkName(c[2]), sub: t('rk_until', { t: rkT(c[1]) }) + (!nx ? '' : nx[0] === c[1] ? ', ' + t('rk_thenNow', { a: rkLow(nx[2]) }) : ' · ' + t('rk_then', { a: rkLow(nx[2]), t: rkT(nx[0]) })) };
+  }
+  if (nh < bl[0][0]) return { sb: null, head: t('rk_closed'), sub: t('rk_opensAt', { t: rkT(bl[0][0]), a: rkLow(bl[0][2]) }) };
+  const tb = rkBlocks(addDays(d, 1));
+  return { sb: null, head: t('rk_night'), sub: tb ? t('rk_tomorrow', { t: rkT(tb[0][0]), a: rkLow(tb[0][2]) }) : t('rk_ended') };
+}
+const RK_PIC = '<svg class="rk-pic" viewBox="0 0 54 32" aria-hidden="true"><rect class="ice" x="1" y="1" width="52" height="30" rx="14"/><path class="ln" d="M27 2v28M12 2v28M42 2v28"/><circle class="ln" cx="27" cy="16" r="5"/></svg>';
+function rinkGlance() {   /* une ligne dans Aujourd'hui, qui ouvre Calendrier ▸ Patinoire */
+  const s = rinkSeason(TODAY);
+  let st;
+  if (TODAY < s.open) st = { sb: null, head: t('rk_opens', { d: longDate(s.open) }), sub: '' };
+  else st = rkStatusNow(TODAY, rkBlocks(TODAY), N.getHours() + N.getMinutes() / 60);
+  return `<div class="card rows"><button class="row" data-a="calSeg" data-v="rink"><span class="ri rk-ri" style="--rk-c:var(--rk-${st.sb ? st.sb[2] : 'g'})">${RK_PIC}</span>
+    <span class="rl"><b>${t('rk_secT')}</b><span>${st.head}${st.sub ? ' · ' + st.sub : ''}</span></span><span class="chev">${I.chev}</span></button></div>`;
+}
+function rinkInfo() {
+  return `<details class="acc" data-id="rink-info"><summary>⛸️ ${t('rk_infoT')}</summary><div class="acc-body"><ul>${tl('rk_info').map(s => `<li>${s}</li>`).join('')}</ul>
+    <p class="tipline"><a href="tel:+15144534128,0">${t('rk_call')}</a></p></div></details>`;
+}
 function rinkCard() {
   const s = rinkSeason(TODAY), base = TODAY < s.open ? s.open : TODAY;
   const days = []; for (let i = 0; i < 7; i++) { const d = addDays(base, i); if (d > s.close) break; days.push(d); }
@@ -1245,13 +1277,7 @@ function rinkCard() {
     if (r) { sb = r.b; sbDay = r.d; sub = r.cur ? t('rk_nowOn', { t: rkT(r.b[1]) }) : t('rk_next', { when: rkWhen(r.d), t: rkT(r.b[0]) }); }
     else sub = t('rk_none');
   } else if (isT) {
-    const c = bl.find(b => nh >= b[0] && nh < b[1]);
-    if (c) {
-      sb = c; head = rkName(c[2]);
-      const nx = bl.slice(bl.indexOf(c) + 1).find(b => b[2] !== 'g');
-      sub = t('rk_until', { t: rkT(c[1]) }) + (!nx ? '' : nx[0] === c[1] ? ', ' + t('rk_thenNow', { a: rkLow(nx[2]) }) : ' · ' + t('rk_then', { a: rkLow(nx[2]), t: rkT(nx[0]) }));
-    } else if (nh < bl[0][0]) { head = t('rk_closed'); sub = t('rk_opensAt', { t: rkT(bl[0][0]), a: rkLow(bl[0][2]) }); }
-    else { const tb = rkBlocks(addDays(d, 1)); head = t('rk_night'); sub = tb ? t('rk_tomorrow', { t: rkT(tb[0][0]), a: rkLow(tb[0][2]) }) : t('rk_ended'); }
+    ({ sb, head, sub } = rkStatusNow(d, bl, nh));
   } else if (RK.off === 0 && TODAY < s.open) { head = t('rk_opens', { d: longDate(s.open) }); sub = t('rk_opensSub'); }
   else {
     const pl = bl.filter(b => b[2] === 'p');
@@ -1280,15 +1306,12 @@ function rinkCard() {
     return `<button class="rk-row${past ? ' past' : ''}${RK.sel === i ? ' sel' : ''}" data-a="rkSel" data-v="${i}"><i style="--c:var(--rk-${b[2]})"></i>
       <span class="rk-tx"><b>${rkName(b[2])}</b><span>${rkRange(b)}${rkPeak(d, b) && b[2] !== 'm' ? ' · ' + t('rk_peakS') : ''}</span></span>${meta}</button>`;
   }).join('');
-  const pic = `<svg class="rk-pic" viewBox="0 0 54 32" aria-hidden="true"><rect class="ice" x="1" y="1" width="52" height="30" rx="14"/><path class="ln" d="M27 2v28M12 2v28M42 2v28"/><circle class="ln" cx="27" cy="16" r="5"/></svg>`;
   return `<article class="card rink" id="rink" style="--rk-c:var(--rk-${sb ? sb[2] : 'g'})">
-    <div class="rk-head">${pic}<div class="rk-tt"><span>${t('rk_place')}</span><b>${head}</b></div></div>
+    <div class="rk-head">${RK_PIC}<div class="rk-tt"><span>${t('rk_place')}</span><b>${head}</b></div></div>
     <p class="rk-sub">${sub}</p><div class="rk-tags">${tags.join('')}</div>
     <div class="rk-strip">${strip}</div><div class="rk-ticks num" aria-hidden="true">${ticks}</div>
     <div class="rk-days">${dayBtns}</div><div class="rk-filt" role="group" aria-label="${esc(t('rk_secT'))}">${filt}</div>
-    <div class="rk-list">${rows || `<p class="rk-empty">${t('rk_noneDay', { a: rkLow(RK.flt) })}</p>`}</div>
-    <details class="acc inner" data-id="rink-info"${OPEN.has('rink-info') ? ' open' : ''}><summary>${t('rk_infoT')}</summary><div class="acc-body"><ul>${tl('rk_info').map(s => `<li>${s}</li>`).join('')}</ul>
-      <p class="tipline"><a href="tel:+15144534128,0">${t('rk_call')}</a></p><p class="tipline" style="font-size:12.5px;color:var(--text-3)">${t('rk_src')}</p></div></details></article>`;
+    <div class="rk-list">${rows || `<p class="rk-empty">${t('rk_noneDay', { a: rkLow(RK.flt) })}</p>`}</div></article>`;
 }
 function renderRink() { const el = $('#rink'); if (el) el.outerHTML = rinkCard(); }
 
@@ -1325,13 +1348,15 @@ function buildActions() {
     buttons: [{ label: t('done'), a: 'winCloseDone', primary: true }] });
   const covered = offer || REC.win === 'open' || REC.win === 'close';
   if (DER.aq && DER.aq.pm25 > WIN.pm25Max && !winOpen(N)) A.push({ key: 'smoke|' + today, pri: 40, tone: 'warn', icon: '😷', title: t('smokeT'), detail: t('smokeD', { v: fmtNum(Math.round(DER.aq.pm25)) }), ack: t('ok') });
+  /* Appareils : ici on dit seulement quoi changer ; le comment et le pourquoi vivent dans Maison */
+  const nv = { tmin: deg(DER.tmin24, true), td: deg(DER.tdAvg24, true) };
   if (!covered && xs !== 'ok') A.push({ pri: xs === 'change' ? 24 : 34, tone: 'info', icon: I.exch, title: t(xs === 'change' ? 'devNewT' : 'devFirstT', { dev: t('exchT') }),
-    detail: t(x.why, { tmin: deg(DER.tmin24, true), td: deg(DER.tdAvg24, true) }), chip: { text: exchSummary(x), tone: 'info' },
+    detail: t('nx_' + x.why.slice(2), nv), chip: { text: exchSummary(x), tone: 'info' },
     buttons: [{ label: t('set'), a: 'apply', data: { dev: 'exchanger', v: x.key }, primary: true }, { label: t('how'), a: 'how', data: { v: 'how-x' } }] });
   const hm = REC.humidifier;
   if (hm.on) { const hs = applied('humidifier', hm.key); if (hs !== 'ok') A.push({ pri: 26, tone: 'info', icon: I.drop, title: t(hs === 'change' ? 'devNewT' : 'devFirstT', { dev: t('humT') }),
-    detail: t(hm.why, { tmin: deg(DER.tmin24, true), rh: pct(hm.rh) }), chip: { text: pct(hm.rh), tone: 'info' },
-    buttons: [{ label: t('set'), a: 'apply', data: { dev: 'humidifier', v: hm.key }, primary: true }] }); }
+    detail: t('nx_heat', nv), chip: { text: pct(hm.rh), tone: 'info' },
+    buttons: [{ label: t('set'), a: 'apply', data: { dev: 'humidifier', v: hm.key }, primary: true }, { label: t('see'), a: 'seeHum' }] }); }
   // Tâches saisonnières
   for (const task of TASKS) {
     if (!inWindow(md, task.from, task.to) || !task.when(DER, N)) continue;
@@ -1391,14 +1416,8 @@ function wxHero() {
     <div class="wx-row num"><span class="wchip">${t('hum')} ${pct(c.rh)}</span><span class="wchip">${t('dew')} ${deg(c.td)}</span><span class="wchip">${t(inWindow(mmdd(TODAY), '11-01', '03-31') ? 'precip24' : 'rain24')} ${mm(DER.rain24)}</span></div>
     <button class="wx-upd" data-a="refresh">${I.refresh}${upd}</button>`;
 }
-function settingsRows() {
-  const x = REC.exchanger, hm = REC.humidifier;
-  const st = s => s === 'ok' ? chip(t('upToDate'), 'ok') : s === 'change' ? chip(t('change'), 'warn') : chip(t('toSet'), 'info');
-  const row = (icon, label, val, status) => `<button class="row" data-a="tab" data-v="climate"><span class="ri">${icon}</span><span class="rl"><b>${label}</b><span>${val}</span></span>${status || ''}<span class="chev">${I.chev}</span></button>`;
-  return `<div class="card rows">${row(I.exch, t('exchT'), exchSummary(x) + (REC.win === 'open' ? ' · ' + t('winOpenShort') : ''), st(applied('exchanger', x.key)))}
-    ${row(I.drop, t('humT'), hm.on ? pct(hm.rh) + ' · ' + t('h_damperW') : t('h_off') + ' · ' + t('h_damperS'), hm.on ? st(applied('humidifier', hm.key)) : '')}
-    ${row(I.thermo, t('thermoT'), t(REC.thermo.label), '')}</div>`;
-}
+const TODO_MAX = 5;
+let TODO_ALL = false;   /* « Voir n de plus » : en mémoire seulement */
 function weekStrip() {
   let html = '<div class="week">';
   for (let i = 0; i < 7; i++) {
@@ -1413,30 +1432,42 @@ function renderToday() {
   BADGE.today = acts.filter(a => !a.done && a.pri < 60 && a.badge !== false).length;
   const night = DER.ok && DER.cur ? !DER.cur.isDay : (N.getHours() < 6 || N.getHours() >= 20);
   let html = hero({ title: greet(N), sub: cap(longDate(TODAY)), night, extra: wxHero() });
+  const pend = acts.filter(a => !a.done), done = acts.filter(a => a.done);
+  const shown = TODO_ALL ? pend : pend.slice(0, TODO_MAX), extra = pend.length - shown.length;
   html += '<div class="wrap">' + sec(t('secTodo'));
-  html += '<div class="stack">' + (acts.some(a => !a.done) ? '' : `<div class="card empty"><div class="e">🌿</div><b>${t('emptyT')}</b><span>${t('emptyD')}</span></div>`) + acts.map(actCard).join('') + '</div>';
-  if (rinkVisible(TODAY)) html += sec(t('rk_secT')) + rinkCard();
-  html += sec(t('secSettings'), `<button class="aside-btn" data-a="tab" data-v="climate">${t('seeClim')}</button>`) + settingsRows();
-  html += sec(t('secWeek'), `<button class="aside-btn" data-a="tab" data-v="calendar">${t('seeCal')}</button>`) + weekStrip();
+  html += '<div class="stack">' + (pend.length ? '' : `<div class="card empty"><div class="e">🌿</div><b>${t('emptyT')}</b><span>${t('emptyD')}</span></div>`)
+    + shown.map(actCard).join('') + (extra > 0 ? `<button class="btn block" data-a="moreTodo">${t('moreTodo', { n: extra })}</button>` : '') + done.map(actCard).join('') + '</div>';
+  /* En ville : un coup d'œil seulement ; les horaires complets sont dans Calendrier */
+  html += sec(t('secTown'), `<button class="aside-btn" data-a="calSeg" data-v="bins">${t('seeCal')}</button>`);
+  html += '<div class="stack">' + (rinkVisible(TODAY) ? rinkGlance() : '') + weekStrip() + '</div>';
   html += '</div>';
   $('#page-today').innerHTML = html;
 }
 
 /* ---------- Calendrier ---------- */
 let calWeeks = 6;
+function calSeg() { return rinkVisible(TODAY) && S.calSeg === 'rink' ? 'rink' : 'bins'; }
 function renderCalendar() {
-  let html = hero({ title: t('tabCal'), sub: t('calSub') }) + '<div class="wrap">';
+  const rinkOn = rinkVisible(TODAY), seg = calSeg();
+  let html = hero({ title: t('tabCal'), sub: t(rinkOn ? 'calSubRink' : 'calSub') }) + '<div class="wrap">';
+  if (rinkOn) html += `<div class="seg calseg" role="tablist" aria-label="${esc(t('tabCal'))}">${['bins', 'rink'].map(k => `<button class="${seg === k ? 'on' : ''}" role="tab" aria-selected="${seg === k}" data-a="calSeg" data-v="${k}">${t(k === 'bins' ? 'segBins' : 'segRink')}</button>`).join('')}</div>`;
+  if (seg === 'rink') {
+    html += '<div class="stack" style="margin-top:14px">' + rinkCard() + rinkInfo() + `</div><p class="foot">${t('rk_src')}</p></div>`;
+    $('#page-calendar').innerHTML = html;
+    return;
+  }
+  /* Fin des dates connues : message neutre pour les voisins ; le rappel de mise à jour seulement en mode admin (?admin) */
+  const left = LAST_DATE ? diffDays(TODAY, LAST_DATE) : -1;
+  if (S.admin && left < 0) html += `<div class="banner">📅 ${t('ended')}</div>`;
+  else if (S.admin && left <= 45) html += `<div class="banner">📅 ${t('endSoon', { n: left })}</div>`;
+  else if (left < 0) html += `<div class="banner" style="background:var(--info-bg);color:var(--info)">📅 ${t('calPending', { y: LAST_DATE ? +LAST_DATE.slice(0, 4) + 1 : N.getFullYear() })}</div>`;
   const nx = TYPE_ORDER.map(k => ({ k, d: nextOf(k, TODAY) })).filter(x => x.d).sort((a, b) => a.d < b.d ? -1 : 1);
-  html += sec(t('nextT')) + '<div class="next">' + nx.map(({ k, d }) => {
+  if (nx.length) html += sec(t('nextT')) + '<div class="next">' + nx.map(({ k, d }) => {
     const n = diffDays(TODAY, d);
     return `<button class="nx" data-a="jump" data-v="${d}"><div class="ic">${TYPES[k].icon}</div><b>${t('type_' + k)}</b><span>${cap(fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short' }))}</span>${chip(cdTxt(n), n <= 1 ? 'warn' : 'neutral')}</button>`;
   }).join('') + '</div>';
-  const left = LAST_DATE ? diffDays(TODAY, LAST_DATE) : -1;
-  if (left < 0) html += `<div class="banner">📅 ${t('ended')}</div>`;
-  else if (left <= 45) html += `<div class="banner">📅 ${t('endSoon', { n: left })}</div>`;
-  html += sec(t('agendaT'));
   const mon0 = addDays(TODAY, -dowOf(TODAY)); /* semaines du dimanche au samedi, comme le calendrier de NDIP */
-  let shown = 0;
+  let agenda = '';
   for (let w = 0; w < calWeeks; w++) {
     const mon = addDays(mon0, w * 7); let rows = '';
     for (let i = 0; i < 7; i++) {
@@ -1447,12 +1478,12 @@ function renderCalendar() {
         : `<span class="pill">${TYPES[k].icon} ${t('type_' + k)}${k === 'branches' ? ` <small>${t('branchesPillS')}</small>` : ''}</span>`).join('');
       rows += `<div class="aday${n === 0 ? ' is-today' : ''}" id="d-${d}"><div class="dt"><div class="w">${shortDay(d)}</div><div class="n num">${dateOf(d).getDate()}</div></div>
         <div>${n <= 1 ? `<div class="lbl">${n === 0 ? t('lblToday') : t('lblTomorrow')}</div>` : ''}<div class="pills">${pills}</div></div></div>`;
-      shown++;
     }
     if (!rows) continue;
     const label = w === 0 ? t('thisWeek') : w === 1 ? t('nextWeek') : t('weekOf', { d: dayMonth(mon) });
-    html += `<div class="wk"><h3>${label}</h3><div class="list">${rows}</div></div>`;
+    agenda += `<div class="wk"><h3>${label}</h3><div class="list">${rows}</div></div>`;
   }
+  if (agenda) html += sec(t('agendaT')) + agenda;
   const endShown = addDays(mon0, calWeeks * 7);
   if (LAST_DATE && endShown <= LAST_DATE) html += `<button class="btn block more" data-a="more" style="margin-top:14px">${t('more')}</button>`;
   html += '<div class="stack" style="margin-top:22px">';
@@ -1522,7 +1553,7 @@ function exchCard() {
   const winLine = REC.win === 'open' && REC.plan ? `<p class="winline">${t('winGood', { until: untilTxt(REC.plan) })}</p>`
     : REC.win === 'close' ? `<p class="winline warn"><b>${t('winCloseT')}.</b> ${closeReason(REC.plan)}</p>`
     : REC.win === 'offer' ? `<p class="winline">${t('winOfferShort', { until: untilTxt(REC.plan) })}</p>` : '';
-  return `<article class="card"><div class="dev-h"><div class="tile t-info">${I.exch}</div><div class="nm"><b>${t('exchT')}</b><span>${t('exchSub')}</span></div>${statusChip(st)}</div>
+  return `<article class="card" id="c-exch"><div class="dev-h"><div class="tile t-info">${I.exch}</div><div class="nm"><b>${t('exchT')}</b><span>${t('exchSub')}</span></div>${statusChip(st)}</div>
     ${seg}${winLine}${lcd(x)}<p class="legendline">${t('spdLegend')}</p><p class="why">${why}</p>${prev}
     <details class="acc inner" data-id="how-x"><summary>${t('how')}</summary><div class="acc-body"><ol class="steps">${steps.map(s => `<li>${s}</li>`).join('')}</ol><p class="tipline">${t('tip3s')}</p></div></details>
     <div class="dev-actions">${st === 'ok' ? '' : `<button class="btn pri" data-a="apply" data-dev="exchanger" data-v="${x.key}">${t('set')}</button>`}</div></article>`;
@@ -1540,13 +1571,13 @@ function humCard() {
       <details class="acc inner" data-id="how-hstop"><summary>${t('humStopHow')}</summary><div class="acc-body"><ol class="steps">${stopSteps.map(s => `<li>${s}</li>`).join('')}</ol></div></details>`;
     actions = (st === 'ok' ? '' : `<button class="btn pri" data-a="apply" data-dev="humidifier" data-v="${hm.key}">${t('set')}</button>`)
       + `<button class="btn" data-a="humOff">${t('humStopped')}</button><button class="btn" data-a="remind" data-v="humStop">${I.calPlus}${t('remind')}</button>`;
-    return `<article class="card"><div class="dev-h"><div class="tile t-info">${I.drop}</div><div class="nm"><b>${t('humT')}</b><span>${t('humSub')}</span></div>${statusChip(st)}</div>${body}<div class="dev-actions">${actions}</div></article>`;
+    return `<article class="card" id="c-hum"><div class="dev-h"><div class="tile t-info">${I.drop}</div><div class="nm"><b>${t('humT')}</b><span>${t('humSub')}</span></div>${statusChip(st)}</div>${body}<div class="dev-actions">${actions}</div></article>`;
   }
   body = `<div class="lcd big-only"><div class="note">${t('h_damperS')}</div><div class="rh"><span>${t('lcdRh')}</span><b style="font-size:26px">${t('h_off')}</b></div></div>
     <p class="why">${t('h_offD')}</p><p class="from">${t('h_nextStart', { d: dayMonth(nextOn('10-15', N)) })}</p>
     <details class="acc inner" data-id="how-hstart"><summary>${t('humStartHow')}</summary><div class="acc-body"><ol class="steps">${startSteps.map(s => `<li>${s}</li>`).join('')}</ol></div></details>`;
   actions = `<button class="btn pri" data-a="remind" data-v="humStart">${I.calPlus}${t('remind')}</button><button class="btn" data-a="humOn">${t('humAlready')}</button>`;
-  return `<article class="card"><div class="dev-h"><div class="tile t-neutral">${I.drop}</div><div class="nm"><b>${t('humT')}</b><span>${t('humSub')}</span></div>${chip(t('h_off'), 'neutral')}</div>${body}<div class="dev-actions">${actions}</div></article>`;
+  return `<article class="card" id="c-hum"><div class="dev-h"><div class="tile t-neutral">${I.drop}</div><div class="nm"><b>${t('humT')}</b><span>${t('humSub')}</span></div>${chip(t('h_off'), 'neutral')}</div>${body}<div class="dev-actions">${actions}</div></article>`;
 }
 function thermoCard() {
   return `<article class="card"><div class="dev-h"><div class="tile t-info">${I.thermo}</div><div class="nm"><b>${t('thermoT')}</b><span>${t('thermoSub')}</span></div></div>
@@ -1580,13 +1611,30 @@ function maintList() {
   }).join('');
   return `<div class="card" style="padding:0;overflow:hidden">${items}</div><button class="btn block" data-a="remindAll" style="margin-top:10px">${I.calPlus}${t('maintAll')}</button>`;
 }
+function seasonCard() {   /* tâches saisonnières de la maison (l'humidificateur a sa propre carte, les hottes dépendent de la neige) */
+  const md = mmdd(TODAY);
+  const items = TASKS.filter(k => !k.per && !k.how && inWindow(md, k.from, k.to)).map(task => {
+    const key = taskKey(task, N), doneOn = S.tasks[key];
+    if (!doneOn && !task.when(DER, N)) return '';
+    const ctl = doneOn
+      ? `<button class="btn ghost" data-a="unack" data-k="task:${esc(key)}" data-task="${esc(key)}">${t('undo')}</button>`
+      : `<button class="btn pri" data-a="task" data-id="${task.id}">${t('done')}</button>${task.rem ? `<button class="btn" data-a="remind" data-v="${task.rem}">${I.calPlus}${t('remind')}</button>` : ''}`;
+    return `<div class="mi"><div class="mi-h"><b>${task.icon} ${t('task_' + task.id + 'T')}</b>${doneOn ? chip(t('seasonDone', { d: dayMonth(doneOn) }), 'ok') : ''}</div>
+      <div class="sub">${t('task_' + task.id + 'D')}</div><div class="ctl">${ctl}</div></div>`;
+  }).join('');
+  return items ? `<div class="card" style="padding:0;overflow:hidden">${items}</div>` : '';
+}
 function renderClimate() {
   BADGE.climate = (applied('exchanger', REC.exchanger.key) === 'change' ? 1 : 0) + (REC.humidifier.on && applied('humidifier', REC.humidifier.key) === 'change' ? 1 : 0);
-  let html = hero({ title: t('tabClim'), sub: t('climSub'), night: DER.ok && DER.cur && !DER.cur.isDay }) + '<div class="wrap"><div class="stack" style="margin-top:6px">';
-  html += outdoorCard() + exchCard() + humCard() + thermoCard() + setupCard();
+  /* Maison : 1. quoi régler  2. tâches de saison  3. entretien  4. pourquoi aujourd'hui  5. pour aller plus loin */
+  let html = hero({ title: t('tabClim'), sub: t('climSub'), night: DER.ok && DER.cur && !DER.cur.isDay }) + '<div class="wrap">';
+  html += sec(t('secSettings')) + '<div class="stack">' + exchCard() + humCard() + thermoCard() + '</div>';
+  const season = seasonCard(); if (season) html += sec(t('secSeason')) + season;
+  html += sec(t('maintT')) + maintList();
+  html += sec(t('secWhyToday')) + outdoorCard();
+  html += sec(t('secMore')) + '<div class="stack">' + setupCard();
   html += `<details class="acc" data-id="why"><summary>🎓 ${t('whyT')}</summary><div class="acc-body">${tl('why').map(p => `<p>${p}</p>`).join('')}<p style="font-size:12.5px;color:var(--text-3)">${t('whySrc')}</p></div></details>`;
   html += `<details class="acc" data-id="ref"><summary>📋 ${t('refT')}</summary><div class="acc-body">${refTable()}</div></details></div>`;
-  html += sec(t('maintT')) + maintList();
   html += `<p class="foot">${t('wxCredit')}</p></div>`;
   $('#page-climate').innerHTML = html;
 }
@@ -1594,7 +1642,7 @@ function renderClimate() {
 /* ---------- Coque ---------- */
 const BADGE = { today: 0, climate: 0 };
 function renderTabbar() {
-  const tabs = [['today', I.today, t('tabToday')], ['calendar', I.cal, t('tabCal')], ['climate', I.clim, t('tabClim')]];
+  const tabs = [['today', I.today, t('tabToday')], ['calendar', I.cal, t('tabCal')], ['climate', I.home, t('tabClim')]];
   $('#tabbar').innerHTML = tabs.map(([id, icon, label]) => `<button class="tab${S.tab === id ? ' on' : ''}" data-a="tab" data-v="${id}" aria-current="${S.tab === id ? 'page' : 'false'}">${icon}<span>${label}</span>${BADGE[id] ? `<span class="badge">${BADGE[id]}</span>` : ''}</button>`).join('');
 }
 const OPEN = new Set();
@@ -1725,7 +1773,14 @@ function openNotifSheet(onlyIfOpen) {
   $('#sheetBody').innerHTML = `<div data-notif><h2 id="sheetTitle">${t('notifT')}</h2>${body}</div>`;
   showSheet();
 }
-function tabFromHash() { const h = (location.hash || '').slice(1); return ['today', 'calendar', 'climate'].includes(h) ? h : null; }
+function tabFromHash() {   /* liens à partager dans le groupe : #patinoire, #calendrier, #maison */
+  const h = decodeURIComponent((location.hash || '').slice(1)).toLowerCase();
+  if (['patinoire', 'rink'].includes(h)) { S.calSeg = 'rink'; return 'calendar'; }
+  if (['calendrier', 'collectes'].includes(h)) { S.calSeg = 'bins'; return 'calendar'; }
+  if (['maison', 'home', 'climat'].includes(h)) return 'climate';
+  if (['aujourdhui', 'aujourd’hui'].includes(h)) return 'today';
+  return ['today', 'calendar', 'climate'].includes(h) ? h : null;
+}
 
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-a]'); if (!el) return;
@@ -1757,8 +1812,15 @@ document.addEventListener('click', e => {
   else if (a === 'pushTest') testPush();
   else if (a === 'pref') { const P = pushPrefs(); P[el.dataset.v] = !P[el.dataset.v]; S.push = Object.assign({ on: false }, S.push, { prefs: P }); persist(); openNotifSheet(); }
   else if (a === 'more') { calWeeks += 6; renderCalendar(); document.querySelectorAll('#page-calendar details[data-id]').forEach(d => { if (OPEN.has(d.dataset.id)) d.open = true; }); watchTitle(); }
-  else if (a === 'jump') { const d = el.dataset.v; if (S.tab !== 'calendar') go('calendar'); const need = diffDays(TODAY, d); if (need > calWeeks * 7 - 7) { calWeeks = Math.ceil(need / 7) + 2; renderCalendar(); } jumpTo('d-' + d); }
+  else if (a === 'jump') { const d = el.dataset.v; if (calSeg() !== 'bins') { S.calSeg = 'bins'; persist(); renderCalendar(); } if (S.tab !== 'calendar') go('calendar'); const need = diffDays(TODAY, d); if (need > calWeeks * 7 - 7) { calWeeks = Math.ceil(need / 7) + 2; renderCalendar(); } jumpTo('d-' + d); }
   else if (a === 'refresh') refresh(true);
+  else if (a === 'calSeg') {
+    S.calSeg = el.dataset.v; persist(); renderCalendar();
+    document.querySelectorAll('#page-calendar details[data-id]').forEach(d => { if (OPEN.has(d.dataset.id)) d.open = true; });
+    if (S.tab !== 'calendar') { go('calendar'); window.scrollTo(0, 0); } else watchTitle();
+  }
+  else if (a === 'moreTodo') { TODO_ALL = true; renderToday(); }
+  else if (a === 'seeHum') { go('climate'); requestAnimationFrame(() => { const c = document.getElementById('c-hum'); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); }
   else if (a === 'rkDay') { RK.off = +el.dataset.v; RK.sel = null; renderRink(); }
   else if (a === 'rkFilt') { RK.flt = el.dataset.v || null; RK.sel = null; renderRink(); }
   else if (a === 'rkSel') { const i = +el.dataset.v; RK.sel = RK.sel === i ? null : i; renderRink(); }
@@ -1785,11 +1847,14 @@ async function refresh(force) {
 })();
 
 const hashTab = tabFromHash();
-if (hashTab) { S.tab = hashTab; try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* rien */ } }
+const qs = new URLSearchParams(location.search);
+if (qs.has('admin')) { S.admin = qs.get('admin') !== '0'; qs.delete('admin'); }   /* ?admin pour voir les rappels d'entretien, ?admin=0 pour les cacher */
+if (hashTab) S.tab = hashTab;
+if (hashTab || location.search !== (qs.toString() ? '?' + qs : '')) { persist(); try { history.replaceState(null, '', location.pathname + (qs.toString() ? '?' + qs : '')); } catch (e) { /* rien */ } }
 renderAll();
 refresh(false);
 pushHealth();
-window.addEventListener('hashchange', () => { const h = tabFromHash(); if (h) go(h); });
+window.addEventListener('hashchange', () => { const h = tabFromHash(); if (h) { renderCalendar(); go(h); } });
 if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { const tb = e.data && e.data.tab; if (['today', 'calendar', 'climate'].includes(tb)) go(tb); });
 let lastMin = -1;
 setInterval(() => {
