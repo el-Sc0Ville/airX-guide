@@ -2,7 +2,7 @@
    Réseau d'abord (les mises à jour GitHub apparaissent tout de suite), cache en secours hors ligne,
    et affichage des notifications envoyées par le Worker Cloudflare.
    Changez CACHE si vous voulez forcer un nettoyage complet. */
-const CACHE = 'mcnabb-v3';
+const CACHE = 'mcnabb-v4';
 const ASSETS = ['./', './index.html', './schedule.js', './manifest.webmanifest', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png', './icons/favicon-32.png'];
 
 self.addEventListener('install', e => {

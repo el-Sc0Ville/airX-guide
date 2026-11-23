@@ -10,7 +10,7 @@
 <meta name="application-name" content="McNabb">
 <meta name="theme-color" content="#0F4863">
 <meta name="format-detection" content="telephone=no">
-<meta name="description" content="Collectes, arrosage et climat intérieur de la maison, à Notre-Dame-de-l’Île-Perrot.">
+<meta name="description" content="Collectes, arrosage, patinoire et climat intérieur de la maison, à Notre-Dame-de-l’Île-Perrot.">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -39,6 +39,7 @@
   --wave-grass:#A8D48D; --wave-line:#C2BEB7;
   --lcd-bg:linear-gradient(180deg,#DCE7D8,#C6D5C1); --lcd-fg:#16261A; --lcd-bezel:#E3E8EC;
   --step-bg:#E3F1F8; --step-fg:#166486;
+  --rk-p:#4C9FD6; --rk-h:#7B6CD9; --rk-f:#4E9F3D; --rk-r:#D2649A; --rk-m:#DE9327; --rk-g:#C9D4DC; --rk-off:#EAEFF3;
 }
 @media (prefers-color-scheme:dark){
   :root{
@@ -55,6 +56,7 @@
     --wave-grass:#4F7E47; --wave-line:#6E7B80;
     --lcd-bg:linear-gradient(180deg,#1B2B23,#13201A); --lcd-fg:#A9E8BC; --lcd-bezel:#1B2B37;
     --step-bg:rgba(116,181,222,.16); --step-fg:#9BCBEA;
+    --rk-p:#74B5DE; --rk-h:#A194EC; --rk-f:#7CC35E; --rk-r:#E896BC; --rk-m:#F2A541; --rk-g:#2A3944; --rk-off:#0B1822;
   }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -280,6 +282,48 @@ table.ref+p{margin-top:10px}
 .mi .other{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:var(--text-3);font-weight:600}
 .mi .other input{flex:0 1 auto;height:32px;font-size:13.5px}
 
+/* patinoire */
+.rk-head{display:flex;align-items:center;gap:12px}
+.rk-pic{width:54px;height:32px;flex:0 0 auto;color:var(--rk-c,var(--neutral));transition:color .2s}
+.rk-pic .ice{fill:currentColor;fill-opacity:.18;stroke:currentColor;stroke-width:1.6}
+.rk-pic .ln{fill:none;stroke:currentColor;stroke-width:1.1}
+.rk-tt{min-width:0}
+.rk-tt span{display:block;font-size:12.5px;color:var(--text-3);font-weight:650}
+.rk-tt b{display:block;font-size:20px;font-weight:760;letter-spacing:-.01em;line-height:1.22}
+.rk-sub{font-size:14px;color:var(--text-2);margin-top:6px;line-height:1.4}
+.rk-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.rk-tags:empty{display:none}
+.rk-strip{position:relative;height:28px;border-radius:9px;overflow:hidden;background:var(--rk-off);margin-top:14px}
+.rk-seg{position:absolute;top:0;bottom:0;background:var(--c);border-right:1.5px solid var(--card);transition:opacity .15s}
+.rk-seg.dim{opacity:.25}
+.rk-seg.sel{box-shadow:inset 0 0 0 2.5px var(--text)}
+.rk-nowl{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--text);pointer-events:none}
+.rk-ticks{position:relative;height:16px;margin-top:4px;font-size:11px;color:var(--text-3);font-weight:650}
+.rk-ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+.rk-ticks span:first-child{transform:none}
+.rk-ticks span:last-child{transform:translateX(-100%)}
+.rk-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:12px}
+.rk-day{border-radius:11px;padding:6px 0 7px;background:var(--neutral-bg);font-size:11px;font-weight:720;color:var(--text-3);text-transform:uppercase;letter-spacing:.03em;line-height:1.25}
+.rk-day b{display:block;font-size:16px;color:var(--text);letter-spacing:0}
+.rk-day.on{background:var(--sky-600);color:rgba(255,255,255,.85)}
+.rk-day.on b{color:#fff}
+.rk-filt{display:flex;gap:6px;margin:10px -14px 0;padding:0 14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.rk-filt::-webkit-scrollbar{display:none}
+.rk-f{flex:0 0 auto;height:30px;padding:0 12px;border-radius:15px;background:var(--neutral-bg);font-size:13px;font-weight:650;color:var(--text-2);display:inline-flex;align-items:center;gap:6px}
+.rk-f i{width:9px;height:9px;border-radius:3px;background:var(--c)}
+.rk-f.on{background:var(--text);color:var(--card)}
+.rk-list{margin-top:8px}
+.rk-row{position:relative;display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;padding:9px 8px;border-radius:12px}
+.rk-row+.rk-row::before{content:"";position:absolute;left:30px;right:8px;top:0;height:.5px;background:var(--sep)}
+.rk-row.sel::before,.rk-row.sel+.rk-row::before{display:none}
+.rk-row>i{width:10px;height:10px;border-radius:3px;background:var(--c)}
+.rk-row b{display:block;font-size:15px;font-weight:650}
+.rk-row .rk-tx span{display:block;font-size:13px;color:var(--text-2);margin-top:1px}
+.rk-row .rk-w{font-size:13.5px;color:var(--text-2);white-space:nowrap}
+.rk-row.past{opacity:.45}
+.rk-row.sel{background:var(--neutral-bg)}
+.rk-empty{font-size:14px;color:var(--text-2);padding:10px 8px}
+
 /* bottom sheet */
 .sheet-wrap{position:fixed;inset:0;z-index:80}
 .sheet-wrap[hidden]{display:none}
@@ -354,7 +398,7 @@ const WATER_SEASON = ['04-15', '10-31'];
 /* Météo : Open-Meteo, Notre-Dame-de-l'Île-Perrot */
 const WX_URL = 'https://api.open-meteo.com/v1/forecast?latitude=45.3668&longitude=-73.9325'
   + '&current=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation,weather_code,is_day,wind_speed_10m'
-  + '&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,precipitation,precipitation_probability,weather_code,wind_speed_10m'
+  + '&hourly=temperature_2m,relative_humidity_2m,dew_point_2m,apparent_temperature,precipitation,precipitation_probability,weather_code,wind_speed_10m'
   + '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,et0_fao_evapotranspiration'
   + '&past_days=7&forecast_days=3&timezone=America%2FToronto';
 /* Qualité de l'air (CAMS via Open-Meteo) : sert à ne jamais suggérer d'ouvrir les fenêtres dans la fumée */
@@ -386,6 +430,24 @@ const MAINT = [
   { id: 'hrvCore',       days: 365, icon: '🔲' },
   { id: 'hrvDrain',      days: 365, icon: '🚿' }
 ];
+
+/* Patinoire réfrigérée du parc des Éperviers, horaire de l'hiver 2026-2027 (affiche de NDIP).
+   Chaque bloc : [début, fin, activité], en heures (11.5 = 11 h 30).
+   p = patin libre, h = hockey libre, f = hockey famille, r = ringuette libre, m = HMIP (glace réservée), g = entretien de la glace.
+   season : ouverture et fermeture (MM-JJ). Ajustez quand NDIP annonce les vraies dates.
+   La carte apparaît « preview » jours avant l'ouverture. Affluence (preuve de résidence) : en semaine dès peakFrom, toute la fin de semaine. */
+const RINK = {
+  season: ['12-01', '03-15'], preview: 14, peakFrom: 17, start: 8, end: 23,
+  week: [
+    /* dimanche */ [[8, 11.5, 'f'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 16.5, 'p'], [16.5, 17, 'g'], [17, 19.5, 'p'], [19.5, 20, 'g'], [20, 23, 'h']],
+    /* lundi    */ [[8, 11.5, 'p'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 15.5, 'h'], [15.5, 16.5, 'p'], [16.5, 17, 'g'], [17, 19.5, 'h'], [19.5, 20, 'g'], [20, 22, 'h']],
+    /* mardi    */ [[8, 11.5, 'p'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 15.5, 'h'], [15.5, 16.5, 'f'], [16.5, 17, 'g'], [17, 18, 'p'], [18, 22, 'm']],
+    /* mercredi */ [[8, 11.5, 'p'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 15.5, 'h'], [15.5, 16.5, 'p'], [16.5, 17, 'g'], [17, 19.5, 'h'], [19.5, 20, 'g'], [20, 22, 'h']],
+    /* jeudi    */ [[8, 11.5, 'p'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 15.5, 'h'], [15.5, 16.5, 'f'], [16.5, 17, 'g'], [17, 19.5, 'p'], [19.5, 20, 'g'], [20, 22, 'h']],
+    /* vendredi */ [[8, 11.5, 'p'], [11.5, 12.5, 'h'], [12.5, 13, 'g'], [13, 15.5, 'h'], [15.5, 16.5, 'p'], [16.5, 17, 'g'], [17, 22, 'h']],
+    /* samedi   */ [[8, 10, 'r'], [10, 12.5, 'p'], [12.5, 13, 'g'], [13, 16.5, 'h'], [16.5, 17, 'g'], [17, 19.5, 'h'], [19.5, 20, 'g'], [20, 23, 'h']]
+  ]
+};
 
 /* Réglages d'hiver selon la nuit la plus froide des 24 prochaines heures.
    Humidificateur : tableau anti-condensation (Aprilaire / GeneralAire) avec 30 % comme plancher pour le bois.
@@ -562,7 +624,24 @@ fr: {
   cat_garden: 'Jardin et arrosage', cat_gardenD: 'Soirs d’arrosage, gel, préparation de l’hiver.',
   cat_windows: 'Fenêtres', cat_windowsD: 'Beaux jours pour aérer, quand fermer, fumée.',
   cat_home: 'Maison', cat_homeD: 'Humidificateur et entretien des filtres.',
-  pushAskT: 'Recevoir les rappels sur ce téléphone', pushAskD: 'Bacs à sortir, soirs d’arrosage, quand fermer les fenêtres : même quand l’app est fermée.', pushAskB: 'Activer'
+  pushAskT: 'Recevoir les rappels sur ce téléphone', pushAskD: 'Bacs à sortir, soirs d’arrosage, quand fermer les fenêtres : même quand l’app est fermée.', pushAskB: 'Activer',
+  rk_secT: 'Patinoire', rk_place: 'Parc des Éperviers · patinoire réfrigérée',
+  rk_p: 'Patin libre', rk_h: 'Hockey libre', rk_f: 'Hockey famille', rk_r: 'Ringuette libre', rk_m: 'HMIP · glace réservée', rk_g: 'Entretien de la glace',
+  rk_all: 'Tout', rk_fp: 'Patin', rk_fh: 'Hockey', rk_ff: 'Famille', rk_fr: 'Ringuette', rk_today: 'Auj.',
+  rk_until: 'Jusqu’à {t}', rk_thenNow: 'puis {a}', rk_then: 'puis {a} à {t}', rk_range: '{a} à {b}',
+  rk_closed: 'Fermée pour l’entretien', rk_opensAt: 'Ouvre à {t} avec {a}.', rk_night: 'Fermée pour la nuit', rk_tomorrow: 'Demain à {t} : {a}.', rk_ended: 'C’était la dernière soirée de la saison.',
+  rk_hours: 'Ouvert de {a} à {b}', rk_skateAt: 'patin libre à {list}',
+  rk_next: 'Prochaine fois : {when} à {t}', rk_nowOn: 'En cours, jusqu’à {t}', rk_none: 'Rien d’ici une semaine.', rk_noneDay: 'Pas de {a} ce jour-là.',
+  rk_opens: 'Ouverture prévue le {d}', rk_opensSub: 'Selon la météo. Touchez un jour pour voir l’horaire.',
+  rk_peak: 'Affluence · carte Accès NDIP', rk_free: 'Accès libre, sans surveillance', rk_kids: '12 ans et moins, avec un adulte', rk_gear: 'Casque et gants',
+  rk_peakS: 'affluence', rk_nowS: 'Maintenant', rk_infoT: 'Bon à savoir',
+  rk_info: ['Affluence (lundi au vendredi dès 17 h, fins de semaine toute la journée) : preuve de résidence exigée. Montrez la carte Accès NDIP, physique ou dans l’app Espace citoyen NDIP.',
+    'En affluence : gratuit pour les résidents de NDIP, Pincourt, Terrasse-Vaudreuil, L’Île-Perrot et Vaudreuil-Dorion. Pour les autres : 10 $ par personne (taxes incluses), crédit ou débit seulement.',
+    'Hors affluence, la patinoire est sans surveillance.',
+    'Casque et gants obligatoires pour le hockey et la ringuette, recommandés pour le patin libre.',
+    'Hockey famille : jeunes de 12 ans et moins, adulte accompagnateur obligatoire. Hockey amical, aucun lancer frappé.',
+    'Les heures d’entretien de la glace peuvent varier selon la météo.'],
+  rk_call: 'Services communautaires : 514 453-4128, poste 0', rk_src: 'Source : horaire de la patinoire, hiver 2026-2027 (NDIP).'
 },
 en: {
   tabToday: 'Today', tabCal: 'Calendar', tabClim: 'Climate',
@@ -723,7 +802,24 @@ en: {
   cat_garden: 'Garden and watering', cat_gardenD: 'Watering nights, frost, winter prep.',
   cat_windows: 'Windows', cat_windowsD: 'Nice days to air out, when to close, smoke.',
   cat_home: 'Home', cat_homeD: 'Humidifier and filter reminders.',
-  pushAskT: 'Get reminders on this phone', pushAskD: 'Bins to put out, watering nights, when to close the windows: even when the app is closed.', pushAskB: 'Turn on'
+  pushAskT: 'Get reminders on this phone', pushAskD: 'Bins to put out, watering nights, when to close the windows: even when the app is closed.', pushAskB: 'Turn on',
+  rk_secT: 'Ice rink', rk_place: 'Parc des Éperviers · refrigerated rink',
+  rk_p: 'Free skate', rk_h: 'Open hockey', rk_f: 'Family hockey', rk_r: 'Open ringette', rk_m: 'HMIP · reserved ice', rk_g: 'Ice maintenance',
+  rk_all: 'All', rk_fp: 'Skate', rk_fh: 'Hockey', rk_ff: 'Family', rk_fr: 'Ringette', rk_today: 'Today',
+  rk_until: 'Until {t}', rk_thenNow: 'then {a}', rk_then: 'then {a} at {t}', rk_range: '{a} to {b}',
+  rk_closed: 'Closed for maintenance', rk_opensAt: 'Opens at {t} with {a}.', rk_night: 'Closed for the night', rk_tomorrow: 'Tomorrow at {t}: {a}.', rk_ended: 'That was the last night of the season.',
+  rk_hours: 'Open {a} to {b}', rk_skateAt: 'free skate at {list}',
+  rk_next: 'Next: {when} at {t}', rk_nowOn: 'On now, until {t}', rk_none: 'Nothing in the next week.', rk_noneDay: 'No {a} that day.',
+  rk_opens: 'Planned opening: {d}', rk_opensSub: 'Weather permitting. Tap a day to see the schedule.',
+  rk_peak: 'Peak · NDIP Accès card', rk_free: 'Open access, unsupervised', rk_kids: '12 and under, with an adult', rk_gear: 'Helmet and gloves',
+  rk_peakS: 'peak', rk_nowS: 'Now', rk_infoT: 'Good to know',
+  rk_info: ['Peak hours (weekdays from 5 pm, all day on weekends): proof of residence required. Show your NDIP Accès card, physical or in the Espace citoyen NDIP app.',
+    'During peak hours: free for residents of NDIP, Pincourt, Terrasse-Vaudreuil, L’Île-Perrot and Vaudreuil-Dorion. Others: $10 per person (taxes included), credit or debit only.',
+    'Outside peak hours, the rink is unsupervised.',
+    'Helmet and gloves required for hockey and ringette, recommended for free skate.',
+    'Family hockey: kids 12 and under, an adult must come along. Friendly hockey, no slapshots.',
+    'Ice maintenance times can shift with the weather.'],
+  rk_call: 'Community services: 514-453-4128, ext. 0', rk_src: 'Source: rink schedule, winter 2026-2027 (NDIP).'
 }
 };
 
@@ -772,8 +868,9 @@ function seasonYear(N) { return N.getMonth() >= 7 ? N.getFullYear() : N.getFullY
 function stripTags(s) { return s.replace(/<[^>]+>/g, ''); }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function shortDay(s) { return fmtDate(s, { weekday: 'short' }).replace('.', ''); }
-function longDate(s) { return fmtDate(s, { weekday: 'long', day: 'numeric', month: 'long' }); }
-function dayMonth(s) { return fmtDate(s, { day: 'numeric', month: 'long' }); }
+function first(s) { return S.lang === 'fr' ? s.replace(/(^|\s)1(\s)/, '$11er$2') : s; }   /* « 1er décembre » en français */
+function longDate(s) { return first(fmtDate(s, { weekday: 'long', day: 'numeric', month: 'long' })); }
+function dayMonth(s) { return first(fmtDate(s, { day: 'numeric', month: 'long' })); }
 
 for (const k in SCHEDULE) SCHEDULE[k].sort();
 const SET = {}; for (const k in SCHEDULE) SET[k] = new Set(SCHEDULE[k]);
@@ -796,7 +893,7 @@ function normalize(j, aq) {
   return {
     fetchedAt: now().getTime(), aq: aq || null,
     current: { time: c.time, t: c.temperature_2m, rh: c.relative_humidity_2m, td: c.dew_point_2m, feels: c.apparent_temperature, p: c.precipitation, code: c.weather_code, isDay: c.is_day, w: c.wind_speed_10m },
-    hourly: h.time.map((tm, i) => ({ time: tm, t: h.temperature_2m[i], rh: h.relative_humidity_2m[i], td: h.dew_point_2m[i], p: h.precipitation[i] || 0, pp: h.precipitation_probability ? h.precipitation_probability[i] : null, code: h.weather_code[i], w: h.wind_speed_10m ? h.wind_speed_10m[i] : null })),
+    hourly: h.time.map((tm, i) => ({ time: tm, t: h.temperature_2m[i], f: h.apparent_temperature ? h.apparent_temperature[i] : null, rh: h.relative_humidity_2m[i], td: h.dew_point_2m[i], p: h.precipitation[i] || 0, pp: h.precipitation_probability ? h.precipitation_probability[i] : null, code: h.weather_code[i], w: h.wind_speed_10m ? h.wind_speed_10m[i] : null })),
     daily: d.time.map((tm, i) => ({ date: tm, tmax: d.temperature_2m_max[i], tmin: d.temperature_2m_min[i], p: d.precipitation_sum[i] || 0, pp: d.precipitation_probability_max ? d.precipitation_probability_max[i] : null, et0: d.et0_fao_evapotranspiration[i] || 0, code: d.weather_code[i] }))
   };
 }
@@ -805,7 +902,8 @@ function getJSON(url) {
   const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
   const timer = ctl ? setTimeout(() => ctl.abort(), 12000) : null;
   return fetch(url, ctl ? { signal: ctl.signal, cache: 'no-store' } : { cache: 'no-store' })
-    .then(r => { if (timer) clearTimeout(timer); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .finally(() => { if (timer) clearTimeout(timer); });
 }
 async function fetchWeather(force) {
   if (window.__MCNABB_WX) { WX = normalize(window.__MCNABB_WX, normAQ(window.__MCNABB_AQ)); wxState = 'live'; return true; }
@@ -940,7 +1038,6 @@ function closeReason(plan) {
 }
 function applied(dev, key) { const a = S.applied[dev]; return !a ? 'new' : a === key ? 'ok' : 'change'; }
 function exchSummary(x) { if (!x) return ''; return (x.mode === 'int' ? '⏲' + NB + t('m_int') : x.speed === 0 ? '⇄' + NB + t('spd0') : '⇄' + NB + t('spd', { n: x.speed })) + ' · ' + pct(x.rh); }
-function humSummary(h) { return h.on ? pct(h.rh) : t('h_off'); }
 
 /* Arrosage */
 function wateringCard(N, der) {
@@ -983,6 +1080,28 @@ function maintStatus(m, N) {
   if (!last) return { state: 'never', left: null, due: null, last: null };
   const due = addDays(last, m.days), left = diffDays(today, due);
   return { state: left < 0 ? 'over' : left === 0 ? 'today' : left <= 14 ? 'soon' : 'ok', left, due, last };
+}
+
+/* Patinoire */
+function rinkSeason(today) {
+  const [o, c] = RINK.season, y = +today.slice(0, 4), wrap = o > c;
+  const oy = wrap ? (mmdd(today) <= c ? y - 1 : y) : y;
+  return { open: oy + '-' + o, close: (wrap ? oy + 1 : oy) + '-' + c };
+}
+function rinkVisible(today) { const s = rinkSeason(today); return today >= addDays(s.open, -RINK.preview) && today <= s.close; }
+function rkBlocks(d) { const s = rinkSeason(TODAY); return d >= s.open && d <= s.close ? RINK.week[dowOf(d)] : null; }
+function rkPeak(d, b) { const w = dowOf(d); return w === 0 || w === 6 || b[0] >= RINK.peakFrom; }
+function rkNext(type, from, fromH) {
+  for (let i = 0; i < 8; i++) {
+    const d = addDays(from, i), bl = rkBlocks(d); if (!bl) continue;
+    for (const b of bl) { if (b[2] !== type || (i === 0 && b[1] <= fromH)) continue; return { d, b, cur: i === 0 && b[0] <= fromH }; }
+  }
+  return null;
+}
+function rkWx(d, b) {
+  if (!WX || !WX.hourly) return null;
+  const hr = Math.floor(b[0]), h = WX.hourly.find(x => x.time === d + 'T' + pad(hr) + ':00');
+  return h && h.t != null ? { e: wmo(h.code, hr >= 7 && hr < 17).e, t: h.t, f: h.f } : null;
 }
 
 /* ================================================================
@@ -1101,6 +1220,78 @@ function context() {
   REC = recommend(DER, N);
 }
 
+/* ---------- Patinoire (carte de l'onglet Aujourd'hui) ---------- */
+const RK = { off: 0, flt: null, sel: null };   /* jour affiché, activité filtrée, bloc touché : en mémoire seulement */
+function rkT(h) { return fmtTime(Math.floor(h), Math.round((h % 1) * 60)); }
+function rkName(k) { return t('rk_' + k); }
+function rkLow(k) { return k === 'm' ? rkName(k) : rkName(k).toLowerCase(); }
+function rkRange(b) { return t('rk_range', { a: rkT(b[0]), b: rkT(b[1]) }); }
+function rkWhen(d) { const n = diffDays(TODAY, d); return n === 0 ? t('cdToday') : n === 1 ? t('cdTomorrow') : longDate(d); }
+function rinkCard() {
+  const s = rinkSeason(TODAY), base = TODAY < s.open ? s.open : TODAY;
+  const days = []; for (let i = 0; i < 7; i++) { const d = addDays(base, i); if (d > s.close) break; days.push(d); }
+  if (RK.off >= days.length) RK.off = 0;
+  const d = days[RK.off], bl = rkBlocks(d) || [], isT = d === TODAY;
+  if (RK.sel != null && !bl[RK.sel]) RK.sel = null;
+  const nh = N.getHours() + N.getMinutes() / 60;
+  let head, sub, sb = null, sbDay = d;
+  if (RK.sel != null) {
+    sb = bl[RK.sel]; head = rkName(sb[2]); sub = cap(rkWhen(d)) + ', ' + rkRange(sb);
+    const w = d >= TODAY && !(isT && sb[1] <= nh) ? rkWx(d, sb) : null;
+    if (w) sub += ' · ' + w.e + NB + deg(w.t) + (w.f != null && Math.round(w.f) < Math.round(w.t) ? ', ' + t('feels').toLowerCase() + ' ' + deg(w.f) : '');
+  } else if (RK.flt) {
+    const r = rkNext(RK.flt, d, isT ? nh : 0);
+    head = rkName(RK.flt);
+    if (r) { sb = r.b; sbDay = r.d; sub = r.cur ? t('rk_nowOn', { t: rkT(r.b[1]) }) : t('rk_next', { when: rkWhen(r.d), t: rkT(r.b[0]) }); }
+    else sub = t('rk_none');
+  } else if (isT) {
+    const c = bl.find(b => nh >= b[0] && nh < b[1]);
+    if (c) {
+      sb = c; head = rkName(c[2]);
+      const nx = bl.slice(bl.indexOf(c) + 1).find(b => b[2] !== 'g');
+      sub = t('rk_until', { t: rkT(c[1]) }) + (!nx ? '' : nx[0] === c[1] ? ', ' + t('rk_thenNow', { a: rkLow(nx[2]) }) : ' · ' + t('rk_then', { a: rkLow(nx[2]), t: rkT(nx[0]) }));
+    } else if (nh < bl[0][0]) { head = t('rk_closed'); sub = t('rk_opensAt', { t: rkT(bl[0][0]), a: rkLow(bl[0][2]) }); }
+    else { const tb = rkBlocks(addDays(d, 1)); head = t('rk_night'); sub = tb ? t('rk_tomorrow', { t: rkT(tb[0][0]), a: rkLow(tb[0][2]) }) : t('rk_ended'); }
+  } else if (RK.off === 0 && TODAY < s.open) { head = t('rk_opens', { d: longDate(s.open) }); sub = t('rk_opensSub'); }
+  else {
+    const pl = bl.filter(b => b[2] === 'p');
+    head = cap(longDate(d));
+    sub = t('rk_hours', { a: rkT(bl[0][0]), b: rkT(bl[bl.length - 1][1]) }) + (pl.length ? ' · ' + t('rk_skateAt', { list: pl.map(b => rkT(b[0])).join(', ') }) : '');
+  }
+  const tags = [];
+  if (sb && sb[2] !== 'g' && sb[2] !== 'm') {
+    tags.push(rkPeak(sbDay, sb) ? chip(t('rk_peak'), 'info') : chip(t('rk_free'), 'neutral'));
+    if (sb[2] === 'f') tags.push(chip(t('rk_kids'), 'ok'));
+    if ('hfr'.includes(sb[2])) tags.push(chip(t('rk_gear'), 'neutral'));
+  }
+  const span = RINK.end - RINK.start, x = h => ((h - RINK.start) / span * 100).toFixed(2) + '%';
+  const strip = bl.map((b, i) => {
+    const dim = (RK.flt && b[2] !== RK.flt && b[2] !== 'g') || (isT && b[1] <= nh);
+    return `<button class="rk-seg${dim ? ' dim' : ''}${RK.sel === i ? ' sel' : ''}" style="left:${x(b[0])};width:${x(RINK.start + b[1] - b[0])};--c:var(--rk-${b[2]})" data-a="rkSel" data-v="${i}" aria-label="${esc(rkName(b[2]) + ', ' + rkRange(b))}"></button>`;
+  }).join('') + (isT && nh >= RINK.start && nh <= RINK.end ? `<span class="rk-nowl" style="left:${x(nh)}"></span>` : '');
+  const ticks = [8, 12, 16, 20, 23].map(h => `<span style="left:${x(h)}">${rkT(h)}</span>`).join('');
+  const dayBtns = days.map((dd, i) => `<button class="rk-day${i === RK.off ? ' on' : ''}" data-a="rkDay" data-v="${i}" aria-pressed="${i === RK.off}" aria-label="${esc(longDate(dd))}">${dd === TODAY ? t('rk_today') : shortDay(dd)}<b class="num">${dateOf(dd).getDate()}</b></button>`).join('');
+  const filt = [['', 'all'], ['p', 'fp'], ['h', 'fh'], ['f', 'ff'], ['r', 'fr']].map(([k, l]) => `<button class="rk-f${(RK.flt || '') === k ? ' on' : ''}" data-a="rkFilt" data-v="${k}" aria-pressed="${(RK.flt || '') === k}">${k ? `<i style="--c:var(--rk-${k})"></i>` : ''}${t('rk_' + l)}</button>`).join('');
+  const rows = bl.map((b, i) => {
+    if (b[2] === 'g' || (RK.flt && b[2] !== RK.flt)) return '';
+    const past = isT && b[1] <= nh, cur = isT && nh >= b[0] && nh < b[1];
+    const w = !past && !cur && d >= TODAY ? rkWx(d, b) : null;
+    const meta = cur ? chip(t('rk_nowS'), 'info') : w ? `<span class="rk-w num">${w.e} ${deg(w.t)}</span>` : '<span></span>';
+    return `<button class="rk-row${past ? ' past' : ''}${RK.sel === i ? ' sel' : ''}" data-a="rkSel" data-v="${i}"><i style="--c:var(--rk-${b[2]})"></i>
+      <span class="rk-tx"><b>${rkName(b[2])}</b><span>${rkRange(b)}${rkPeak(d, b) && b[2] !== 'm' ? ' · ' + t('rk_peakS') : ''}</span></span>${meta}</button>`;
+  }).join('');
+  const pic = `<svg class="rk-pic" viewBox="0 0 54 32" aria-hidden="true"><rect class="ice" x="1" y="1" width="52" height="30" rx="14"/><path class="ln" d="M27 2v28M12 2v28M42 2v28"/><circle class="ln" cx="27" cy="16" r="5"/></svg>`;
+  return `<article class="card rink" id="rink" style="--rk-c:var(--rk-${sb ? sb[2] : 'g'})">
+    <div class="rk-head">${pic}<div class="rk-tt"><span>${t('rk_place')}</span><b>${head}</b></div></div>
+    <p class="rk-sub">${sub}</p><div class="rk-tags">${tags.join('')}</div>
+    <div class="rk-strip">${strip}</div><div class="rk-ticks num" aria-hidden="true">${ticks}</div>
+    <div class="rk-days">${dayBtns}</div><div class="rk-filt" role="group" aria-label="${esc(t('rk_secT'))}">${filt}</div>
+    <div class="rk-list">${rows || `<p class="rk-empty">${t('rk_noneDay', { a: rkLow(RK.flt) })}</p>`}</div>
+    <details class="acc inner" data-id="rink-info"${OPEN.has('rink-info') ? ' open' : ''}><summary>${t('rk_infoT')}</summary><div class="acc-body"><ul>${tl('rk_info').map(s => `<li>${s}</li>`).join('')}</ul>
+      <p class="tipline"><a href="tel:+15144534128,0">${t('rk_call')}</a></p><p class="tipline" style="font-size:12.5px;color:var(--text-3)">${t('rk_src')}</p></div></details></article>`;
+}
+function renderRink() { const el = $('#rink'); if (el) el.outerHTML = rinkCard(); }
+
 /* ---------- Aujourd'hui ---------- */
 function buildActions() {
   const today = TODAY, tom = addDays(today, 1), h = N.getHours(), md = mmdd(today);
@@ -1172,8 +1363,7 @@ function buildActions() {
     }
   }
   if (!S.maint.furnaceFilter) A.push({ key: 'filterAsk', pri: 60, tone: 'neutral', icon: '🌬️', title: t('filterAskT'), detail: t('filterAskD'), buttons: [{ label: t('filterAskB'), a: 'gomaint', data: { v: 'furnaceFilter' }, primary: true }], dismiss: true });
-  const standalone = window.navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
-  if (!standalone && /iPhone|iPad|iPod/.test(navigator.userAgent)) A.push({ key: 'install', pri: 70, tone: 'info', icon: '📱', title: t('installT'), detail: t('installD'), ack: t('ok'), persistAck: true });
+  if (IOS && !isStandalone()) A.push({ key: 'install', pri: 70, tone: 'info', icon: '📱', title: t('installT'), detail: t('installD'), ack: t('ok'), persistAck: true });
 
   if (pushStatus() === 'ready' && Notification.permission === 'default') A.push({ key: 'pushAsk', pri: 58, tone: 'info', icon: '🔔', title: t('pushAskT'), detail: t('pushAskD'), buttons: [{ label: t('pushAskB'), a: 'pushOn', primary: true }], dismiss: true });
   for (const a of A) if (a.key && S.ack[a.key]) a.done = true;
@@ -1225,6 +1415,7 @@ function renderToday() {
   let html = hero({ title: greet(N), sub: cap(longDate(TODAY)), night, extra: wxHero() });
   html += '<div class="wrap">' + sec(t('secTodo'));
   html += '<div class="stack">' + (acts.some(a => !a.done) ? '' : `<div class="card empty"><div class="e">🌿</div><b>${t('emptyT')}</b><span>${t('emptyD')}</span></div>`) + acts.map(actCard).join('') + '</div>';
+  if (rinkVisible(TODAY)) html += sec(t('rk_secT')) + rinkCard();
   html += sec(t('secSettings'), `<button class="aside-btn" data-a="tab" data-v="climate">${t('seeClim')}</button>`) + settingsRows();
   html += sec(t('secWeek'), `<button class="aside-btn" data-a="tab" data-v="calendar">${t('seeCal')}</button>`) + weekStrip();
   html += '</div>';
@@ -1568,6 +1759,9 @@ document.addEventListener('click', e => {
   else if (a === 'more') { calWeeks += 6; renderCalendar(); document.querySelectorAll('#page-calendar details[data-id]').forEach(d => { if (OPEN.has(d.dataset.id)) d.open = true; }); watchTitle(); }
   else if (a === 'jump') { const d = el.dataset.v; if (S.tab !== 'calendar') go('calendar'); const need = diffDays(TODAY, d); if (need > calWeeks * 7 - 7) { calWeeks = Math.ceil(need / 7) + 2; renderCalendar(); } jumpTo('d-' + d); }
   else if (a === 'refresh') refresh(true);
+  else if (a === 'rkDay') { RK.off = +el.dataset.v; RK.sel = null; renderRink(); }
+  else if (a === 'rkFilt') { RK.flt = el.dataset.v || null; RK.sel = null; renderRink(); }
+  else if (a === 'rkSel') { const i = +el.dataset.v; RK.sel = RK.sel === i ? null : i; renderRink(); }
 });
 document.addEventListener('change', e => {
   const inp = e.target.closest('input[data-maint]'); if (!inp) return;
@@ -1582,10 +1776,11 @@ async function refresh(force) {
   renderAll();
   if (force) toast(ok ? t('wxUpdated') : t('wxFailed'));
 }
-/* Ménage des accusés de réception de plus de 14 jours */
-(function cleanAcks() {
-  const lim = addDays(isoOf(now()), -14);
+/* Ménage : accusés de réception de plus de 14 jours, tâches de plus d'un an (la saison en cours est gardée) */
+(function cleanState() {
+  const today = isoOf(now()), lim = addDays(today, -14), old = addDays(today, -400);
   for (const k in S.ack) if (typeof S.ack[k] !== 'string' || (S.ack[k] < lim && k !== 'install')) delete S.ack[k];
+  for (const k in S.tasks) if (typeof S.tasks[k] !== 'string' || S.tasks[k] < old) delete S.tasks[k];
   persist();
 })();
 
@@ -1597,7 +1792,11 @@ pushHealth();
 window.addEventListener('hashchange', () => { const h = tabFromHash(); if (h) go(h); });
 if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', e => { const tb = e.data && e.data.tab; if (['today', 'calendar', 'climate'].includes(tb)) go(tb); });
 let lastMin = -1;
-setInterval(() => { const m = now().getMinutes(); if (m !== lastMin) { lastMin = m; renderAll(); } }, 30000);
+setInterval(() => {
+  const m = now().getMinutes(); if (m === lastMin) return;
+  const f = document.activeElement; if (f && f.matches && f.matches('input, select, textarea')) return;   /* ne pas fermer un sélecteur de date ouvert */
+  lastMin = m; renderAll();
+}, 30000);
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { refresh(false); pushHealth(); } });
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 window.__mcnabb = { derive, recommend, buildICS, remSpec, state: S };
